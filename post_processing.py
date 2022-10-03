@@ -1,4 +1,5 @@
 from pre_processing import *
+import seaborn as sns
 
 
 def get_doc_topics(model,docs,n_topics,doc_number,top_doc_n=10,show_top_doc=False):
@@ -283,3 +284,22 @@ def prepare_authorless_data(df,lda_model,pre_processed_docs):
   t.to_csv('corpus',sep='\t',encoding="UTF-8",header=False,index=True)
   #saving LDAMallet model to compute author-topic correlations
   ldaMallet.save('ldaMallet_model.gensim')
+
+
+
+
+def plotting_coherence(eval_df):
+  '''
+  plotting coherence and std for different number of topics
+
+  Returns: None
+
+  parameter eval_df: Pandas DataFrame of the multiple coherene score for multiple runs for each topic number
+  '''
+  ax = sns.pointplot(x='num_topics',y='coherence',data=eval_df)
+  plt.title('Coherence score with Wiki docs as ref corpus')
+  plt.show()
+
+  ax = plt.errorbar(x='num_topics',y='coherence',yerr='coherence_std',data=eval_df[0:-1:3])
+  plt.title('Coherence score with std within a single run')
+  plt.show()
