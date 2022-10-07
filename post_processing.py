@@ -1,47 +1,8 @@
 from pre_processing import *
 import seaborn as sns
+import copy
+from matplotlib import pyplot as py
 
-
-def get_doc_topics(model,docs,n_topics,doc_number,top_doc_n=10,show_top_doc=False):
-  '''
-  Computes and shows doc-topic distribution
-  -----------------------------------------
-  parameters:
-  -----------------
-  model: A LdaMallet gensim wrapper
-  n_topics: number of topics that the model was trained with
-  doc_number: number of documents in total
-  top_doc_n: number of top documents to show for each topic
-  show_top_doc: whether to show top documents for each topic or not
-
-  returns:
-  -----------------
-  doc_topics_np: a numpy array of size (doc,n_topics) that shows the distribution of topics for each doc
-  '''
-  #test something
-  doc_topics = model.load_document_topics() #loading doc-topic distribution
-  doc_topics_np = np.zeros((doc_number,n_topics)) #initializing a numpy array to collect all topic-doc matrices
-
-  docc = 0
-  #reading one by one from doc_topics LDA output
-  for D in doc_topics:
-    doc_topics_np[docc,:] = np.asarray(D)[:,1]
-    docc = docc + 1
-  #top_doc_n = 10
-
-  if show_top_doc:
-    #printing top documents of each topics
-    for i in range(doc_topics_np.shape[1]):
-      top_doc = np.argsort(doc_topics_np[:,i])[-top_doc_n:]
-      print('Topic ', i,' : ',model.show_topic(i))
-      print('top docs: \n')
-      for ind in reversed(range(len(top_doc))):
-        print([doc_topics_np[top_doc[ind],i],docs[top_doc[ind]]])
-        print("........----------------........")
-      print("------------------------------------------------------------------")
-      print('\n\n\n')
-
-  return doc_topics_np
 
 
 
@@ -82,6 +43,61 @@ def similarity_computation(topics1,topics2,sim_func=dice_sim):
 
   return sim_matrix
 
+
+def topic_doc_dist_threshold(records,n_topics,group,start_col=11,bins=6):
+  """
+  Computes topic assignment of each document w.r.t. to a threshold and returns 
+  average of topics distributions for a column (e.g., blog name)
+
+  parameters:
+  -----------
+  records: the dataframe of the data
+  n_topics: number of topics
+  start_col: The column that starts as topic = 0 
+
+  returns:
+  -----------
+  average of topic distribution for the selected group
+  """
+  topic_dist = pd.DataFrame(records.iloc[:,start_col:])
+
+  #article to pick the best bin-wdith and way to compute it (link from stat exchange)
+  #https://en.wikipedia.org/wiki/Freedman%E2%80%93Diaconis_rule
+  #https://stats.stackexchange.com/questions/798/calculating-optimal-number-of-bins-in-a-histogram
+  # q75,q25 = np.percentile(topic_dist.iloc[:,10],[75,25])
+  # iqr = q75 - q25
+  # h = 2 * iqr * len(topic_dist)**(1/3)
+  # print(1/h)
+
+  #find threshold for each topic 
+  #I set the threshold one a bin has less than half of population than the previous bin
+  topic_thresholds = []
+  for i in range(0,n_topics):
+    h,b = np.histogram(topic_dist.iloc[:,i],bins=bins)
+    for j in range(1,len(h)):
+      if abs(h[j]-h[j-1]) > h[j]:
+        topic_thresholds.append(b[j-1]*1.5)
+        topic_dist.iloc[topic_dist.iloc[:,i] <b[j-1]*1.5,i] = 0 #set any document-topic dist that are below threshold to zero
+        #print(sum(h[j:]))
+        break
+
+
+  records_topic_avg = pd.DataFrame(records)
+  #replacing obtained topic-dist from previous cell
+  records_topic_avg.iloc[:,start_col:] = topic_dist
+  #averaging over group
+  records_topic_avg = records_topic_avg.groupby(group).sum()
+  #sum over each topic, so later we can compute state-topic proportion that sums up to 1
+  topic_sum = np.sum(topic_dist)#sum of doc-topic for each topic after removing documents with doc-topic below threshold
+  #states summation 
+  #dividing states summations by topic_sum to obtain satet proportion
+  #records_topic_avg = pd.DataFrame(records_topic_avg.values/np.reshape(topic_sum.values,(1,35)))
+  # print((records_topic_avg.values).shape)
+  # print(np.reshape(topic_sum.values,(1,n_topics)).shape)
+  records_topic_avg.iloc[:,:] = (records_topic_avg.values/np.reshape(topic_sum.values,(1,n_topics)))
+  records_topic_avg
+
+  return records_topic_avg
 
 
 import matplotlib.pyplot as plt
@@ -130,7 +146,7 @@ def heatmap(data, ax=None,title_text="A plot",
 
     # ... and label them with the respective list entries.
     ax.set_xticklabels(data,fontsize=25,style='oblique')###
-    ax.set_yticklabels(data,fontsize=25,style='oblique')###
+    ax.set_yticklabels(data.index,fontsize=25,style='oblique')###
 
     # Let the horizontal axes labeling appear on top.
     ax.tick_params(top=True, bottom=False,
@@ -302,4 +318,73 @@ def plotting_coherence(eval_df):
 
   ax = plt.errorbar(x='num_topics',y='coherence',yerr='coherence_std',data=eval_df[0:-1:3])
   plt.title('Coherence score with std within a single run')
+  plt.show()
+
+
+def topic_top_terms(ldaMallet,n_topics,top_n_terms = 20):
+  '''
+  gets an LDAMallet model and returns top-terms in a list
+
+  Returns: list of top terms (type:List)
+
+  parameter ldaMallet: Trained Gensim Object for ldaMallet
+  '''
+
+
+  topic_term = []#np.asarray([['sample_string']*top_n]*n_topics)
+
+  # loop through all the topics we have
+  for i in range(n_topics):
+    text_to_show = ''
+    temp_ls = []
+    # looping through the number of words we want to represent each topic ==> can do it with an iterator oved show_topic results as well.
+    for j in range(top_n_terms): 
+      temp_ls.append(ldaMallet.show_topic(i,topn=top_n_terms)[j][0])
+    topic_term.append(temp_ls[:])
+
+  return topic_term
+
+def col_proportion(topic_avg,df,col=9):
+  x = pd.DataFrame(df.iloc[:,9].value_counts()).sort_index().values / np.sum(pd.DataFrame(df.iloc[:,9].value_counts()).sort_index().values)
+  # print(x)
+  return topic_avg * x
+
+
+def topic_author_heat_map(doc_topics,topic_term,sel_df,author_names='blog_name',start_col=10):
+  '''
+  plot topic_author_heat map
+
+  returns: None
+
+  parameter doc_topics: document-topic distribution (type:np.array)
+  parameter topic_term: top terms of all topics (type: list)
+  parameter author_names: names of the authors in general (default='blog names')
+  parameter start_col: columns that topic-doc distribution starts from (default=10)
+  '''
+
+  #merging doc-topics distribution with selected_doc dataframe
+  tdf = pd.DataFrame(doc_topics)
+  tdf.index = sel_df.index
+  sel_df = sel_df.join(tdf)
+
+  n_topics = len(topic_term) #number of topics
+
+  #extracting topic labels to use for column labels for each topic
+  topic_labels = ['_'.join(i) for i in np.array(topic_term)[:,0:3]]
+  col_names = dict(zip(list(np.arange(0,n_topics)),topic_labels))
+  sel_df = sel_df.rename(columns=col_names)
+
+  #getting avg of topic distribution for each group (blog name here)
+  t = copy.deepcopy(sel_df)
+  topic_avg_df = topic_doc_dist_threshold(t,n_topics=n_topics,group=author_names,start_col=start_col)
+
+  #computing topic proportion
+  topic_avg_proportion_df = col_proportion(topic_avg_df,sel_df,col=start_col-1)
+
+  #visualizing the final results
+  fig, ax = plt.subplots(figsize=(60,15))
+
+  im, cbar = heatmap(topic_avg_df,ax=ax, cmap="inferno",title_text='Doc-Topic dist average on Topics')
+  texts = annotate_heatmap(im, valfmt="{x:.4f}",fontsize=10,weight="bold",)
+  fig.tight_layout()
   plt.show()

@@ -18,6 +18,16 @@ import sys
 
 import matplotlib.pyplot as plt
 
+from scipy.spatial.distance import jensenshannon
+try:
+	from hungarian_algorithm import algorithm
+except:
+	print('You need to install "hungarian_algorithm" package to run this code')
+	exit()
+
+
+from post_processing import jaccard_sim, dice_sim, similarity_computation
+
 mallet_path = 'mallet'
 
 
@@ -252,4 +262,142 @@ def alpha_adjustment(doc_term_matrix,n_topics:int,vocab_dict,pre_processed_docs,
 
 	ax = plt.plot(np.arange(alpha_min,alpha_max+1,alpha_step),coherence_value)
 	plt.title('Coherence score of different alpha')
+	plt.show()
+
+
+def get_doc_topics(model,docs,n_topics,doc_number,top_doc_n=10,show_top_doc=False):
+  '''
+  Computes and shows doc-topic distribution
+  -----------------------------------------
+  parameters:
+  -----------------
+  model: A LdaMallet gensim wrapper
+  n_topics: number of topics that the model was trained with
+  doc_number: number of documents in total
+  top_doc_n: number of top documents to show for each topic
+  show_top_doc: whether to show top documents for each topic or not
+
+  returns:
+  -----------------
+  doc_topics_np: a numpy array of size (doc,n_topics) that shows the distribution of topics for each doc
+  '''
+  #test something
+  doc_topics = model.load_document_topics() #loading doc-topic distribution
+  doc_topics_np = np.zeros((doc_number,n_topics)) #initializing a numpy array to collect all topic-doc matrices
+
+  docc = 0
+  #reading one by one from doc_topics LDA output
+  for D in doc_topics:
+    doc_topics_np[docc,:] = np.asarray(D)[:,1]
+    docc = docc + 1
+  #top_doc_n = 10
+
+  if show_top_doc:
+    #printing top documents of each topics
+    for i in range(doc_topics_np.shape[1]):
+      top_doc = np.argsort(doc_topics_np[:,i])[-top_doc_n:]
+      print('Topic ', i,' : ',model.show_topic(i))
+      print('top docs: \n')
+      for ind in reversed(range(len(top_doc))):
+        print([doc_topics_np[top_doc[ind],i],docs[top_doc[ind]]])
+        print("........----------------........")
+      print("------------------------------------------------------------------")
+      print('\n\n\n')
+
+  return doc_topics_np
+
+
+
+
+
+def compute_stability_values(dictionary, corpus, texts, limit=25, start=5, step=5,runs = 1,sim_funcs=[jaccard_sim,jensenshannon],func_names=['jaccard','JSD']):
+    """
+    Compute stability for various number of topics and with a given set of similarity function
+
+    Parameters:
+    ----------
+    dictionary : Gensim dictionary
+    corpus : Gensim corpus
+    texts : List of input texts
+    limit : Max num of topics
+    step  : steps of changing counter for topics
+    sim_functions: similarity functions
+
+    Returns:
+    -------
+    df: a dataframe including all similarity values with different K and different similairy functions
+    """
+
+    coherence_values = []
+    model_list = []
+    purity_values = []
+    contrast_values = []
+    df = pd.DataFrame(columns=['num_topics'])
+    for num_topics in range(start, limit+1, step):
+      #storing similarity values in an array for each number of topics
+      appear_sim_values = []
+      prob_sim_values = []
+      #list of topic terms for each run. Each entry would be a list of topic-terms
+      topic_terms = []
+      #list of term probabilities. Each entry would be a list of topic-term probabilities for a single run
+      term_prob = []
+      
+      #running multiple topic models
+      for r in range(runs):
+          model = LdaMallet(mallet_path, corpus=corpus, num_topics=num_topics, id2word=dictionary,optimize_interval = 50)
+          temp = []
+          #extracting top-20 terms of each topic
+          for k in range(num_topics):
+            temp.append(list(np.array(model.show_topic(k,topn=20))[:,0]))
+          
+          #storing topic-terms and term-probability vector of the current model
+          topic_terms.append(temp)
+          term_prob.append(model.get_topics().T)
+      
+      #do the pairwise comparison
+      for i in range(runs):
+        for j in range(runs):
+          if i==j: continue #we don't want to compute run[i] vs. run[i]
+          #do pairwsie topic comparison to build a matrix matching [should be a dictionary for algorithm.matching function]
+          sim_term = {}# np.zeros((len(topic_terms[i]),len(topic_terms[j])))
+          sim_prob = {}# np.zeros((len(topic_terms[i]),len(topic_terms[j])))
+          for t1 in range(len(topic_terms[i])):
+            term_dic={} #each entry of the dictionary is also a dictionary
+            prob_dic={}
+            for t2 in range(len(topic_terms[j])):
+              func = sim_funcs[0] #first function should be term-based similarity function
+              term_dic[t2] = func(topic_terms[i][t1],topic_terms[j][t2])
+              func = sim_funcs[1] #second function should be probability-based similarity function
+              prob_dic[t2] = 1-func(term_prob[i][:,t1],term_prob[j][:,t2]) #Jensen and shanon is a distance function and needs to be subtract from 1
+            sim_term['model1_'+str(t1)] = term_dic
+            sim_prob['model1_'+str(t1)] = prob_dic
+          
+          #compute similairy using hungarian bi-partite matching
+          try:
+            appear_sim_values.append(np.mean(np.array(algorithm.find_matching(sim_term))[:,1]))
+            prob_sim_values.append(np.mean(np.array(algorithm.find_matching(sim_prob))[:,1]))
+          except:
+            0 #an error caused by hungarian algorithm that I can't understand!
+          #return np.mean(np.array(algorithm.find_matching(sim_term))[:,1]),sim_term,topic_terms,sim_prob
+
+      #storing average similarity for each K
+      df = df.append({'num_topics':num_topics,'appearance_sim_avg':np.mean(appear_sim_values),'probability_sim_avg':np.mean(prob_sim_values),'appearance_sim_std':np.std(appear_sim_values),'probability_sim_std':np.std(prob_sim_values)},ignore_index=True)
+
+      print('All runs for {0} topics have finished'.format(num_topics))
+
+
+    return df
+
+def stability_plot(stab_df:pd.DataFrame):
+	'''
+	plotting the results of stabulity function for top-terms and term-topic probability
+
+	Returns: None
+
+	parameter stab_df: results of stability function, aka compute_stability_values as pd.DataFrame
+	'''
+	ax = plt.errorbar(x='num_topics',y='appearance_sim_avg',yerr='appearance_sim_std',data=stab_df)
+	ax = plt.errorbar(x='num_topics',y='probability_sim_avg',yerr='probability_sim_std',data=stab_df)
+	#plt.title('Coherence score with std within a single run')
+	plt.legend(['appearance stability','probability stability'])
 	plt.show()
