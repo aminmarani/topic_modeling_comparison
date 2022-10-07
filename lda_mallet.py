@@ -16,6 +16,8 @@ import numpy as np
 import math
 import sys
 
+import matplotlib.pyplot as plt
+
 mallet_path = 'mallet'
 
 
@@ -223,3 +225,31 @@ class ComputeSaliency( object ):
 def computeSaliency( r_model, rank = True):
 	model = Model( r_model )
 	return ComputeSaliency().execute( model, rank )
+
+
+def alpha_adjustment(doc_term_matrix,n_topics:int,vocab_dict,pre_processed_docs,random_seed = 54321,alpha_min=5,alpha_max=100,alpha_step=5):
+	'''
+	finding the alpha that maximizes coherence score
+
+	Returns: None (plots an alpha-NPMI)
+
+	parameter doc_term_matrix: document_term matrix (type:np_array)
+	parameter n_topics: number of topics to find the best alpha for (type: int)
+	parameter vocab_dict: dictionary of words (type:list)
+	parameter pre_processed_docs: processed docs (type:List)
+
+	parameter random_seed: Fixed random seed to generate similar results every time running a model with similar alpha (default:54321)
+	parameter alpha_min: minimum parameter for alpha (default=5)
+	parameter alpha_max: maximum parameter for alpha (default=100)
+	parameter alpha_step: step value to change alpha for each run (default=5)
+	'''
+	coherence_value = []
+
+	for alpha in np.arange(alpha_min,alpha_max+1,alpha_step):
+		ldaMallet = LdaMallet(mallet_path, corpus=doc_term_matrix, num_topics=n_topics, id2word=vocab_dict,random_seed = random_seed,optimize_interval=alpha)
+		coherencemodel = CoherenceModel(model=ldaMallet, texts=pre_processed_docs, dictionary=vocab_dict, coherence='c_npmi')
+		coherence_value.append(coherencemodel.get_coherence())
+
+	ax = plt.plot(np.arange(alpha_min,alpha_max+1,alpha_step),coherence_value)
+	plt.title('Coherence score of different alpha')
+	plt.show()
