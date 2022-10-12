@@ -14,8 +14,8 @@
 # if (! require('qdapTools'))
 # 	stop('qdapTools package is not installed! You need to isntall this package to continue.')	
 
-# if (! require('reader'))
-# 	stop('reader package is not installed! You need to isntall this package to continue.')	
+if (! require('reader'))
+	stop('reader package is not installed! You need to isntall this package to continue.')	
 
 # if (! require('dplyr'))
 # 	stop('dplyr package is not installed! You need to isntall this package to continue.')	
@@ -27,11 +27,17 @@
 # 	stop('jsonlite package is not installed! You need to isntall this package to continue.')	
 
 
+# test <- function(inp)
+# {
+# 	print(inp)
+# 	return (13123.1232)
+# }
+
 
 # #loading libraries
 # library(rJava)
 # library(mallet)
-# library(readr)
+library(readr)
 # library(dplyr)
 # .jinit(parameters="-Xmx12g") #Give rJava enough memory
 # library(ggplot2)
@@ -40,6 +46,47 @@
 # library(reticulate)
 # library(qdapTools)
 
+
+#'running STM for one-single run 
+#' @param docs documents with text
+#'
+run_stm <- function(docs,topic.n=10,verbose=F)
+{
+	###checking libraries
+	if (! require('reader'))
+		stop('reader package is not installed! You need to isntall this package to continue.')	
+	if (! require('stm'))
+		stop('stm package is not installed! You need to isntall this package to continue.')	
+	if (! require('tm'))
+		stop('tm package is not installed! You need to isntall this package to continue.')	
+
+
+	###loading libraries
+	library(readr)
+	library(stm)
+
+	###adding sources
+	source('./coherence.R')
+
+	###adjusting data
+	# text <- docs$text
+
+	# data <- data.frame(as.character(1:length(text)), stringsAsFactors = FALSE)
+	# names(data) <- "id"
+	# data$text <- text
+
+	processed <- textProcessor(docs$text, metadata = docs,stem = FALSE,onlycharacter = T)
+	out <- prepDocuments(processed$documents, processed$vocab, processed$meta)
+	docs <- out$documents
+	vocab <- out$vocab
+	meta <-out$meta
+
+	#running STM
+	LDA_STM <- stm(documents = out$documents, vocab = out$vocab,
+	              K = topic.n, prevalence =~ rating + s(day) ,
+	              max.em.its = 75, data = out$meta,
+	              init.type = "LDA", verbose = FALSE,seed = 12345)
+}
 
 
 # ####defining functions####
