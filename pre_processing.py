@@ -191,5 +191,19 @@ def loading_wiki_docs(filename:str):
 	        wiki_docs.append(d)
 	return wiki_docs
 
+def newsgroup(data_path):
+  '''
+  Read data of 20newsgroup from a CSV file and return a dataframe incluidng the actual and cleaned docs
+
+  Returns : A pandas dataframe
+
+  parameter data_path: path to the csv file
+  '''
+
+  text_df =  pd.read_csv(data_path,sep=';')
+  #removing non-string documents/entities
+  doc_list = [i for i in list(text_df.text_cleaned) if type(i) == str]
+  actual_doc_list = [text_df.text[i] for i,j in enumerate(list(text_df.text_cleaned)) if type(j) == str]
+  return pd.DataFrame(list(zip(doc_list,actual_doc_list)),columns=['text','text_cleaned'])
 
 
