@@ -28,7 +28,13 @@ except:
 
 from post_processing import jaccard_sim, dice_sim, similarity_computation
 
-mallet_path = 'mallet'
+import platform 
+#checking OS
+if 'windows' in platform.system().lower():
+	mallet_path = 'c:/mallet-2.0.8/bin/mallet'
+else:
+	mallet_path = 'mallet'
+
 
 
 
