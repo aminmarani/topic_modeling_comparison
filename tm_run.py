@@ -19,9 +19,9 @@ if __name__ == '__main__':
     technique = ''
     num_topics = 100
     random_seed = 12345
-    iterations = 1000
+    iterations = 900
 
-    opts,args = getopt.getopt(sys.argv[1:],"h",['data=','tech=','num=','seed=','iter=='])
+    opts,args = getopt.getopt(sys.argv[1:],"h",['data=','tech=','num=','seed=','iter='])
 
   except getopt.GetoptError:
     print('python3 tm_run.py --data data_path --tech topic_modeling_technique --num number_of_topics --seed random_seed --iter iterations')
@@ -40,8 +40,7 @@ if __name__ == '__main__':
     elif opt == '--iter':
       iterations = int(arg)
 
-  print(iterations)
-  print('***************22222')
+
   #loading data
   if '20newsgroup' in data_path:
     text_df = newsgroup(data_path)
@@ -53,8 +52,9 @@ if __name__ == '__main__':
   vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
   #run topic modeling technique
   if technique == 'lda':
-    print(iterations)
-    ldaMallet = LdaMallet(mallet_path, corpus=doc_term_matrix, num_topics=num_topics, id2word=vocab_dict,random_seed = random_seed,optimize_interval=50,iterations=iterations)
+    ldaMallet = LdaMallet(mallet_path, corpus=doc_term_matrix, num_topics=num_topics, id2word=vocab_dict,iterations=iterations,random_seed = random_seed,optimize_interval=50)
+
+
 
 
 

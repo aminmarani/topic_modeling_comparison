@@ -1,0 +1,69 @@
+Mallet LDA: 3 topics, 2 topic bits, 11 topic mask
+Data loaded.
+max tokens: 12817
+total tokens: 2280175
+<10> LL/token: -9.64982
+<20> LL/token: -9.25442
+<30> LL/token: -9.14844
+<40> LL/token: -9.09789
+
+0	16.66667	ax max ca article drive apr windows game car dos card team cs mb st scsi uk games hp win 
+1	16.66667	people article god good time make government question things point law fact key read thing true life made jesus apr 
+2	16.66667	system time file program work space data year information mail software bit university back list number gov line set image 
+
+<50> LL/token: -9.0685
+<60> LL/token: -9.04988
+<70> LL/token: -9.03807
+<80> LL/token: -9.02798
+<90> LL/token: -9.02062
+
+0	16.66667	ax max article ca apr drive game car card cs team good mb year st scsi games win gv mike 
+1	16.66667	people article god time good make government question things point fact law made years day state life jesus world thing 
+2	16.66667	system windows file work information mail bit time program space data software university problem dos number computer line run list 
+
+<100> LL/token: -9.01428
+<110> LL/token: -9.00862
+<120> LL/token: -9.00469
+<130> LL/token: -9.00174
+<140> LL/token: -8.9983
+
+0	16.66667	ax article max ca apr drive game car cs card team year good mb st scsi games win gv mike 
+1	16.66667	people article god time good make government point question things fact made years law state world day life jesus true 
+2	16.66667	system windows file mail work information bit problem time program space data university software dos number computer run line list 
+
+<150> LL/token: -8.99469
+<160> LL/token: -8.99201
+<170> LL/token: -8.99082
+<180> LL/token: -8.98809
+<190> LL/token: -8.98644
+
+0	16.66667	ax article max ca apr drive game car cs year good card team mb st scsi games win gv mike 
+1	16.66667	people article god time good make government point question things years fact made law state world day life true jesus 
+2	16.66667	system windows file mail work information bit problem program space data university time software key dos computer run number line 
+
+<200> LL/token: -8.98494
+<210> LL/token: -8.98406
+<220> LL/token: -8.98189
+<230> LL/token: -8.98047
+<240> LL/token: -8.97906
+
+0	16.66667	ax article max ca apr drive game cs car year good card team mb st scsi games win gv mike 
+1	16.66667	people article god time good make government years point question things fact made world law state day life jesus true 
+2	16.66667	system windows mail file work information bit problem program space data university time software key dos computer line number run 
+
+[beta: 0.09419] 
+<250> LL/token: -8.94926
+
+Total time: 33 seconds
+[nltk_data] Downloading package stopwords to /Users/das-
+[nltk_data]     lab/nltk_data...
+[nltk_data]   Package stopwords is already up-to-date!
+[nltk_data] Downloading package wordnet to /Users/das-lab/nltk_data...
+[nltk_data]   Package wordnet is already up-to-date!
+[nltk_data] Downloading package omw-1.4 to /Users/das-lab/nltk_data...
+[nltk_data]   Package omw-1.4 is already up-to-date!
+[nltk_data] Downloading package averaged_perceptron_tagger to
+[nltk_data]     /Users/das-lab/nltk_data...
+[nltk_data]   Package averaged_perceptron_tagger is already up-to-
+[nltk_data]       date!
+************
