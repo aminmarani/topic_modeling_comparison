@@ -35,7 +35,7 @@ def reading_results(res,topic_num,itreations):
       try:
         #reading top terms splited by two tabs + the second split is for splitting the terms with space
         #excluding the last item using [0:-1].  because the last item is '\n'
-        all_top_terms.extend(res[current_line].split('\t')[2].split(' ')[0:-1])
+        all_top_terms.append(res[current_line].split('\t')[2].split(' ')[0:-1])
       except:
         print(res[current_line-2:current_line+3],current_line)
       current_line+=1#going to next line
@@ -76,10 +76,9 @@ for _ in range(3): #three runs
   #   csvfile.write(res)
 
   with open('t.csv','r') as csvfile:
-    res = csvfile.read()
-  res = res.split('\n')
+    res = csvfile.readlines()
+  # res = res.split('\n')
   tts,LLs = reading_results(res,topic_num,itreations)
-  print(tts)
   all_lls.extend(LLs)
   all_top_terms.extend(tts)
   coherence = []
@@ -90,11 +89,16 @@ for n in [5,10,15,20]:
   #we compute coherence scores for all topics, which is [topic_num * numnber of runs (3) * group of top terms (4 grpups: 5-10-15-20)]
   #we should compute the average for each run over all topics with same number of top terms
   cscore = CoherenceModel(topics=all_top_terms,dictionary=vocab_dict,texts=pre_processed_wiki,topn=n,coherence='c_npmi').get_coherence_per_topic()
-  cscore = np.asarray(cscore).reshape(int(itreations/iter_stp),topic_num)
+  cscore = np.asarray(cscore).reshape(int(itreations/iter_stp)*3,topic_num) #3 : three runs
   coherence_avg = np.sum(cscore,axis=1)
+  print(coherence_avg)
 
-  for it in range(itreations/iter_stp):
-    stats.append(stats,pd.DataFrame(data=[(it+1)*iter_stp,n,coherence_avg[it],LL[it]],columns=['iterations','top_n','coherence','LL']),ignore_index=True)
+  c =0 #coherence counter
+  for _ in range(3):#for three runs
+    for it in range(int(itreations/iter_stp)):
+      print([(it+1)*iter_stp,n,coherence_avg[c],all_lls[it]])
+      stats = pd.concat([stats,pd.DataFrame(data=[[(it+1)*iter_stp,n,coherence_avg[c],all_lls[it]]],columns=['iterations','top_n','coherence','LL'])],ignore_index=True)
+      c+=1 #adding coherence counter
 
 print(stats)
 
