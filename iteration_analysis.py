@@ -79,6 +79,7 @@ for _ in range(3): #three runs
     res = csvfile.read()
   res = res.split('\n')
   tts,LLs = reading_results(res,topic_num,itreations)
+  print(tts)
   all_lls.extend(LLs)
   all_top_terms.extend(tts)
   coherence = []
