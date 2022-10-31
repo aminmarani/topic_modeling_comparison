@@ -2,7 +2,7 @@ import gensim
 
 
 #check Gensim version
-assert gensim.__version__ == '3.8.3', 'You must install Gensim 3.8.3 to be able to run LDA Mallet'
+assert '3.8.2' <= gensim.__version__ <= '3.8.3', 'You must install Gensim 3.8.3 or 3.8.2 to be able to run LDA Mallet'
 
 
 from gensim.models.wrappers import LdaMallet

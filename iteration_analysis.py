@@ -72,6 +72,8 @@ for _ in range(3): #three runs
                         '--tech','lda','--num',str(topic_num),'--seed',
                         str(int(random.random()*100000)),'--iter',str(itreations)]
                         , stdout=subprocess.PIPE,stderr=subprocess.STDOUT).stdout.decode('utf-8')
+  #we have to wait till subprocess.run finishes....
+  
   # with open('t.csv','w') as csvfile:
   #   csvfile.write(res)
 
