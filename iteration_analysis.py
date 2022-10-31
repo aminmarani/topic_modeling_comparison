@@ -61,27 +61,29 @@ vocab_dict_, doc_term_matrix_ = prepare_corpus(pre_processed_docs)
 
 #running for one topic number
 topic_num = 3
-itreations = 250
+itreations = 4000
 iter_stp = 50#LDA stops every 50 iterations and print LLs and top terms
 
 all_top_terms = []#storing all top terms in one vector
 all_lls = [] #all of Log-Likelihood values
 
 for _ in range(3): #three runs
-  # res = subprocess.run(['python3', 'tm_run.py','--data','./data/20newsgroup_preprocessed.csv',
-  #                       '--tech','lda','--num',str(topic_num),'--seed',
-  #                       str(int(random.random()*100000)),'--iter',str(itreations)]
-  #                       , stdout=subprocess.PIPE,stderr=subprocess.STDOUT).stdout.decode('utf-8')
+  res = subprocess.run(['python3', 'tm_run.py','--data','./data/20newsgroup_preprocessed.csv',
+                        '--tech','lda','--num',str(topic_num),'--seed',
+                        str(int(random.random()*100000)),'--iter',str(itreations)]
+                        , stdout=subprocess.PIPE,stderr=subprocess.STDOUT).stdout.decode('utf-8')
   # with open('t.csv','w') as csvfile:
   #   csvfile.write(res)
 
-  with open('t.csv','r') as csvfile:
-    res = csvfile.readlines()
-  # res = res.split('\n')
+  # with open('t.csv','r') as csvfile:
+  #   res = csvfile.readlines()
+  res = res.split('\n')
   tts,LLs = reading_results(res,topic_num,itreations)
   all_lls.extend(LLs)
   all_top_terms.extend(tts)
   coherence = []
+
+print('LDA runs are finished!')
 
 stats = pd.DataFrame(columns=['iterations','top_n','coherence','LL'])
 #running all top-terms in one go!
@@ -99,8 +101,9 @@ for n in [5,10,15,20]:
       print([(it+1)*iter_stp,n,coherence_avg[c],all_lls[it]])
       stats = pd.concat([stats,pd.DataFrame(data=[[(it+1)*iter_stp,n,coherence_avg[c],all_lls[it]]],columns=['iterations','top_n','coherence','LL'])],ignore_index=True)
       c+=1 #adding coherence counter
-
-print(stats)
+  #save a copy
+  stats.to_csv('LDA_stats.csv',index=False)
+  print('All coherence compuation for top-{0} terms are computed'.format(n))
 
 ax = sns.pointplot(x='iterations',y='coherence',hue='top_n',data=stats)
 ax.title('Coherence and LL with Wiki docs as ref corpus')

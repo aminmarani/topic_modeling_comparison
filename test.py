@@ -81,10 +81,12 @@ pre_processed_wiki,no_var = preprocess_data(wiki_docs)
 
 no_var = []
 
-# lim = 150
-# st = 10
-# stp = 20
-# models, coherence, pur, cont,eval_df = compute_coherence_values(dictionary=vocab_dict, corpus=doc_term_matrix, texts=pre_processed_wiki, limit=lim, start=st, step=stp,threshold=0.10,runs = 3)
+lim = 150
+st = 10
+stp = 20
+models, coherence, pur, cont,eval_df = compute_coherence_values(dictionary=vocab_dict, corpus=doc_term_matrix, texts=pre_processed_wiki, limit=lim, start=st, step=stp,threshold=0.10,runs = 3)
+#running on a VM machine
+eval_df.to_csv('coherence_newsgroup_10to150.csv',index=False)
 # plotting_coherence(eval_df)
 
 
@@ -96,8 +98,8 @@ no_var = []
 # stability_plot(stab_df)
 
 #running topic modeling with selected parameters
-n_topics = 6; iterations = 1000
-ldaMallet = LdaMallet(mallet_path, corpus=doc_term_matrix, num_topics=n_topics, id2word=vocab_dict,iterations=iterations,random_seed = 54321,optimize_interval=50)
+# n_topics = 6; iterations = 1000
+# ldaMallet = LdaMallet(mallet_path, corpus=doc_term_matrix, num_topics=n_topics, id2word=vocab_dict,iterations=iterations,random_seed = 54321,optimize_interval=50)
 
 
 # #plotting author-topic heatmap
