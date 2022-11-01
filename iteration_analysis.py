@@ -92,9 +92,17 @@ for _ in range(3): #three runs
   tts,LLs = reading_results(res,topic_num,itreations)
   all_lls.extend(LLs)
   all_top_terms.extend(tts)
-  coherence = []
+  
+
+#saving to keep in case of an Error
+with open('LLs_iter_analysis.txt','w') as txtfile:
+  txtfile.writelines(all_lls)
+with open('top_terms_iter_analysis.txt','w') as txtfile:
+  txtfile.writelines(all_top_terms)
 
 print('LDA runs are finished!')
+
+coherence = []
 
 stats = pd.DataFrame(columns=['iterations','top_n','coherence','LL'])
 #running all top-terms in one go!
