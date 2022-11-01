@@ -96,7 +96,7 @@ for _ in range(3): #three runs
 
 #saving to keep in case of an Error
 with open('LLs_iter_analysis.txt','w') as txtfile:
-  txtfile.writelines(all_lls)
+  txtfile.writelines([str(i) for i in all_lls])
 with open('top_terms_iter_analysis.txt','w') as txtfile:
   txtfile.writelines(all_top_terms)
 
