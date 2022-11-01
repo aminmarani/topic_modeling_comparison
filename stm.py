@@ -5,15 +5,19 @@ pandas2ri.activate()
 from rpy2.robjects.packages import importr
 from rpy2.robjects.conversion import localconverter
 
+from pre_processing import ap_corpus
+
 import pandas as pd
 
 #import R base library
 base = importr('base')
 
 
-pd_df = pd.DataFrame({'int_values': [1,2,3],'text': ['abc', 'def', 'ghi']})
+# pd_df = pd.DataFrame({'int_values': [1,2,3],'text': ['The first example is not too long'
+  # , 'second example have to be short, too.', 'basically trying to write another example']})
+text_df = ap_corpus('./data/ap.txt')
 with localconverter(robjects.default_converter + pandas2ri.converter):
-  r_from_pd_df = robjects.conversion.py2rpy(pd_df)
+  r_from_pd_df = robjects.conversion.py2rpy(text_df)
 
 
 # ans = robjects.r(
@@ -25,6 +29,6 @@ with localconverter(robjects.default_converter + pandas2ri.converter):
 #   '''.format(12,22))
 
 robjects.r.source('stm.R')
-ans = robjects.r.run_stm(pd_df,10)
+ans = robjects.r.run_stm(text_df,10)
 print(ans)
 

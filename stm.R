@@ -50,7 +50,7 @@ library(readr)
 #'running STM for one-single run 
 #' @param docs documents with text
 #'
-run_stm <- function(docs,topic.n=10,verbose=F)
+run_stm <- function(docs,topic.n=10,verbose=T)
 {
 	###checking libraries
 	if (! require('reader'))
