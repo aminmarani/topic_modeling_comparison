@@ -11,6 +11,14 @@ import random
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+import platform 
+#checking OS
+if 'windows' in platform.system().lower():
+  python_cmd = "C:\\PROGRA~1\\Python37\\python.exe"
+elif 'darwin' in platform.system().lower():
+  python_cmd = 'python3'
+else:
+  python_cmd = 'python.exe'
 
 def reading_results(res,topic_num,itreations):
   '''
@@ -69,7 +77,7 @@ all_top_terms = []#storing all top terms in one vector
 all_lls = [] #all of Log-Likelihood values
 
 for _ in range(3): #three runs
-  res = subprocess.run(['python3', 'tm_run.py','--data','./data/20newsgroup_preprocessed.csv',
+  res = subprocess.run([python_cmd, 'tm_run.py','--data','./data/20newsgroup_preprocessed.csv',
                         '--tech','lda','--num',str(topic_num),'--seed',
                         str(int(random.random()*100000)),'--iter',str(itreations)]
                         , stdout=subprocess.PIPE,stderr=subprocess.STDOUT).stdout.decode('utf-8')
