@@ -67,7 +67,8 @@ from os import walk
 
 '''reading data for 20newsgroup
 '''
-text_df = newsgroup('./data/20newsgroup_preprocessed.csv')
+#text_df = newsgroup('./data/20newsgroup_preprocessed.csv')
+text_df = ap_corpus('./data/ap.txt')
 doc_list = list(text_df.text_cleaned)
 #tokenizing
 pre_processed_docs,filtered_docs = preprocess_data(doc_list)
@@ -81,13 +82,13 @@ pre_processed_wiki,no_var = preprocess_data(wiki_docs)
 
 no_var = []
 
-lim = 150
-st = 10
-stp = 20
+lim = 151
+st = 50
+stp = 50
 models, coherence, pur, cont,eval_df = compute_coherence_values(dictionary=vocab_dict, corpus=doc_term_matrix, texts=pre_processed_wiki, limit=lim, start=st, step=stp,threshold=0.10,runs = 3)
 #running on a VM machine
-eval_df.to_csv('coherence_newsgroup_10to150.csv',index=False)
-# plotting_coherence(eval_df)
+eval_df.to_csv('coherence_ap_50to150.csv',index=False)
+plotting_coherence(eval_df)
 
 
 #Coherence Evaluation for different optimize interval values

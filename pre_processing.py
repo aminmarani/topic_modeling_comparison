@@ -25,8 +25,10 @@ import numpy as np
 import copy
 
 
-
-csv.field_size_limit(sys.maxsize)
+try:
+	csv.field_size_limit(sys.maxsize)
+except:
+	print('Error in setting maxSize for CSV output')
 
 
 
@@ -182,7 +184,7 @@ def loading_wiki_docs(filename:str):
 	'''
 	wiki_docs = []
 
-	with open(filename,'r') as f:
+	with open(filename,'r',encoding="utf-8") as f:
 	    d = f.readline()
 	    wiki_docs.append(d)
 	    while(d):
@@ -206,4 +208,22 @@ def newsgroup(data_path):
   actual_doc_list = [text_df.text[i] for i,j in enumerate(list(text_df.text_cleaned)) if type(j) == str]
   return pd.DataFrame(list(zip(doc_list,actual_doc_list)),columns=['text','text_cleaned'])
 
+def ap_corpus(data_path):
+	'''
+	read data of AP corpus as one text file
 
+	Returns : A pandas dataframe
+
+  parameter data_path: path to the csv file
+	'''
+	docs = []
+
+	with open(data_path,'r') as txtfile:
+		lines = txtfile.readlines()
+		for l in lines:
+			if l[0] != '<':
+				#it is supposed to be clean and actual text for each doc
+				#but we will do pre-processing anyways; so to keep the format
+				#we save it twice
+				docs.append([l,l])
+	return pd.DataFrame(docs,columns=['text','text_cleaned'])

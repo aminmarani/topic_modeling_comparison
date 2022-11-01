@@ -88,7 +88,7 @@ def compute_coherence_values(dictionary, corpus, texts, limit=25, start=5, step=
 
           purity_t.append(np.mean(pur))
           contrast_t.append(np.mean(cont))
-          coherencemodel = CoherenceModel(model=model, texts=texts, dictionary=dictionary, coherence='c_npmi')
+          coherencemodel = CoherenceModel(model=model, texts=texts, dictionary=dictionary, coherence='c_npmi',processes=1)
           coherence_value = coherencemodel.get_coherence()
           coherence_t.append(coherence_value)
           df = df.append({'num_topics':num_topics,'coherence':coherence_value,'purity':np.mean(pur),'contrast':np.mean(cont),'coherence_std':np.std(coherencemodel.get_coherence_per_topic())},ignore_index=True)
