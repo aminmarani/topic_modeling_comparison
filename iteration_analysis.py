@@ -53,7 +53,6 @@ def reading_results(res,topic_num,itreations):
     LLs.append(float(res[current_line].split(': ')[1]))
     current_line += stp2
     #all_top_terms.append(top_terms)
-    print(LLs,all_top_terms)
   return all_top_terms,LLs
 
 #loading reference corpus
@@ -92,7 +91,7 @@ for _ in range(3): #three runs
   tts,LLs = reading_results(res,topic_num,itreations)
   all_lls.extend(LLs)
   all_top_terms.extend(tts)
-  
+  print(LLs)
 
 #saving to keep in case of an Error
 with open('LLs_iter_analysis.txt','w') as txtfile:
