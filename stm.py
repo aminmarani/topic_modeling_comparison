@@ -19,8 +19,8 @@ base = importr('base')
   # , 'second example have to be short, too.', 'basically trying to write another example']})
 docs = list(ap_corpus('./data/ap.txt').text)
 text_df = pd.DataFrame(zip(np.arange(1,len(docs)),docs),columns=['int_values','text'])
-with localconverter(robjects.default_converter + pandas2ri.converter):
-  r_from_pd_df = robjects.conversion.py2rpy(text_df)
+# with localconverter(robjects.default_converter + pandas2ri.converter):
+#   r_from_pd_df = robjects.conversion.py2rpy(text_df)
 
 
 # ans = robjects.r(
@@ -36,4 +36,8 @@ num_topics = 10
 ans = robjects.r.run_stm(text_df,topic_n=num_topics,max_itr=50)
 top_terms = np.asarray(ans[1]).reshape(num_topics,50,order='F')#topic number * top_n
 print(top_terms)
+
+
+#get the outputs for the STM and LDA ready
+#set all the evaluation including flexible set of evalauation as well as optimization ready
 
