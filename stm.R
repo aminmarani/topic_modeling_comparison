@@ -146,12 +146,12 @@ run_stm <- function(docs,topic_n=10,verbose=T,prevalence='',content='', model_ty
 	                rp.p=rp.p, tSNE_init.dims = tSNE_init.dims),
 	                init.type = "LDA", verbose = FALSE,seed = 12345)
   #storing top terms
-	top.terms = matrix(nrow = topic_n,ncol = 20)
+	top.terms = matrix(nrow = topic_n,ncol = 50)
   log.beta = STM$beta$logbeta[[1]]
   for (i in 1:topic_n)
   {
     sx = sort(log.beta[i,],index.return=T,decreasing = T)
-    top.terms[i,] =  STM$vocab[sx$ix[1:20]]
+    top.terms[i,] =  STM$vocab[sx$ix[1:50]]
   }
 	return(list(STM,top.terms))
 }
