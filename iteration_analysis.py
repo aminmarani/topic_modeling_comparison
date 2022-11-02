@@ -76,7 +76,7 @@ all_top_terms = []#storing all top terms in one vector
 all_lls = [] #all of Log-Likelihood values
 
 for _ in range(3): #three runs
-  res = subprocess.run([python_cmd, 'tm_run.py','--data','./data/20newsgroup_preprocessed.csv',
+  res = subprocess.run([python_cmd, 'tm_run.py','--data','./data/ap.txt',
                         '--tech','lda','--num',str(topic_num),'--seed',
                         str(int(random.random()*100000)),'--iter',str(itreations)]
                         , stdout=subprocess.PIPE,stderr=subprocess.STDOUT).stdout.decode('utf-8')
@@ -91,17 +91,19 @@ for _ in range(3): #three runs
   tts,LLs = reading_results(res,topic_num,itreations)
   all_lls.extend(LLs)
   all_top_terms.extend(tts)
-  print(LLs)
 
 #saving to keep in case of an Error
 with open('LLs_iter_analysis.txt','w') as txtfile:
-  for tt in LLs:
+  for tt in all_lls:
     txtfile.write(str(tt)+'\n')
 with open('top_terms_iter_analysis.txt','w') as txtfile:
   for tt in all_top_terms:
-    txtfile.write(tt+'\n')
+    txtfile.write(','.join(tt)+'\n')
 
 print('LDA runs are finished!')
+
+print(all_top_terms)
+exit()
 
 coherence = []
 

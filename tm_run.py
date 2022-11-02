@@ -44,6 +44,8 @@ if __name__ == '__main__':
   #loading data
   if '20newsgroup' in data_path:
     text_df = newsgroup(data_path)
+  if 'ap' in data_path:
+    text_df = ap_corpus(data_path)
 
   doc_list = list(text_df.text_cleaned)
   #tokenizing

@@ -81,6 +81,7 @@ def compute_coherence_values(dictionary, corpus, texts, ref_dict=[], limit=25, s
           	tt = model.show_topic(tn,topn=20)
           	#saving top_terms and their counts
           	all_top_terms.append([i[0] for i in tt])
+          print(all_top_terms)
 				  #saving counts of top_terms
           top_terms_count_ls.append(len(all_top_terms))
 
