@@ -48,10 +48,34 @@ library(readr)
 
 
 #'running STM for one-single run 
-#' @param docs documents with text
+#' @param docs documents with text and other meta-data
+#' @param topic_n number of topics
+#' @param verbose showing the process including topic labels every N iterations
+#' @param prevalence Right-side of a formula showing the prevalence relation. It should be vars in the dataframe. e.g., days+party
+#' @param content Right-side of a formlua for content. It should be vars of the dataframe you pass as docs
+#' @param model_type initialization type including LDA, Random, Spectral. If you are using Spectral, set K=0 so the algorithm find the best K for you!
+#' @param max_itr maximum iteration STM part takes. It does not include LDA or Spectral iterations.
+#' @param emtol the tolerance to finish the iterative algorithm before reaching to max_itr
+#' @param LDAbeta When there is no content variable set to TRUE. If set to False the model perform SAGE style topic updates
+#' @param interactions includes interaction between content variable and latent topics. Set to FALSE to reduce the model to no interactions
+#' @param ngroups A number equal or bigger than 1. This divides the corpus into multiple memory division and makes the algorithm converge faster. It could end up with differnt results with different ngroups
+#' @param sigma.prior A scalar between 0-1. Sets the strength of regularization of covariance matrix. If topics are highly correlated, setting this value >0 would be helpful.
+#' @param gamma.prior Prior estimation method for prevalence. Values=c('Pooled','L1')
+#' @param kappa.prior prior estimation method for content. Values=c('L1','Jeffreys')
+#' @param number of iterations for LDA gibbs sampling
+#' @param buring for LDA gibbs sampling
+#' @param alpha prevalence hyperparameter in collabsed gibbs sampling for LDA
+#' @param eta sets the topic-word hyperparameter for collapsed gibbs sampling in LDA
+#' @param rp.s a param between 0-1 controlling the sparsity of random projection for Spectral initialization
+#' @param rp.p dimensionality of the random projections for Spectral initialization
+#' @param tSNE_init.dims if you use K=0 for spectral initialization, the algorithm uses tSNE for starting and only uses tSNE_init.dims (i.e., default = 50) to initialize
 #'
-run_stm <- function(docs,topic.n=10,verbose=T)
+run_stm <- function(docs,topic_n=10,verbose=T,prevalence='',content='', model_type='LDA',max_itr=500,emtol = 1e-05,LDAbeta=T,interactions=T,ngroups=1, sigma.prior = 0, gamma.prior='Pooled',kappa.prior='L1',nits=50,burnin=25, alpha=-1, eta= 0.1,rp.s = 0.05, rp.p=3000, tSNE_init.dims = 50)
 {
+  #if no value is provide, we set it to the default STM uses, 50/K
+  if (alpha == -1)
+    alpha = 50/topic_n
+  
 	###checking libraries
 	if (! require('reader'))
 		stop('reader package is not installed! You need to isntall this package to continue.')	
@@ -82,10 +106,54 @@ run_stm <- function(docs,topic.n=10,verbose=T)
 	meta <-out$meta
 
 	#running STM
-	LDA_STM <- stm(documents = out$documents, vocab = out$vocab,
-	              K = topic.n, prevalence =~ rating + s(day) ,
-	              max.em.its = 75, data = out$meta,
-	              init.type = "LDA", verbose = FALSE,seed = 12345)
+	if (nchar(prevalence)>0 && nchar(content)>0)
+	  STM <- stm(documents = out$documents, vocab = out$vocab,
+	                K = topic_n, prevalence =~ prevalence ,content=content,
+	                data = out$meta, max.em.its = max_itr,
+	                emtol = emtol,LDAbeta=FALSE, interactions=interactions,
+	                ngroups = ngroups, gamma.prior = gamma.prior, 
+	                kappa.prior = kappa.prior, control= list(nits=nits,
+	                burnin=burnin, alpha= alpha, eta= eta, rp.s = rp.s,
+	                rp.p=rp.p, tSNE_init.dims = tSNE_init.dims),
+	                init.type = "LDA", verbose = FALSE,seed = 12345)
+	else if (nchar(prevalence)>0)
+    STM <- stm(documents = out$documents, vocab = out$vocab,
+	                K = topic_n, prevalence =~ prevalence ,
+	                max.em.its = 75, data = out$meta, max.em.its = max_itr,
+                  emtol = emtol,LDAbeta=T, interactions=interactions,
+                  ngroups = ngroups,gamma.prior = gamma.prior, 
+	                kappa.prior = kappa.prior, control= list(nits=nits,
+	                burnin=burnin, alpha= alpha, eta= eta, rp.s = rp.s,
+	                rp.p=rp.p, tSNE_init.dims = tSNE_init.dims),
+	                init.type = "LDA", verbose = FALSE,seed = 12345)
+	else if (nchar(content)>0)
+	  STM <- stm(documents = out$documents, vocab = out$vocab,
+	                K = topic_n,content=content,
+	                max.em.its = max_itr, data = out$meta, 
+	                emtol = emtol,LDAbeta=F, interactions=interactions,
+	                ngroups = ngroups,gamma.prior = gamma.prior, 
+	                kappa.prior = kappa.prior, control= list(nits=nits,
+	                burnin=burnin, alpha= alpha, eta= eta, rp.s = rp.s,
+	                rp.p=rp.p, tSNE_init.dims = tSNE_init.dims),
+	                init.type = "LDA", verbose = FALSE,seed = 12345)
+	else
+	  STM <- stm(documents = out$documents, vocab = out$vocab,
+	                K = topic_n, max.em.its = max_itr, data = out$meta, 
+	                emtol = emtol, LDAbeta=F, interactions=interactions, 
+	                ngroups = ngroups, gamma.prior = gamma.prior, 
+	                kappa.prior = kappa.prior, control= list(nits=nits,
+	                burnin=burnin, alpha= alpha, eta= eta, rp.s = rp.s,
+	                rp.p=rp.p, tSNE_init.dims = tSNE_init.dims),
+	                init.type = "LDA", verbose = FALSE,seed = 12345)
+  #storing top terms
+	top.terms = matrix(nrow = topic_n,ncol = 20)
+  log.beta = STM$beta$logbeta[[1]]
+  for (i in 1:topic_n)
+  {
+    sx = sort(log.beta[i,],index.return=T,decreasing = T)
+    top.terms[i,] =  STM$vocab[sx$ix[1:20]]
+  }
+	return(list(STM,top.terms))
 }
 
 

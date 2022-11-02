@@ -9,13 +9,16 @@ from pre_processing import ap_corpus
 
 import pandas as pd
 
+import numpy as np
+
 #import R base library
 base = importr('base')
 
 
 # pd_df = pd.DataFrame({'int_values': [1,2,3],'text': ['The first example is not too long'
   # , 'second example have to be short, too.', 'basically trying to write another example']})
-text_df = ap_corpus('./data/ap.txt')
+docs = list(ap_corpus('./data/ap.txt').text)
+text_df = pd.DataFrame(zip(np.arange(1,len(docs)),docs),columns=['int_values','text'])
 with localconverter(robjects.default_converter + pandas2ri.converter):
   r_from_pd_df = robjects.conversion.py2rpy(text_df)
 
@@ -29,6 +32,6 @@ with localconverter(robjects.default_converter + pandas2ri.converter):
 #   '''.format(12,22))
 
 robjects.r.source('stm.R')
-ans = robjects.r.run_stm(text_df,10)
+ans = robjects.r.run_stm(text_df,topic_n=10,max_itr=50)
 print(ans)
 
