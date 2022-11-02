@@ -79,15 +79,16 @@ vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
 wiki_docs = loading_wiki_docs('./data/wiki_sampled_5p.txt')
 #doing pre-processing on wiki-pedia documents
 pre_processed_wiki,no_var = preprocess_data(wiki_docs)
+wiki_vocab_dict, _ = prepare_corpus(pre_processed_wiki)
 
 no_var = []
 
-lim = 151
-st = 50
-stp = 50
-models, coherence, pur, cont,eval_df = compute_coherence_values(dictionary=vocab_dict, corpus=doc_term_matrix, texts=pre_processed_wiki, limit=lim, start=st, step=stp,threshold=0.10,runs = 3)
+lim = 90
+st = 10
+stp = 20
+models, coherence, pur, cont,eval_df = compute_coherence_values(dictionary=vocab_dict, corpus=doc_term_matrix, texts=pre_processed_wiki,ref_dict=wiki_vocab_dict, limit=lim, start=st, step=stp,threshold=0.10,runs = 3)
 #running on a VM machine
-eval_df.to_csv('coherence_ap_50to150.csv',index=False)
+# eval_df.to_csv('coherence_ap_10to90.csv',index=False)
 plotting_coherence(eval_df)
 
 

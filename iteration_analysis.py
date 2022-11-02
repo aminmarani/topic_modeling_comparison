@@ -53,7 +53,7 @@ def reading_results(res,topic_num,itreations):
     LLs.append(float(res[current_line].split(': ')[1]))
     current_line += stp2
     #all_top_terms.append(top_terms)
-
+    print(LLs,all_top_terms)
   return all_top_terms,LLs
 
 #loading reference corpus
@@ -69,7 +69,7 @@ pre_processed_docs,filtered_docs = preprocess_data(doc_list)
 vocab_dict_, doc_term_matrix_ = prepare_corpus(pre_processed_docs)
 
 #running for one topic number
-topic_num = 100
+topic_num = 50
 itreations = 4000
 iter_stp = 50#LDA stops every 50 iterations and print LLs and top terms
 
@@ -96,9 +96,11 @@ for _ in range(3): #three runs
 
 #saving to keep in case of an Error
 with open('LLs_iter_analysis.txt','w') as txtfile:
-  txtfile.writelines([str(i) for i in all_lls])
+  for tt in LLs:
+    txtfile.write(str(tt)+'\n')
 with open('top_terms_iter_analysis.txt','w') as txtfile:
-  txtfile.writelines(all_top_terms)
+  for tt in all_top_terms:
+    txtfile.write(tt+'\n')
 
 print('LDA runs are finished!')
 
