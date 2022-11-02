@@ -33,5 +33,6 @@ with localconverter(robjects.default_converter + pandas2ri.converter):
 
 robjects.r.source('stm.R')
 ans = robjects.r.run_stm(text_df,topic_n=10,max_itr=50)
-print(ans)
+top_terms = np.asarray(ans[1]).reshape(10,20,order='F')#topic number * top_n
+print(top_terms)
 
