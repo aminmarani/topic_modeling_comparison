@@ -64,7 +64,7 @@ vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_wiki)
 # text_df = newsgroup('./data/20newsgroup_preprocessed.csv')
 text_df = ap_corpus('./data/ap.txt')
 doc_list = list(text_df.text_cleaned)
-pre_processed_docs,filtered_docs = preprocess_data(doc_list)
+pre_processed_docs,filtered_docs = preprocess_data(doc_list,,extra_stopwords={'bentsen'})
 vocab_dict_, doc_term_matrix_ = prepare_corpus(pre_processed_docs)
 
 #running for one topic number
@@ -102,8 +102,6 @@ with open('top_terms_iter_analysis.txt','w') as txtfile:
 
 print('LDA runs are finished!')
 
-print(all_top_terms)
-exit()
 
 coherence = []
 
