@@ -56,7 +56,7 @@ def reading_results(res,topic_num,itreations):
   return all_top_terms,LLs
 
 #loading reference corpus
-wiki_docs = loading_wiki_docs('./data/wiki_sampled_5p.txt')
+wiki_docs = loading_wiki_docs('./data/wiki_sampled_40p.txt')
 pre_processed_wiki,no_var = preprocess_data(wiki_docs)
 vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_wiki)
 
