@@ -71,7 +71,7 @@ from os import walk
 text_df = ap_corpus('./data/ap.txt')
 doc_list = list(text_df.text_cleaned)
 #tokenizing
-pre_processed_docs,filtered_docs = preprocess_data(doc_list)
+pre_processed_docs,filtered_docs = preprocess_data(doc_list,extra_stopwords={'bentsen'})
 #generate vocabulary and texts
 vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
 
