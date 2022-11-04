@@ -76,7 +76,7 @@ pre_processed_docs,filtered_docs = preprocess_data(doc_list,extra_stopwords={})
 vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
 
 #coherene score for lda_mallet
-wiki_docs = loading_wiki_docs('./data/wiki_sampled_20p.txt')
+wiki_docs = loading_wiki_docs('./data/wiki_sampled_15p.txt')
 #doing pre-processing on wiki-pedia documents
 pre_processed_wiki,no_var = preprocess_data(wiki_docs)
 wiki_vocab_dict, _ = prepare_corpus(pre_processed_wiki)
