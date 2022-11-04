@@ -81,6 +81,8 @@ wiki_docs = loading_wiki_docs('./data/wiki_sampled_10p.txt')
 pre_processed_wiki, _ = preprocess_data(wiki_docs)
 wiki_vocab_dict, _ = prepare_corpus(pre_processed_wiki)
 
+del wiki_docs
+
 lim = 151
 st = 50
 stp = 50
