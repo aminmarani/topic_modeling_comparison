@@ -81,7 +81,6 @@ def compute_coherence_values(dictionary, corpus, texts, ref_dict=[], limit=25, s
           	tt = model.show_topic(tn,topn=20)
           	#saving top_terms and their counts
           	all_top_terms.append([i[0] for i in tt])
-          print(all_top_terms)
 				  #saving counts of top_terms
           top_terms_count_ls.append(len(all_top_terms))
 
@@ -114,13 +113,14 @@ def compute_coherence_values(dictionary, corpus, texts, ref_dict=[], limit=25, s
       print('{0} number of topics has been processed'.format(num_topics))
 
     #computing coherence for all top terms at once
-    cscore = CoherenceModel(topics=all_top_terms,dictionary=ref_dict,texts=texts,coherence='c_npmi').get_coherence_per_topic()
-    for i in range(0,len(top_terms_count_ls-1)):
-    	coherence_values.append(np.mean(cscore[top_terms_count_ls[i]:top_terms_count_ls[i]]))
-    	coherence_std.append(np.std(cscore[top_terms_count_ls[i]:top_terms_count_ls[i]]))
+    cscore = CoherenceModel(topics=all_top_terms,dictionary=ref_dict,texts=texts,coherence='c_npmi',processes=3).get_coherence_per_topic()
+
+    for i in range(0,len(top_terms_count_ls)-1):
+    	coherence_values.append(np.mean(cscore[top_terms_count_ls[i]:top_terms_count_ls[i+1]]))
+    	coherence_std.append(np.std(cscore[top_terms_count_ls[i]:top_terms_count_ls[i+1]]))
     	#update dataframe
     df.coherence = coherence_values
-    df.coherence_std = coherence_std
+    df['coherence_std'] = coherence_std
     return model_list, coherence_values, purity_values, contrast_values,df
 
 

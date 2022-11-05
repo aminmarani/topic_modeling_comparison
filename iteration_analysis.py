@@ -55,20 +55,30 @@ def reading_results(res,topic_num,itreations):
     #all_top_terms.append(top_terms)
   return all_top_terms,LLs
 
-#loading reference corpus
-wiki_docs = loading_wiki_docs('./data/wiki_sampled_40p.txt')
-pre_processed_wiki,no_var = preprocess_data(wiki_docs)
-vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_wiki)
+#loading ref corpus for coherene score for lda_mallet
+wiki_docs = loading_wiki_docs('./data/wiki_sampled_5p.txt')
+#doing pre-processing on wiki-pedia documents
+pre_processed_wiki, _ = preprocess_data(wiki_docs)
+wiki_vocab_dict, _ = prepare_corpus(pre_processed_wiki)
+del wiki_docs
 
-#loading the dataset we train the model on
-# text_df = newsgroup('./data/20newsgroup_preprocessed.csv')
+'''reading data
+'''
+#text_df = newsgroup('./data/20newsgroup_preprocessed.csv')
 text_df = ap_corpus('./data/ap.txt')
 doc_list = list(text_df.text_cleaned)
+#tokenizing
 pre_processed_docs,filtered_docs = preprocess_data(doc_list,extra_stopwords={})
-vocab_dict_, doc_term_matrix_ = prepare_corpus(pre_processed_docs)
+#generate vocabulary and texts
+vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
+
+#finding stopwords that are not in Wikipedia and removing those
+extra_stopwords = set(vocab_dict.token2id.keys()).difference(set(wiki_vocab_dict.token2id.keys()))
+pre_processed_docs,filtered_docs = preprocess_data(doc_list,extra_stopwords=extra_stopwords)
+vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
 
 #running for one topic number
-topic_num = 50
+topic_num = 41
 itreations = 4000
 iter_stp = 50#LDA stops every 50 iterations and print LLs and top terms
 
