@@ -74,8 +74,8 @@ del wiki_docs
 
 '''reading data
 '''
-#text_df = newsgroup('./data/20newsgroup_preprocessed.csv')
-text_df = ap_corpus('./data/ap.txt')
+text_df = newsgroup('./data/20newsgroup_preprocessed.csv')
+# text_df = ap_corpus('./data/ap.txt')
 doc_list = list(text_df.text_cleaned)
 #tokenizing
 pre_processed_docs,filtered_docs = preprocess_data(doc_list,extra_stopwords={})
@@ -90,9 +90,9 @@ vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
 
 
 
-lim = 63
-st = 30
-stp = 30
+lim = 200
+st = 20
+stp = 20
 models, coherence, pur, cont,eval_df = compute_coherence_values(dictionary=vocab_dict, corpus=doc_term_matrix, texts=pre_processed_wiki,ref_dict=wiki_vocab_dict, limit=lim, start=st, step=stp,threshold=0.10,runs = 3)
 #running on a VM machine
 # eval_df.to_csv('coherence_ap_10to90.csv',index=False)

@@ -46,6 +46,11 @@ if __name__ == '__main__':
     text_df = newsgroup(data_path)
   if 'ap' in data_path:
     text_df = ap_corpus(data_path)
+  if 'temp' in data_path:
+    docs = []
+    with open(data_path,'r',encoding='utf-8') as txtfile:
+      docs = txtfile.readlines()
+    text_df = pd.DataFrame(docs,columns=['text_cleaned'])
 
   doc_list = list(text_df.text_cleaned)
   #tokenizing

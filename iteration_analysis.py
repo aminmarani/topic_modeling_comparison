@@ -7,6 +7,7 @@ from os import walk
 import subprocess
 
 import random
+import time
 
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -65,8 +66,15 @@ del wiki_docs
 '''reading data
 '''
 #text_df = newsgroup('./data/20newsgroup_preprocessed.csv')
-text_df = ap_corpus('./data/ap.txt')
-doc_list = list(text_df.text_cleaned)
+# text_df = ap_corpus('./data/ap.txt')
+# doc_list = list(text_df.text_cleaned)
+#EDML corpus
+doc_list=[]
+with open('./data/edml.txt','r',encoding='utf-8') as txtfile:
+  doc_list = txtfile.readlines()
+#extra_stopwords for EDML
+extra_stopwords = ['isnt','want','cant','wanna','im','could','ive','would','dont','get','also','us','thats','got','ur','wanted',
+                   'may', 'the', 'just', 'can', 'think', 'damn', 'still', 'guys', 'literally', 'hopefully', 'much', 'even', 'rly', 'guess', 'anon']#anything with a length of one
 #tokenizing
 pre_processed_docs,filtered_docs = preprocess_data(doc_list,extra_stopwords={})
 #generate vocabulary and texts
@@ -75,10 +83,16 @@ vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
 #finding stopwords that are not in Wikipedia and removing those
 extra_stopwords = set(vocab_dict.token2id.keys()).difference(set(wiki_vocab_dict.token2id.keys()))
 pre_processed_docs,filtered_docs = preprocess_data(doc_list,extra_stopwords=extra_stopwords)
-vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
+#since we will pre-process the corpus in the tm_run.py file, we will save 
+#it in a temp file
+#vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
+with open('./data/temp_corpus','w',encoding='utf-8') as txtfile:
+  for t in pre_processed_docs:
+    txtfile.write(' '.join(t)+'\n')
+
 
 #running for one topic number
-topic_num = 41
+topic_num = 10
 itreations = 4000
 iter_stp = 50#LDA stops every 50 iterations and print LLs and top terms
 
@@ -86,7 +100,7 @@ all_top_terms = []#storing all top terms in one vector
 all_lls = [] #all of Log-Likelihood values
 
 for _ in range(3): #three runs
-  res = subprocess.run([python_cmd, 'tm_run.py','--data','./data/ap.txt',
+  res = subprocess.run([python_cmd, 'tm_run.py','--data','./data/temp_corpus',
                         '--tech','lda','--num',str(topic_num),'--seed',
                         str(int(random.random()*100000)),'--iter',str(itreations)]
                         , stdout=subprocess.PIPE,stderr=subprocess.STDOUT).stdout.decode('utf-8')
@@ -120,29 +134,33 @@ stats = pd.DataFrame(columns=['iterations','top_n','coherence','LL'])
 for n in [5,10,15,20]:
   #we compute coherence scores for all topics, which is [topic_num * numnber of runs (3) * group of top terms (4 grpups: 5-10-15-20)]
   #we should compute the average for each run over all topics with same number of top terms
-  cscore = CoherenceModel(topics=all_top_terms,dictionary=vocab_dict,texts=pre_processed_wiki,topn=n,coherence='c_npmi').get_coherence_per_topic()
+  cscore = CoherenceModel(topics=all_top_terms,dictionary=wiki_vocab_dict,texts=pre_processed_wiki,topn=n,coherence='c_npmi',processes=1).get_coherence_per_topic()
   cscore = np.asarray(cscore).reshape(int(itreations/iter_stp)*3,topic_num) #3 : three runs
-  coherence_avg = np.sum(cscore,axis=1)
-  print(coherence_avg)
+  coherence_avg = np.mean(cscore,axis=1)
+  # print(coherence_avg)
+
 
   c =0 #coherence counter
   for _ in range(3):#for three runs
     for it in range(int(itreations/iter_stp)):
-      print([(it+1)*iter_stp,n,coherence_avg[c],all_lls[it]])
+      # print([(it+1)*iter_stp,n,coherence_avg[c],all_lls[it]])
       stats = pd.concat([stats,pd.DataFrame(data=[[(it+1)*iter_stp,n,coherence_avg[c],all_lls[it]]],columns=['iterations','top_n','coherence','LL'])],ignore_index=True)
       c+=1 #adding coherence counter
   #save a copy
   stats.to_csv('LDA_stats.csv',index=False)
   print('All coherence compuation for top-{0} terms are computed'.format(n))
 
+plt.figure(figsize=(12,12))
+
 ax = sns.pointplot(x='iterations',y='coherence',hue='top_n',data=stats)
-ax.title('Coherence and LL with Wiki docs as ref corpus')
-ax.y_label('Coherence')
-ax.x_label('Iterations#')
+ax.set(title='Coherence and LL with Wiki docs as ref corpus for K={0}'.format(topic_num),xlabel='Coherence',ylabel='Iterations#')
+ax.tick_params(axis='x', rotation=90)
+
 
 ax2 = ax.twinx()
-sns.pointplot(x='iterations',y='LL',data=stats)
-ax2.y_label('Log-Likelihood')
+sns.pointplot(x='iterations',y='LL',data=stats,color='cyan')
+ax2.set(ylabel='Log-Likelihood')
+# ax2.y_label('Log-Likelihood')
 
 plt.show()
 
