@@ -1,0 +1,316 @@
+Mallet LDA: 6 topics, 3 topic bits, 111 topic mask
+Data loaded.
+max tokens: 534
+total tokens: 170852
+<10> LL/token: -8.8835
+<20> LL/token: -8.50223
+<30> LL/token: -8.24774
+<40> LL/token: -8.09921
+
+0	8.33333	weight feel eating time thing good lot life body things running question thoughts years normal feeling anxious started big answer 
+1	8.33333	therapy week session things bit talk therapist felt back thought end talking time year asked told thinking stuff minutes mum 
+2	8.33333	eat food day recovery ed body today days binge eating full run good control lunch ate meals uk make meal 
+3	8.33333	question answer home calories feel school baby good nice morning time make makes back happy work taking hospital hope fun 
+4	8.33333	time eating feel brain life disorder hope hard back feeling bad person stop cake things lot make times trauma find 
+5	8.33333	people day answer care question shit love fucking friends bc feel family lol today night gonna fuck make inpatient life 
+
+<50> LL/token: -7.99298
+<60> LL/token: -7.92235
+<70> LL/token: -7.87969
+<80> LL/token: -7.83855
+<90> LL/token: -7.81742
+
+0	8.33333	feel weight lot thing find years normal body people past running healthy lose hard matter time make anxiety working anxious 
+1	8.33333	therapy week things session bit talk therapist felt thought end back talking year told time stuff asked thinking parents feeling 
+2	8.33333	eat food day eating recovery today body days ed binge run full control tomorrow good ate lunch meals meal evening 
+3	8.33333	question answer home good calories baby school time morning happy house made nice thankyou makes great thing hope pretty hospital 
+4	8.33333	time feel life disorder back make hard eating brain bad hope point person long things stop good times kind mind 
+5	8.33333	people day love care friends shit fucking life bc family lol gonna night fuck make inpatient hate room feel anymore 
+
+<100> LL/token: -7.78736
+<110> LL/token: -7.77008
+<120> LL/token: -7.75858
+<130> LL/token: -7.74604
+<140> LL/token: -7.73429
+
+0	8.33333	feel weight thing lot find body people normal big makes part make brain making lose thoughts uk change matter sense 
+1	8.33333	therapy week things session bit talk therapist felt end thought talking back year told time stuff asked parents minutes mum 
+2	8.33333	eating eat food day recovery today ed body days good binge run full control tomorrow ate stop lunch meals meal 
+3	8.33333	question answer good home calories baby school morning hope great house happy kind nice made thankyou pretty back hospital free 
+4	8.33333	time feel back hard life long person feeling bad disorder things make point brain hope mind stay stop work start 
+5	8.33333	people day love care friends shit life fucking family bc lol night gonna feel make fuck sleep inpatient friend hate 
+
+<150> LL/token: -7.73077
+<160> LL/token: -7.72057
+<170> LL/token: -7.71835
+<180> LL/token: -7.7076
+<190> LL/token: -7.70369
+
+0	8.33333	feel weight thing lot body find normal makes people thoughts past part big lose change uk sense working brain important 
+1	8.33333	therapy week things session bit talk therapist felt end thought back time talking year told stuff parents thinking asked good 
+2	8.33333	eating eat day food recovery good today ed body binge days run full control tomorrow ate lunch meals make meal 
+3	8.33333	question answer home calories baby school hope good morning today house happy nice thankyou great made back free pretty weird 
+4	8.33333	time feel hard back life long person feeling make things work disorder point bad stay brain stop mind times feels 
+5	8.33333	people love care day friends shit fucking family bc lol night gonna life make fuck bad sleep hate inpatient anymore 
+
+<200> LL/token: -7.70359
+<210> LL/token: -7.7023
+<220> LL/token: -7.69159
+<230> LL/token: -7.68756
+<240> LL/token: -7.68677
+
+0	8.33333	feel weight thing lot body disorder find eating normal people makes brain make part lose working past change thoughts anxiety 
+1	8.33333	therapy week things session bit talk therapist felt end thought time talking back year told stuff parents asked made thinking 
+2	8.33333	eating day eat food recovery good ed today body days binge run full stop control ate cake running lunch meals 
+3	8.33333	question answer home calories baby school today morning hope happy house great back hours good thankyou uk friend hospital free 
+4	8.33333	time feel hard back life work make person long feeling bad stay things times point place world brain mind hope 
+5	8.33333	people love care friends day shit fucking family bc life lol night gonna fuck sleep bad hate inpatient anymore give 
+
+[beta: 0.04944] 
+<250> LL/token: -7.66217
+<260> LL/token: -7.76531
+<270> LL/token: -7.79323
+<280> LL/token: -7.80284
+<290> LL/token: -7.81113
+
+0	7.88251	feel weight thing body lot disorder eating brain people find makes normal things make lose important healthy matter part sense 
+1	7.97552	therapy week session things bit talk therapist felt end thought talking back good time parents told asked thinking stuff minutes 
+2	7.64486	eat eating day food recovery ed good today binge days body run full ate cake lunch running make meals control 
+3	7.79382	question answer home calories baby school today morning house great back made year uk thankyou happy long hospital time friend 
+4	8.07047	time feel hard life back work bad person feeling hope long stay make times things stop point world give days 
+5	7.84824	people day love care friends shit fucking bc family life lol gonna good fuck pretty sleep make inpatient room put 
+
+[beta: 0.0821] 
+<300> LL/token: -7.80353
+<310> LL/token: -7.86372
+<320> LL/token: -7.87393
+<330> LL/token: -7.87483
+<340> LL/token: -7.87917
+
+0	7.33244	weight feel body eating disorder thing brain people lot make normal makes find things part healthy thoughts lose change start 
+1	7.55211	therapy week things session bit talk therapist felt time end thought talking back parents good asked made stuff head told 
+2	6.98794	eat food eating day recovery good ed today calories binge run full days stop cake ate running lunch meals control 
+3	7.26158	question answer home baby school today morning family house long year weeks great thankyou uk tomorrow nice bed hospital back 
+4	7.68777	time feel hard life back work hope bad make lot person feeling long days things world times stay point years 
+5	7.33289	people day love care friends shit fucking bc lol gonna good pretty fuck life sleep inpatient put hate give money 
+
+[beta: 0.10177] 
+<350> LL/token: -7.86836
+<360> LL/token: -7.8941
+<370> LL/token: -7.89919
+<380> LL/token: -7.90823
+<390> LL/token: -7.92013
+
+0	6.77051	eating body weight feel disorder brain thing people lot make healthy normal thoughts lose part matter start change makes find 
+1	7.07066	therapy week things session bit talk therapist felt end time back thought talking good asked stuff thinking told mum minutes 
+2	6.24188	eat food day recovery eating ed today good calories binge full ate cake lunch meals stop run made meal running 
+3	6.70038	answer question home day school baby today family morning weeks house year tomorrow great thankyou stay uk inpatient made hours 
+4	7.25703	time feel life back hard work hope things bad lot long feeling person days make world years past place find 
+5	6.78568	people love day friends shit good fucking bc care lol gonna feel fuck make put hate sleep money pretty bad 
+
+[beta: 0.11178] 
+<400> LL/token: -7.91552
+<410> LL/token: -7.93224
+<420> LL/token: -7.93475
+<430> LL/token: -7.93325
+<440> LL/token: -7.93616
+
+0	6.12928	eating body weight recovery disorder ed brain thing people feel healthy normal health time stop thoughts make lose mental control 
+1	6.59549	therapy week things session bit talk therapist time felt end thought talking feel back good asked thinking told stuff started 
+2	5.40342	eat food day good today calories eating binge run days cake ate lunch meals meal made running water breakfast evening 
+3	6.34441	answer question day home baby school today family morning back friends great weeks inpatient year bed time nice house uk 
+4	6.78674	feel time life back hard lot things hope bad work make feeling long years world person find place past live 
+5	6.21118	people feel love shit fucking bc gonna lol good care make fuck hate life friends money sick ass put makes 
+
+[beta: 0.11677] 
+<450> LL/token: -7.92974
+<460> LL/token: -7.93254
+<470> LL/token: -7.92409
+<480> LL/token: -7.92615
+<490> LL/token: -7.92685
+
+0	5.52817	eating body weight recovery ed disorder brain healthy thing health food normal control stop people mental time lose feel thoughts 
+1	6.13249	therapy week things session bit talk therapist time felt end feel thought back talking good asked stuff thinking started mum 
+2	4.59913	eat food day good today calories binge run eating full cake ate days lunch meals meal running evening water breakfast 
+3	6.03248	answer question day home school baby today time family morning friends night great inpatient nice back year house pretty bed 
+4	6.31983	feel life time hard lot back things bad hope make work feeling long days find person years world kind place 
+5	5.60153	people feel love shit fucking bc make lol gonna fuck care hate friends money good ass give tumblr makes life 
+
+[beta: 0.12118] 
+<500> LL/token: -7.9252
+<510> LL/token: -7.92757
+<520> LL/token: -7.93707
+<530> LL/token: -7.9327
+<540> LL/token: -7.93784
+
+0	4.91299	eating body weight recovery ed disorder food brain healthy stop health lose control start mental normal thoughts number diet thing 
+1	5.68765	therapy week session things time bit talk therapist felt end thought talking back good feel asked part stuff started told 
+2	3.89584	eat day food calories today good binge run eating cake ate lunch meals days running meal full evening water breakfast 
+3	5.67845	answer question day home school baby today time family friends morning back house bed inpatient night friend weeks nice year 
+4	5.87681	feel life hard time things back bad hope make lot work person feeling years world long days makes good find 
+5	5.01589	people love feel shit fucking bc lol gonna make time fuck life hate give money ass weird good blog tumblr 
+
+[beta: 0.12218] 
+<550> LL/token: -7.93318
+<560> LL/token: -7.93436
+<570> LL/token: -7.93213
+<580> LL/token: -7.93258
+<590> LL/token: -7.93769
+
+0	4.29614	eating body weight recovery ed disorder food brain healthy health stop control lose thing mental normal thoughts time number make 
+1	5.259	therapy week session things bit talk therapist time felt end back thought feel talking thinking asked feeling started stuff told 
+2	3.30019	eat food day today calories good binge run cake ate lunch meal running days meals eating make breakfast water evening 
+3	5.3277	question answer day home time baby school today back family morning friends night inpatient year nice bed weeks house pretty 
+4	5.42888	feel life hard things hope time lot bad people answer person work back make world good years question makes live 
+5	4.47448	people feel shit fucking make bc time love lol gonna life fuck good hate give money ass friends care work 
+
+[beta: 0.12219] 
+<600> LL/token: -7.93194
+<610> LL/token: -7.92921
+<620> LL/token: -7.93096
+<630> LL/token: -7.93322
+<640> LL/token: -7.93171
+
+0	3.7568	eating body weight recovery ed food disorder brain healthy stop health thing lose control normal mental eat number start diet 
+1	4.82125	therapy week session time bit things talk therapist feel felt back thought end talking good told asked started stuff thinking 
+2	2.79037	eat food day calories binge good today run ate cake lunch running meals meal breakfast make water hungry dinner full 
+3	4.93619	answer day question today home time baby school family good friends morning back days nice night house inpatient bed year 
+4	5.05027	feel life people things hard question bad hope answer lot make person time find love back world years feeling care 
+5	3.93928	people feel shit fucking time bc lol gonna fuck give make love hate life money ass good idk friends blog 
+
+[beta: 0.12232] 
+<650> LL/token: -7.91903
+<660> LL/token: -7.92062
+<670> LL/token: -7.91803
+<680> LL/token: -7.92576
+<690> LL/token: -7.92506
+
+0	3.27434	eating body weight recovery food ed disorder brain healthy stop health eat mental lose control normal thing feel time start 
+1	4.41009	therapy things week session bit time talk therapist felt feel thought end talking back feeling good feels asked thinking told 
+2	2.3498	eat food calories day binge today good run ate cake eating lunch meals meal breakfast make dinner hungry water running 
+3	4.516	day answer question today home time school baby back family good friends morning night nice bed inpatient days house year 
+4	4.68277	feel question answer people life bad hope things hard lot person love find make world care back kind years days 
+5	3.45572	feel people shit fucking time bc make lol gonna fuck life hate give money ass love work put idk good 
+
+[beta: 0.12411] 
+<700> LL/token: -7.92107
+<710> LL/token: -7.9127
+<720> LL/token: -7.90997
+<730> LL/token: -7.91958
+<740> LL/token: -7.91842
+
+0	2.84993	eating body weight recovery ed disorder food healthy brain eat stop lose time normal health control feel thoughts thing start 
+1	3.99911	therapy things session week bit time talk feel therapist felt end thought back talking thinking asked good feeling told stuff 
+2	1.96167	eat food calories good day today binge eating run cake ate lunch make meal breakfast running water meals dinner hungry 
+3	4.10123	day time today home baby school back question answer family morning good friends days bed inpatient nice night house friend 
+4	4.34389	question answer people feel life things hope hard make person love lot bad find world years good kind thing makes 
+5	3.02245	feel shit fucking time bc people lol gonna make fuck life hate money ass love good give idk work care 
+
+[beta: 0.12412] 
+<750> LL/token: -7.90988
+<760> LL/token: -7.90494
+<770> LL/token: -7.89691
+<780> LL/token: -7.90261
+<790> LL/token: -7.90457
+
+0	2.49421	eating body weight recovery ed disorder food healthy eat stop brain control time feel lose normal binge thoughts health hard 
+1	3.62884	therapy things session week time feel bit talk therapist felt back thought end talking feeling asked thinking feels stuff told 
+2	1.63148	eat food calories day good today cake ate lunch binge meal eating breakfast make dinner water run hungry meals days 
+3	3.66699	day time today home back baby school family morning days friends night nice inpatient house bed room hours weeks good 
+4	4.01587	question answer people life feel hope things good person love hard lot care find make world bad thing live years 
+5	2.63376	feel fucking shit people time bc make gonna lol fuck life hate work money ass give friends love idk ppl 
+
+[beta: 0.12499] 
+<800> LL/token: -7.89469
+<810> LL/token: -7.8874
+<820> LL/token: -7.89166
+<830> LL/token: -7.89143
+<840> LL/token: -7.89352
+
+0	2.17654	eating body weight recovery ed disorder food healthy eat stop brain feel time lose control back hard health bad diet 
+1	3.27076	therapy things session time week feel bit talk therapist felt thought back talking end feeling thinking good asked feels thing 
+2	1.35082	eat food calories good binge day ate cake eating today lunch meal meals breakfast dinner hungry water make foods drink 
+3	3.2796	day today time home baby school back days morning family good night friends house run tomorrow bed inpatient weeks hours 
+4	3.68636	question answer people feel life hope things love person care good lot find world hard make kind live years thankyou 
+5	2.28844	feel fucking shit people time bc make lol gonna life fuck hate money ass give idk love work friends point 
+
+[beta: 0.1265] 
+<850> LL/token: -7.89042
+<860> LL/token: -7.88371
+<870> LL/token: -7.87749
+<880> LL/token: -7.87652
+<890> LL/token: -7.87711
+
+0	1.90399	eating weight recovery body ed disorder food eat healthy feel stop brain binge control lose normal time thoughts hard make 
+1	2.94514	therapy things session time feel week talk bit therapist felt back thought talking end good feeling told thinking asked feels 
+2	1.11098	eat food calories good ate cake lunch day eating meal today breakfast meals hungry dinner water binge full coffee drink 
+3	2.93345	day today time home school baby back days good morning family friends night run house inpatient hours bed nice tomorrow 
+4	3.34856	question answer people life feel hope things love person lot care find world good make hard kind live post thankyou 
+5	1.99324	feel shit fucking bc time make lol people gonna life fuck hate money ass work body give idk makes love 
+
+[beta: 0.12976] 
+<900> LL/token: -7.88014
+<910> LL/token: -7.88041
+<920> LL/token: -7.87452
+<930> LL/token: -7.8753
+<940> LL/token: -7.87402
+
+0	1.66717	eating weight recovery body food ed disorder eat healthy time stop brain binge feel lose control normal hard start diet 
+1	2.64463	therapy feel things session time week talk bit therapist felt back thought end talking feeling feels good asked thinking told 
+2	0.91429	eat food calories good eating ate cake lunch meal day today breakfast dinner hungry meals make binge water eaten drink 
+3	2.61201	day today time home baby school back days good morning family run tomorrow friends night inpatient bed long house year 
+4	3.03325	question answer people life feel hope things love person make find lot care world good hard kind years thing live 
+5	1.72481	feel shit fucking time bc lol gonna people make fuck life hate money ass idk body work give ppl love 
+
+[beta: 0.12974] 
+<950> LL/token: -7.87091
+<960> LL/token: -7.864
+<970> LL/token: -7.87408
+<980> LL/token: -7.87504
+<990> LL/token: -7.8713
+
+0	1.4505	eating weight recovery body food ed disorder eat healthy binge feel brain time stop control lose normal thoughts days diet 
+1	2.34673	therapy things feel session time week talk bit therapist felt back thought talking end feeling good thing asked told feels 
+2	0.76032	eat calories food eating ate cake today lunch good meal breakfast day dinner hungry meals make drink water eaten coffee 
+3	2.31294	day time today home baby school back good days morning family run night tomorrow house inpatient friends long bed year 
+4	2.75009	question answer people feel life things hope love person lot care find make world good hard live years post bad 
+5	1.50852	feel shit fucking bc time lol make gonna fuck life people money hate body ass work idk good back ppl 
+
+[beta: 0.13107] 
+<1000> LL/token: -7.86535
+
+Total time: 40 seconds
+[nltk_data] Downloading package stopwords to /Users/das-
+[nltk_data]     lab/nltk_data...
+[nltk_data]   Package stopwords is already up-to-date!
+[nltk_data] Downloading package wordnet to /Users/das-lab/nltk_data...
+[nltk_data]   Package wordnet is already up-to-date!
+[nltk_data] Downloading package omw-1.4 to /Users/das-lab/nltk_data...
+[nltk_data]   Package omw-1.4 is already up-to-date!
+[nltk_data] Downloading package averaged_perceptron_tagger to
+[nltk_data]     /Users/das-lab/nltk_data...
+[nltk_data]   Package averaged_perceptron_tagger is already up-to-
+[nltk_data]       date!
+blog:mote-of-dust_formatted.xlsx   with posts:271    and reblogs:238  
+blog:fuck-eatingdisorders_formatted.xlsx   with posts:37    and reblogs:4  
+blog:hellsite-residential_formatted.xlsx   with posts:247    and reblogs:191  
+blog:lets-get-better_formatted.xlsx   with posts:509    and reblogs:453  
+blog:bagelbells_formatted.xlsx   with posts:1101    and reblogs:1046  
+blog:imtrying-butimpissed_formatted.xlsx   with posts:838    and reblogs:483  
+blog:faithhopeloveandtherapy_formatted.xlsx   with posts:2994    and reblogs:1510  
+blog:finallyrecoveringforgood_formatted.xlsx   with posts:137    and reblogs:49  
+blog:intentandotrascender_formatted.xlsx   with posts:21    and reblogs:0  
+blog:fearless-foodie_formatted.xlsx   with posts:3956    and reblogs:3670  
+blog:ariessuntaurusrising_formatted.xlsx   with posts:504    and reblogs:206  
+blog:rec-hovery_formatted.xlsx   with posts:22    and reblogs:7  
+blog:shameofateen_formatted.xlsx   with posts:54    and reblogs:2  
+blog:brittle-bunny_formatted.xlsx   with posts:121    and reblogs:20  
+blog:mirithebrave_formatted.xlsx   with posts:578    and reblogs:299  
+blog:matchayogurt_formatted.xlsx   with posts:219    and reblogs:168  
+blog:palpitationstation_formatted.xlsx   with posts:1439    and reblogs:888  
+number of blogs: 17 - number of posts: 12997
+out of 12997 documents, 9234 are reblogged.
+number of unique reblogged texts: 234
+number of unique string in all texts: 11473
+size of orginal dataset: 8276 and size of the pre-processed dataset: 5383
+end...

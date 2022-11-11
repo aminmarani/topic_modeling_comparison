@@ -1,0 +1,516 @@
+Mallet LDA: 16 topics, 4 topic bits, 1111 topic mask
+Data loaded.
+max tokens: 534
+total tokens: 170852
+<10> LL/token: -9.40501
+<20> LL/token: -8.77849
+<30> LL/token: -8.44498
+<40> LL/token: -8.26641
+
+0	3.125	hard work things good find back struggling time children god working helpful stop safe difficult eventually anxiety happen unit big 
+1	3.125	feel life stop make anymore mental ass lol money takes health scared remember easy years shit doesnt kind worth bring 
+2	3.125	eating weight disorder body healthy thoughts lose back brain number idea lost start important size fit big part feel make 
+3	3.125	question answer situation uk trauma stay diet family live social check order covid sucks culture treatment age health support sense 
+4	3.125	time feeling thing brain feel world words side back stuck making ill times emotions starting moving space shame things choose 
+5	3.125	day bc time nice sleep long tired group night hours hour gonna groups left mood didnt meet back lol busy 
+6	3.125	eat day today binge eating run days lunch running full meal evening breakfast ate good dinner walk yesterday water energy 
+7	3.125	therapy therapist talking session talk end week bit parents mum year thought feelings asked felt part told adult back things 
+8	3.125	people friends bad friend lot inpatient pretty good life day hospital days anxious worse feel real ways ppl time making 
+9	3.125	home time baby school house today morning tomorrow minutes bed night lovely sit sitting weekend hours afternoon room waiting rules 
+10	3.125	week therapy bit things session talk felt stuff started thinking conversation time emotional text relationship feel needed feeling cake talked 
+11	3.125	body food fucking feel shit fuck control normal hate gonna give problem bad skinny matter meals gain yeah feeling sounds 
+12	3.125	recovery ed calories eating food eat post foods fat exercise disorders recover posts people pro sick cup cheese ana put 
+13	3.125	hope feel good makes people answer question made face great make things proud case thankyou christmas holiday enjoy online helps 
+14	3.125	feel lot tumblr place phone amazing long make things ago read mind blog glad share call find back time feels 
+15	3.125	love people care question person answer life deserve feel family time car foster weird gotta future strong baby wear legs 
+
+<50> LL/token: -8.15653
+<60> LL/token: -8.0928
+<70> LL/token: -8.03834
+<80> LL/token: -8.0009
+<90> LL/token: -7.97263
+
+0	3.125	hard work time lot back working stop things struggling treatment helpful god past children means process find lockdown eventually happen 
+1	3.125	life feel make shit anymore mental stop worth live takes health lol easy ass art doesnt makes remember learn hair 
+2	3.125	eating weight disorder body healthy thoughts brain lose number lost part start back gain make size fit idea thinking telling 
+3	3.125	question answer thankyou uk trauma situation stay social support order sense covid safe rules therapist sucks culture live kind people 
+4	3.125	time world feeling brain thing find point making things side back words space heart stuck move easier emotions ill year 
+5	3.125	day time bc long sleep nice room lol put night hours tired idk left back spent group hour gonna work 
+6	3.125	eat day binge today run cake days running lunch ate meals meal evening full water breakfast dinner walk hungry eating 
+7	3.125	therapist talk talking session parents therapy mum end feelings year bit remember thought child week adult asked wrong head felt 
+8	3.125	day bad friends days pretty friend lot people inpatient good today anxiety hard anxious kind hospital honestly worse pain ppl 
+9	3.125	home baby school today morning house bed weeks babies minutes night time family lovely tomorrow car weekend sitting hours round 
+10	3.125	therapy week things bit felt session time started stuff thought told talk couple relationship conversation thinking end talked text needed 
+11	3.125	body food fucking fuck feel control hate eat normal gonna give matter problem shit skinny fine stomach thing yeah fear 
+12	3.125	recovery ed calories food eating post eat foods fat exercise disorders recover posts pro sick put diet disordered cup cheese 
+13	3.125	feel good hope makes happy face made make proud great big difficult helps positive things lot idea hold holiday open 
+14	3.125	feel tumblr made read ago sad times call start make years back blog phone mind place making leave time real 
+15	3.125	people love care life person deserve family long strong change things give foster months future reason beautiful wear legs contact 
+
+<100> LL/token: -7.93962
+<110> LL/token: -7.91924
+<120> LL/token: -7.90628
+<130> LL/token: -7.88842
+<140> LL/token: -7.87403
+
+0	3.125	hard time work back things find lot working normal struggling treatment past allowed god process means stop place lockdown helpful 
+1	3.125	life make feel mental anymore live stop worth health lol remember takes learn hell easy turn art doesnt cool kinda 
+2	3.125	eating weight disorder body thoughts healthy brain lose start number lost gain head size point fit longer thinking stopped weighing 
+3	3.125	question answer therapist thankyou uk situation trauma stay sense social found school support covid works rules sucks culture diet live 
+4	3.125	world thing brain feel feels things point kind making back time find moment feeling emotions stuck move words choice heart 
+5	3.125	time bc long sleep put night day money tired room left pain lol back hours nice lmao bed groups gonna 
+6	3.125	eat day binge today run ate cake running lunch meals meal evening days water breakfast full hungry dinner walk food 
+7	3.125	talking parents things year mum felt therapist feelings talk end child thinking part remember adult childhood bit head years wrong 
+8	3.125	day bad friends days good friend pretty today lot inpatient people anxiety great anxious worse hospital ppl honestly staff fun 
+9	3.125	home baby school morning house today weeks tomorrow family babies minutes lovely bed sitting weekend hours girls early car afternoon 
+10	3.125	therapy week session bit talk felt time things started thought end told talked stuff couple asked conversation needed text emotional 
+11	3.125	body feel fucking food shit fuck give hate control gonna problem matter ass skinny stomach stupid eat gotta fear mind 
+12	3.125	recovery food ed calories eating eat foods exercise disorders recover fat posts enjoy pro make post small sick sugar cup 
+13	3.125	feel good hope feeling makes big face happy thing proud difficult make positive nice helps idea christmas hear check great 
+14	3.125	made feel times make tumblr read time call post taking leave back ago phone amazing years glad blog making start 
+15	3.125	people love life care person family deserve strong foster future beautiful mom wear give legs comfortable months contact keeping fall 
+
+<150> LL/token: -7.87018
+<160> LL/token: -7.85563
+<170> LL/token: -7.85265
+<180> LL/token: -7.844
+<190> LL/token: -7.83749
+
+0	3.125	time hard work back lot find working stop things means past struggling normal treatment process god helpful lockdown job children 
+1	3.125	life make feel anymore live mental worth health ill stop easy turn takes doesnt ppl cool remember hair die art 
+2	3.125	eating weight disorder body healthy thoughts lose number start lost brain part gain longer size fit disordered weighing clothes month 
+3	3.125	question answer therapist stay thankyou uk trauma situation school safe found social support works sense covid rules sucks culture decision 
+4	3.125	brain thing world feels point pain time find kind moment years real move emotions choice easier feeling stuck voice choose 
+5	3.125	time bc long lol sleep night put back money hours tired gonna left idk nice days bed day room lmao 
+6	3.125	eat binge day today run ate cake running full lunch days meals eating meal evening breakfast water hungry dinner walk 
+7	3.125	talking things parents year mum feelings therapist child head thinking part bit remember adult wrong felt talk childhood relationship dad 
+8	3.125	day bad friends good today friend pretty days lot inpatient anxiety great anxious kind hospital worse staff tomorrow state hard 
+9	3.125	home baby morning school house weeks minutes babies lovely sitting car tomorrow today weekend bed early couple nice half afternoon 
+10	3.125	therapy week session bit talk felt end time asked thought things started stuff talked told conversation back text difficult needed 
+11	3.125	body shit fucking feel fuck give hate control ass problem gonna skinny food normal mind stupid stop thing matter fine 
+12	3.125	recovery food ed calories eat eating foods exercise disorders post recover make low posts small fat pro enjoy sugar cup 
+13	3.125	feel good hope makes happy feeling things face big thing make proud made positive helps check hear christmas open idea 
+14	3.125	made years times taking long tumblr read call making post ago time leave back phone amazing progress start blog make 
+15	3.125	people love care person family life deserve strong foster comfortable beautiful things legs mom future wear reason real fall keeping 
+
+<200> LL/token: -7.8366
+<210> LL/token: -7.83432
+<220> LL/token: -7.81952
+<230> LL/token: -7.81606
+<240> LL/token: -7.80976
+
+0	3.125	time hard work lot back find working place past struggling treatment helpful process normal god job means lockdown stop things 
+1	3.125	life make feel anymore mental live stop worth easy health ill turn learn cool doesnt spend art makes listen hair 
+2	3.125	eating weight disorder body healthy thoughts lose number lost brain start gain make fit size started longer weighing disordered big 
+3	3.125	question answer therapist school thankyou uk stay safe covid found works rules social culture sucks support advice live vaccine diet 
+4	3.125	brain world point trauma find thing pain feels kind moment space heart emotions feeling stuck choice years voice shame choose 
+5	3.125	time bc lol sleep put money back night idk long left tired ppl gonna lmao bed room hours didnt point 
+6	3.125	eat binge today day food run ate cake running lunch full meals days meal evening water breakfast hungry dinner eating 
+7	3.125	talking year parents things mum felt feelings part child head remember thinking wrong adult therapist childhood relationship happened knew years 
+8	3.125	day bad friends today days friend pretty good nice great inpatient anxiety anxious hospital kind group lot staff room worse 
+9	3.125	home baby weeks house morning minutes babies family hours today couple school lovely bed tomorrow sitting weekend car afternoon night 
+10	3.125	therapy week session bit talk end felt thought asked started stuff things talked time told conversation text faith start relationship 
+11	3.125	body shit fucking feel fuck give hate control sick ass problem gonna stop skinny normal thing matter fine bad fact 
+12	3.125	recovery food ed calories eat eating foods exercise disorders recover small fat posts enjoy pro post sugar cup cheese ana 
+13	3.125	feel good hope things feeling happy makes thing face proud make made lot helps big idea feels christmas check hear 
+14	3.125	time long made back years tumblr ago call times read taking post making break phone leave progress amazing start miss 
+15	3.125	people love care person life family deserve strong foster mom beautiful reason wear legs future change things keeping real fall 
+
+[beta: 0.02314] 
+<250> LL/token: -7.79587
+<260> LL/token: -7.88182
+<270> LL/token: -7.90265
+<280> LL/token: -7.9063
+<290> LL/token: -7.91295
+
+0	2.90546	time hard work lot normal working place find process struggling helpful part back things past job treatment stop means starting 
+1	2.89177	life feel make live mental health worth stop anymore makes easy learn sit art doesnt remember listen ill hair bring 
+2	2.73935	eating weight disorder body healthy thoughts lose brain number start lost gain exercise month size longer weighing control disordered make 
+3	2.89338	question answer therapist school thankyou uk stay covid rules called safe support social sucks questions vaccine works culture order message 
+4	2.84774	brain world point trauma kind pain feels thing find words emotions choice heart space back shame real moment choose living 
+5	2.74756	bc lol time put sleep money idk make ppl night gonna left bed back hours long didnt point lmao tired 
+6	2.72824	eat food binge today day eating ate run cake running lunch meals days meal evening breakfast full water hungry dinner 
+7	2.8579	talking parents things felt year mum feelings wrong child thinking head bit adult relationship thought remember part childhood sense knew 
+8	2.86552	day bad friends today friend pretty days good nice inpatient anxiety room anxious hospital great worse kind staff tomorrow state 
+9	2.82646	home baby house weeks minutes morning babies hours today lovely sitting walk bed lockdown family weekend week car couple cold 
+10	2.89075	therapy week session talk bit end felt asked thought things talked stuff started time conversation back faith text start needed 
+11	2.7748	body shit fucking fuck hate give sick stop gonna bad skinny problem control gotta small yeah thing hell ass bitch 
+12	2.5849	recovery ed food calories eat foods recover posts disorders eating pro post fat sugar enjoy cup diet ana low cheese 
+13	2.95115	feel good hope feeling things thing happy makes face make proud made feels great helps big idea check sad matter 
+14	2.94292	time back long years made tumblr taking read call post months ago making phone situation break finally amazing set miss 
+15	2.80498	people love care person family deserve life things give weird mom strong wear beautiful legs real reason future find energy 
+
+[beta: 0.03209] 
+<300> LL/token: -7.89656
+<310> LL/token: -7.94386
+<320> LL/token: -7.94837
+<330> LL/token: -7.9474
+<340> LL/token: -7.95412
+
+0	2.67404	time hard work lot normal working find things past times place helpful struggling part process stay stuff stop starting back 
+1	2.63112	life make feel mental stop live health worth god anymore easy sit remember makes doesnt turn learn change hair physical 
+2	2.36045	eating weight disorder body healthy thoughts lose number control exercise start disorders gain lost disordered weighing brain thinking weigh size 
+3	2.61367	question answer school thankyou therapist uk stay covid called news advice lockdown social allowed long vaccine sucks situation positive schools 
+4	2.54587	brain world trauma space pain point thing kind heart feels moment find shame choice real choose emotions back living words 
+5	2.37284	bc lol sleep put money time idk hours gonna ppl point make night left ill lmao ass didnt bed kinda 
+6	2.38498	eat food binge day today eating cake ate lunch meals meal days breakfast water hungry full dinner coffee drink run 
+7	2.61801	talking things parents felt thought mum year feelings head part wrong child bit thinking years adult happened remember talk childhood 
+8	2.58816	day bad today days pretty friends nice inpatient friend anxiety room anxious hospital lot great good worse morning kind staff 
+9	2.56634	home baby house weeks family morning run babies bed today lovely walk yesterday weekend tomorrow foster minutes holiday couple running 
+10	2.64213	therapy week session bit talk therapist end asked talked felt stuff things started minutes conversation relationship back needed faith told 
+11	2.45924	body shit fucking fuck hate give sick bad gonna problem skinny mind small thing stupid food stop fine hell bitch 
+12	2.11859	recovery ed calories food eat post recover pro foods diet sugar cup ana cheese small low fat sweet recovering follow 
+13	2.7996	feel good feeling hope thing things makes make happy face proud feels sad idea great hear big helps lot guilty 
+14	2.73453	back time long made years tumblr read months call taking making post ago phone leave blog set amazing miss glad 
+15	2.48508	people love person care life deserve friends family things real beautiful find wear comfortable energy mom give support strong legs 
+
+[beta: 0.03865] 
+<350> LL/token: -7.9438
+<360> LL/token: -7.97529
+<370> LL/token: -7.97862
+<380> LL/token: -7.98617
+<390> LL/token: -7.98515
+
+0	2.43196	time hard work back lot stay part normal stuff place helpful means process working find stop give struggling scared happen 
+1	2.3383	life make mental feel health put live anymore worth god stop care remember learn makes art sit turn tired hair 
+2	2.0358	eating weight disorder body healthy thoughts lose number exercise brain start disorders gain control fat lost disordered weighing longer weigh 
+3	2.321	question answer school thankyou uk message covid stay therapist called works news year allowed vaccine social live schools long daughter 
+4	2.25486	brain world trauma pain heart words days years past treatment shame real thing space life living moment body emotions true 
+5	2.01836	bc lol time money gonna idk sleep ppl point shit ass lmao hours make ill didnt left put rn man 
+6	2.10481	eat food binge eating day ate lunch cake meals meal breakfast today days dinner hungry full coffee foods eaten hunger 
+7	2.37811	things parents talking felt mum feelings wrong child thinking year part head adult made thought childhood knew years happened understand 
+8	2.32143	day today bad days good nice pretty inpatient friends friend made room great hospital anxiety night lot anxious morning tomorrow 
+9	2.30005	home baby run house today running morning babies family hours lovely bed week foster weekend tomorrow walk half evening holiday 
+10	2.39557	therapy session week talk therapist bit end asked talked felt thought minutes conversation time started told text stuff faith things 
+11	2.1375	body fucking shit fuck hate feel sick bad thing give stop skinny problem control gonna matter hell mind stupid cool 
+12	1.71538	recovery ed calories diet post recover pro food sugar small culture cup cheese ana sucks low reblog sweet blog tag 
+13	2.61765	feel good feeling hope things happy makes thing make feels proud lot sad idea great helps times face bit working 
+14	2.51847	back time long years tumblr ago weeks call months read made start post finally phone leave taking month share gave 
+15	2.18013	people love person care friends family deserve life support beautiful find wear real mom things strong posts legs social favorite 
+
+[beta: 0.04281] 
+<400> LL/token: -7.98416
+<410> LL/token: -8.00347
+<420> LL/token: -8.01078
+<430> LL/token: -8.00969
+<440> LL/token: -8.01402
+
+0	2.24555	time hard work lot back normal stay working helpful long brain process place find started means stuff struggling times eventually 
+1	2.07461	life make mental health stop live anymore worth put care god feel art friend easy choice sit hair makes change 
+2	1.73695	eating weight disorder body healthy thoughts lose number exercise disorders control gain food start fat point lost ed weighing disordered 
+3	2.07075	question answer school thankyou uk year message covid called news vaccine social contact kids stay schools test kind curious allowed 
+4	1.93975	world trauma brain life pain back days words shame past treatment experience place true give heart disorder ways fear years 
+5	1.68058	bc lol money shit time gonna idk ass ppl doesnt man lmao ill point didnt wont sleep house rn kinda 
+6	1.81737	eat food eating binge day cake lunch meals ate meal breakfast hungry days dinner today foods drink eaten full energy 
+7	2.12153	things parents mum feelings felt part child wrong made thought told adult year relationship thing childhood head knew years feels 
+8	2.05563	day today bad days pretty nice inpatient friends anxious room great hospital good anxiety night morning staff worse made spent 
+9	2.05446	home baby run today running house family hours morning babies bed lovely walk tomorrow foster evening sleep minutes night pm 
+10	2.15243	therapy session week therapist talk bit talking end asked felt talked thinking thought stuff minutes conversation face text time started 
+11	1.85973	body fucking fuck hate shit bad sick feel skinny thing problem food gonna control hell stop cool stupid fine realize 
+12	1.35624	recovery calories ed diet recover pro post culture cup sugar follow ana blog reblog sucks cheese low tag tags eat 
+13	2.4191	feel good things feeling hope thing make makes happy feels proud find sad bit helps great times coming making comfortable 
+14	2.28756	back time long years ago weeks made taking read months tumblr call post start phone move finally miss set check 
+15	1.90445	people love person care friends deserve family kind things support wear beautiful real life posts lives strong legs struggling favorite 
+
+[beta: 0.04526] 
+<450> LL/token: -7.99105
+<460> LL/token: -8.00657
+<470> LL/token: -7.99364
+<480> LL/token: -8.00685
+<490> LL/token: -8.00193
+
+0	2.06605	time hard work back long lot brain working find stay helpful give process stuff place means normal stop full taking 
+1	1.81874	life make put health mental care live worth stop god change anymore energy tired remember making art easy turn sit 
+2	1.48075	eating weight disorder body healthy lose food recovery thoughts number ed disorders gain start exercise control fat lost disordered stop 
+3	1.85046	question answer school thankyou uk care covid message year kids contact social vaccine allowed news live schools test lockdown curious 
+4	1.60809	world life trauma brain pain treatment shame days past words heart years body disorder real hear behaviors place fear back 
+5	1.3796	lol bc money shit idk ass gonna ppl time doesnt lmao life ill point didnt wont make rn man kinda 
+6	1.54916	eat food eating binge day cake ate lunch meals meal breakfast today hungry dinner full foods drink days eaten hunger 
+7	1.86993	things parents mum feelings thought wrong child made felt years part adult year relationship childhood thinking situation knew told happened 
+8	1.81306	day today days bad inpatient pretty friends room anxious nice lot night hospital morning great good made anxiety staff worse 
+9	1.81814	home baby run today house running family morning babies hours walk lovely tomorrow sleep day half bed foster evening night 
+10	1.92204	therapy session week therapist talk bit talking end asked felt talked minutes thought started thinking conversation stuff things text told 
+11	1.58184	body fucking bad fuck shit hate sick feel gonna skinny thing problem hell mind cool matter water give yeah stupid 
+12	1.05587	recovery calories ed diet pro blog post cup culture ana recover small sucks sugar reblog hey posts tag fat follow 
+13	2.24493	feel good things feeling hope make thing makes happy feels lot proud great helps sad times nice bit find progress 
+14	2.07574	time back weeks months post ago call tumblr years read long start phone made leave month finally miss set check 
+15	1.65229	people love person friends care deserve family kind support beautiful life wear things strong find lives posts real women favorite 
+
+[beta: 0.04724] 
+<500> LL/token: -7.99337
+<510> LL/token: -7.99872
+<520> LL/token: -8.01292
+<530> LL/token: -8.01094
+<540> LL/token: -8.01505
+
+0	1.91289	time hard back work lot long brain give find stay process helpful means stuff working place part important started point 
+1	1.58244	make life mental health put care stop change worth god remember energy choice art things sit watch making hurt hair 
+2	1.26168	eating weight disorder recovery body healthy food lose thoughts number ed disorders control gain recover start exercise stop weighing disordered 
+3	1.6249	question answer school thankyou uk covid live kids mom allowed news stay vaccine year contact care week social people schools 
+4	1.32566	life world trauma pain heart brain days past treatment shame words years body experience behaviors space disorder healing live living 
+5	1.13439	lol bc gonna money shit idk ppl life ass make doesnt ill lmao didnt wont point rn urself sleep bitch 
+6	1.32698	eat food eating binge ate cake lunch day meal meals today breakfast hungry dinner full foods eaten drink good coffee 
+7	1.63753	things parents mum feelings part wrong child felt made adult thought years year childhood relationship feels situation happened head knew 
+8	1.58443	day today days bad friends inpatient room pretty good hospital great night anxious nice anxiety lot made staff morning tomorrow 
+9	1.59241	baby home run today house family day running morning babies walk lovely hours tomorrow bed evening foster sleep night car 
+10	1.7058	therapy session week therapist talk bit talking asked end felt thought talked things minutes started stuff thinking text start told 
+11	1.3548	body fucking fuck shit hate sick ed bad skinny problem feel stop give hell food gonna die cool water stupid 
+12	0.80887	calories recovery ed diet post pro blog cup culture ana sucks reblog fat posts follow tag cheese tags sugar bread 
+13	2.07007	feel good things hope feeling make thing makes happy proud feels lot find times great helps bad hear sad nice 
+14	1.84128	time back weeks ago made tumblr read long months call years post phone year taking check month finally break miss 
+15	1.43013	people love person care friends deserve life friend family beautiful wear support lives real strong comfortable posts women show social 
+
+[beta: 0.04853] 
+<550> LL/token: -8.00295
+<560> LL/token: -8.00303
+<570> LL/token: -8.00192
+<580> LL/token: -8.0125
+<590> LL/token: -8.00836
+
+0	1.7547	time hard work back lot long brain part working stay process find means stuff give place started feels point eventually 
+1	1.36392	make life mental care put health worth things stop god remember energy art mind watch change hair choice learn live 
+2	1.0854	eating weight disorder recovery body healthy food lose ed thoughts number disorders gain stop fat exercise start control weighing disordered 
+3	1.42357	question answer school thankyou uk year care home covid allowed social kids vaccine news live contact people foster stay schools 
+4	1.09176	world life trauma pain brain live days treatment words heart body recovery small past behaviors back shame place healing disorder 
+5	0.92694	lol bc money gonna idk life shit ppl ass doesnt time lmao didnt man point wont urself rn gotta arent 
+6	1.12411	eat food eating binge cake lunch meal meals day breakfast ate hungry today dinner foods eaten good full drink coffee 
+7	1.43476	things parents mum feelings felt wrong child thinking made part years adult thought childhood told happened talk relationship feeling understand 
+8	1.37386	day today days good bad friends inpatient pretty room nice hospital great made night anxious lot hard anxiety worse staff 
+9	1.38483	baby home run today morning house running day family bed babies tomorrow walk sleep week bit night hours evening lovely 
+10	1.49276	therapy session week therapist talk bit talking end asked felt talked thought minutes time things conversation started stuff start text 
+11	1.16565	body fucking fuck shit hate sick ed food feel eat gonna problem bad stop hell thing give cool die stupid 
+12	0.5962	calories recovery ed diet blog pro post cup ana posts culture reblog sucks follow tag tags blogs thinspo potato fat 
+13	1.89699	feel good things hope make feeling makes thing bad feels proud happy lot real great helps sad completely find hear 
+14	1.63514	time back ago weeks made months call post read tumblr phone years miss happy taking big long check send message 
+15	1.24176	people love person friends deserve life care family beautiful friend wear find strong support kind space lives skinny women legs 
+
+[beta: 0.04927] 
+<600> LL/token: -7.99945
+<610> LL/token: -8.00384
+<620> LL/token: -8.00329
+<630> LL/token: -8.0118
+<640> LL/token: -8.01381
+
+0	1.58656	time hard back work long lot brain stay find give feels part process years means point working life stuff started 
+1	1.15837	life make mental care health worth things stop remember put change god art thing mind love watch hair learn energy 
+2	0.93474	eating weight disorder recovery body healthy food lose thoughts ed number disorders gain fat control exercise brain recover lost stop 
+3	1.2518	question answer school people thankyou uk care year family foster covid social home live stay news kids vaccine allowed contact 
+4	0.89631	world life trauma pain body live treatment heart behaviors past years brain words recovery living days back real death fear 
+5	0.77079	lol bc money shit gonna idk make ppl ass life doesnt lmao didnt ill wont rn gotta urself kinda time 
+6	0.96153	eat food eating binge cake lunch meals meal ate day breakfast dinner hungry full good foods eaten today small chocolate 
+7	1.24723	things parents mum feelings child wrong made adult years part feels childhood talk happened felt situation thing thought relationship normal 
+8	1.17725	day today bad days friends inpatient good pretty great hospital anxious made room nice staff night worse lot anxiety morning 
+9	1.19197	baby home today run house day morning running babies walk tomorrow night hours bed half family week car evening lovely 
+10	1.30603	therapy session week therapist talk bit talking felt end asked things talked thought started minutes stuff thinking conversation told text 
+11	0.99034	fucking body fuck ed food shit eat feel sick hate gonna problem bad hell stop stomach yeah pretty day tw 
+12	0.45453	calories recovery ed diet blog post pro posts ana cup culture follow tag reblog tags sucks blogs thinspo tumblr community 
+13	1.72844	feel good hope feeling make things makes thing bad lot proud person happy kind find helps hear great days fact 
+14	1.43928	time back ago call made read weeks post months tumblr phone send couple leave long month friend finally message miss 
+15	1.06408	people love person friends deserve care skinny beautiful wear friend support family life lives kind fit strong women find size 
+
+[beta: 0.05083] 
+<650> LL/token: -8.00386
+<660> LL/token: -8.00312
+<670> LL/token: -8.01382
+<680> LL/token: -8.01956
+<690> LL/token: -8.0212
+
+0	1.43	time hard back work long brain lot life start give stay part working process months find started end stuff means 
+1	0.9808	make mental care life put health worth god art remember control feel hair change stop thing things sit love focus 
+2	0.80689	eating weight disorder body recovery healthy food lose thoughts ed disorders number gain control exercise stop lost fat weighing disordered 
+3	1.10929	question answer school uk thankyou people year family care foster baby home covid live babies mom children news week vaccine 
+4	0.7287	world life trauma pain live body treatment brain living years words behaviors disorder heart recovery death survive place past true 
+5	0.64579	lol bc money gonna shit idk ppl ass time life doesnt lmao ill didnt wont fucking rn urself man gotta 
+6	0.81785	eat food eating binge cake meals lunch meal today breakfast ate day hungry dinner foods eaten good full make chocolate 
+7	1.06273	parents things mum child feelings wrong years felt adult made childhood thing situation told relationship thought upset talk experience feel 
+8	0.99881	day today bad inpatient pretty friends hospital room good anxious days time nice anxiety morning made great lot night staff 
+9	1.02654	home today baby run day house running morning sleep night tomorrow walk bed evening car bit week back half yesterday 
+10	1.13334	therapy session week therapist talk bit talking asked felt end things thought talked thinking time minutes stuff back text started 
+11	0.84956	fucking body fuck food shit ed eat feel sick recovery hate gonna day problem bad hell days stomach die water 
+12	0.3424	calories recovery ed diet pro post cup ana culture blog posts follow reblog tag tags sucks blogs fat thinspo vegan 
+13	1.58437	feel good things hope make feeling lot makes bad feels thing person find kind answer proud happy great real days 
+14	1.24558	back time call made ago post read tumblr phone happy send check thought nice message weeks month taking share break 
+15	0.90118	people love friends deserve person friend skinny wear beautiful body support care family kind strong lives real makes women legs 
+
+[beta: 0.05263] 
+<700> LL/token: -8.01148
+<710> LL/token: -8.01084
+<720> LL/token: -8.0138
+<730> LL/token: -8.02578
+<740> LL/token: -8.03062
+
+0	1.27762	time back hard work long lot brain life start stay give years working point part started process thing find place 
+1	0.82424	make mental care worth put health life god change stop hair remember art mind thing hurt energy learn sit love 
+2	0.69521	eating weight disorder body recovery food healthy lose number ed disorders binge gain control thoughts eat fat brain weighing disordered 
+3	0.97709	question answer school uk baby people family care home year week foster social live babies covid allowed children group kids 
+4	0.58853	world trauma life treatment pain body live heart words behaviors living recovery past brain shame survive death moment symptoms days 
+5	0.54761	lol bc shit money gonna idk ass ppl life time fucking lmao make doesnt didnt ill rn urself wont gotta 
+6	0.69443	eat food eating binge cake lunch meal breakfast ate today good meals day make dinner eaten hungry foods full snack 
+7	0.90962	things parents mum feelings wrong child felt adult made childhood years feel thinking perfect told normal situation make story thing 
+8	0.83693	day today bad inpatient friends good pretty hospital lot room great anxious staff nice worse days made anxiety spent night 
+9	0.88539	home day run today morning baby house running night tomorrow sleep walk bed bit back evening yesterday week car lovely 
+10	0.98031	therapy session week therapist talk bit talking asked end felt things thought talked time minutes back thinking conversation stuff head 
+11	0.74034	body feel fucking food eat ed fuck shit hate sick bad gonna recovery days hell problem stop day stomach die 
+12	0.26468	calories recovery ed diet pro post ana cup culture posts tag tags blog fat sucks follow reblog community blogs thinspo 
+13	1.43441	feel question answer good hope things make makes lot feeling bad person find proud hard thankyou happy kind time real 
+14	1.06844	time back post call read made tumblr phone ago good send weeks nice taking check thing break miss share message 
+15	0.75978	people love friends life person deserve care body skinny beautiful wear kind give friend lives support women matter size girl 
+
+[beta: 0.05444] 
+<750> LL/token: -8.0227
+<760> LL/token: -8.02153
+<770> LL/token: -8.01767
+<780> LL/token: -8.02376
+<790> LL/token: -8.03359
+
+0	1.14106	time back hard long work life lot start brain point working find years feels stay started give end process stop 
+1	0.69766	make mental health care put feel worth god mind hair stop things feeling art learn energy life sit remember time 
+2	0.6031	eating weight disorder body recovery food healthy lose ed number control disorders binge gain thoughts fat eat disordered brain weighing 
+3	0.80287	answer question school family people uk home baby year care foster babies live covid week social children group allowed kids 
+4	0.4707	life trauma world pain recovery treatment people live disorder behaviors heart words brain real living days survive body death true 
+5	0.47275	lol bc shit money gonna life ppl time make ass idk fucking lmao feel didnt ill doesnt wont urself rn 
+6	0.57779	eat food eating binge cake good lunch meal today breakfast meals ate hungry day make eaten dinner foods made full 
+7	0.76952	things mum parents feel feelings wrong made relationship adult child thing make childhood felt years perfect normal sense dad understand 
+8	0.70152	day today bad inpatient friends pretty hospital good days great room lot staff time nice made night anxious morning unit 
+9	0.76722	day run today home baby house morning running time tomorrow hours sleep night bed walk evening pm days minutes yesterday 
+10	0.85465	therapy session week bit talk talking therapist felt things asked end thought time talked feel back minutes thinking stuff conversation 
+11	0.64205	food feel body eat fucking ed fuck shit day hate bad sick recovery gonna days stomach problem worse die hell 
+12	0.2098	calories recovery ed pro diet ana culture post cup follow posts blog tag tags reblog sucks blogs fat community thinspo 
+13	1.30607	question answer feel good hope things lot make therapist person love thankyou find makes proud happy kind hard bad thing 
+14	0.91034	back time post read made call phone ago send long nice weeks happy message thought friends tumblr gave check head 
+15	0.64367	people love body deserve friends person care skinny beautiful wear friend life size things support strong uncomfortable legs women lives 
+
+[beta: 0.05703] 
+<800> LL/token: -8.02914
+<810> LL/token: -8.02322
+<820> LL/token: -8.03034
+<830> LL/token: -8.03108
+<840> LL/token: -8.03322
+
+0	1.01454	time back hard life long work feel things start feels lot brain make stay working part months thing feeling process 
+1	0.5908	mental make feel care things feeling put god health worth hair remember love art stop water sit thing watch energy 
+2	0.51953	eating weight disorder food binge body healthy recovery lose eat control disorders number gain thoughts stop fat disordered weighing weigh 
+3	0.61843	school answer question home uk people family baby year care foster parents covid babies children live back week social group 
+4	0.37888	trauma world life disorder recovery treatment eating pain body behaviors words heart live brain living people survive symptoms death years 
+5	0.40835	lol bc shit fucking life money gonna ass time ppl idk make lmao feel doesnt didnt ill wont bitch rn 
+6	0.48593	eat food eating good cake lunch day breakfast meal meals today ate eaten dinner make chocolate hungry full foods made 
+7	0.6658	things feel mum feelings parents wrong child made adult felt childhood relationship years understand story situation hard sense talk make 
+8	0.58511	day today bad inpatient good friends hospital pretty anxiety lot room great staff days time made worse nice anxious morning 
+9	0.66357	day run today baby home time morning running house night sleep tomorrow bed walk car pm hours back evening minutes 
+10	0.74856	therapy session week bit talk talking therapist asked felt end things time thought back talked feel minutes thinking conversation good 
+11	0.5664	eat feel food ed body fucking fuck recovery shit bad day sick gonna hate stomach days problem hell ate worse 
+12	0.16972	calories recovery ed pro diet ana culture cup post posts tag sucks follow blog tags people community blogs reblog stuff 
+13	1.17228	question answer feel hope good things therapist lot love person find thankyou makes make proud kind happy hard care people 
+14	0.76963	back call post made happy time phone ago friends send read big share nice message book finally show weeks set 
+15	0.54662	people body love deserve person friends skinny beautiful wear life size care makes comfortable skin women legs wearing friend fit 
+
+[beta: 0.05928] 
+<850> LL/token: -8.02568
+<860> LL/token: -8.02316
+<870> LL/token: -8.02206
+<880> LL/token: -8.0214
+<890> LL/token: -8.01363
+
+0	0.9213	time back feel hard long life lot work things feeling brain start make feels process part working years days months 
+1	0.48277	mental water put art make health hair things worth care god feeling binge remember stop drink feel sit teeth energy 
+2	0.44658	eating weight disorder binge food body healthy eat lose control recovery number thoughts disorders gain ed stop brain disordered weighing 
+3	0.48541	school answer question uk family baby home year people foster care babies children covid week social parents live kids stay 
+4	0.30688	trauma life world disorder recovery eating treatment pain live words brain body behaviors people survive heart death part monster symptoms 
+5	0.3531	lol bc shit money life gonna ass fucking time ppl feel idk make lmao didnt doesnt bitch ill wont urself 
+6	0.40643	eat food good eating cake lunch breakfast meal today ate meals make dinner eaten chocolate full day made tea cheese 
+7	0.57593	things mum feelings parents wrong feel child adult childhood relationship made normal years make attachment felt hard dad told sense 
+8	0.49871	day good bad today inpatient friends hospital pretty made staff room anxiety lot great anxious time hard worse unit nice 
+9	0.57436	day today run time home baby morning house running sleep bed hours tomorrow back walk evening night days week pm 
+10	0.65616	therapy session week talk bit talking felt therapist things asked time end feel thought talked started stuff told conversation back 
+11	0.49693	eat food feel body ed recovery day fucking fuck bad shit sick days hate gonna problem stomach hell make work 
+12	0.144	calories recovery ed diet pro ana culture people follow post cup blog tag posts sucks tags blogs reblog community tumblr 
+13	1.03776	question answer feel hope good therapist love person make find thankyou care things people lot kind happy proud give remember 
+14	0.63298	back post phone happy read call ago share friends big nice made time book send friend online show years check 
+15	0.45031	people body love deserve friends skinny feel makes wear beautiful person life size strong realize thing women skin matter things 
+
+[beta: 0.06121] 
+<900> LL/token: -8.01475
+<910> LL/token: -8.00879
+<920> LL/token: -8.00432
+<930> LL/token: -8.00864
+<940> LL/token: -8.00869
+
+0	0.83195	time back feel life hard things long make work feels brain thing lot start feeling working past years process months 
+1	0.39912	water binge care put feeling hair art mental make things remember teeth worth drink watch hurt depressed energy face reminder 
+2	0.3894	eating weight disorder food body binge healthy eat lose control number disorders gain recovery fat weighing weigh ed disordered thoughts 
+3	0.388	school answer people uk question family baby home year foster live care covid babies week children social vaccine kids parents 
+4	0.24745	trauma life world disorder eating recovery body pain god treatment brain live words survive people heart death behaviors monster symptoms 
+5	0.3142	lol bc shit fucking time money life gonna ass ppl make idk feel lmao didnt doesnt ill point rn urself 
+6	0.32958	eat eating food cake good lunch ate breakfast meal calories today dinner meals chocolate made eaten tea make cheese day 
+7	0.48972	mum things parents feelings wrong feel child made relationship childhood adult normal told good years thing make dad attachment sense 
+8	0.41953	day inpatient bad today good friends hospital pretty great staff people lot room anxiety anxious days unit nice made treatment 
+9	0.50364	day today home run time baby morning running back house sleep days bed night hours tomorrow walk week evening car 
+10	0.57875	therapy session week bit talk talking felt things time asked end therapist feel thought back talked good thinking minutes head 
+11	0.44125	eat food feel body day ed fucking recovery bad fuck shit days time sick hard gonna hate stomach problem hell 
+12	0.12438	recovery calories ed pro diet post people ana culture cup follow posts sucks blog reblog tags tag blogs community shit 
+13	0.90554	question answer feel hope therapist good find people love things person lot thankyou kind care make give time happy helpful 
+14	0.51426	post phone friends happy read call ago back share friend love top book send made group comment years check online 
+15	0.37	people body feel love deserve friends skinny beautiful makes wear person bad size thing legs women friend things matter hate 
+
+[beta: 0.06396] 
+<950> LL/token: -8.00841
+<960> LL/token: -7.99268
+<970> LL/token: -7.99394
+<980> LL/token: -8.00229
+<990> LL/token: -7.99965
+
+0	0.74941	time feel back things life hard make long thing work feeling lot feels days brain start past years find months 
+1	0.32588	water binge hair put drink art remember feeling teeth stop great make depressed time worth care dog mental blood anymore 
+2	0.33989	eating weight disorder food binge body lose healthy eat control number gain disorders thoughts fat weighing disordered weigh recovery stop 
+3	0.3135	school question uk answer people baby family home year foster care covid babies children social vaccine news group contact lockdown 
+4	0.20939	trauma world life disorder eating recovery god treatment brain body pain part words live people behaviors death symptoms monster voice 
+5	0.28068	lol bc shit life gonna money fucking feel ass time ppl idk people lmao make didnt doesnt house bitch fuck 
+6	0.26405	eat eating cake good lunch food meal calories eaten breakfast dinner chocolate meals make ate tea cheese today bread made 
+7	0.41699	mum parents things feelings wrong child made adult childhood feel told relationship attachment dad years sense emotional upset normal lot 
+8	0.35531	day bad inpatient good today friends hospital lot pretty staff anxious room anxiety nice unit days time bc tomorrow morning 
+9	0.44063	day today home run time baby back morning running house bed tomorrow hours good sleep night days walk car week 
+10	0.50824	therapy session week talk bit talking things time felt therapist feel asked end thought back good talked stuff minutes thinking 
+11	0.39701	eat food feel day body ed recovery bad fucking shit eating days today hungry ate fuck sick gonna hate good 
+12	0.11175	recovery calories ed pro diet people post ana culture posts cup blog follow tag tags sucks blogs reblog tumblr community 
+13	0.77891	question answer hope feel love therapist people good find person thankyou things care happy lot kind make give hard helpful 
+14	0.41447	friends phone read call post friend book send group ago online show big nice reading made video weird love zoom 
+15	0.31016	people body love deserve feel skinny friends beautiful wear makes bad person size care friend good matter women strong comfortable 
+
+[beta: 0.06672] 
+<1000> LL/token: -7.99701
+
+Total time: 38 seconds
+[nltk_data] Downloading package stopwords to /Users/das-
+[nltk_data]     lab/nltk_data...
+[nltk_data]   Package stopwords is already up-to-date!
+[nltk_data] Downloading package wordnet to /Users/das-lab/nltk_data...
+[nltk_data]   Package wordnet is already up-to-date!
+[nltk_data] Downloading package omw-1.4 to /Users/das-lab/nltk_data...
+[nltk_data]   Package omw-1.4 is already up-to-date!
+[nltk_data] Downloading package averaged_perceptron_tagger to
+[nltk_data]     /Users/das-lab/nltk_data...
+[nltk_data]   Package averaged_perceptron_tagger is already up-to-
+[nltk_data]       date!
+blog:mote-of-dust_formatted.xlsx   with posts:271    and reblogs:238  
+blog:fuck-eatingdisorders_formatted.xlsx   with posts:37    and reblogs:4  
+blog:hellsite-residential_formatted.xlsx   with posts:247    and reblogs:191  
+blog:lets-get-better_formatted.xlsx   with posts:509    and reblogs:453  
+blog:bagelbells_formatted.xlsx   with posts:1101    and reblogs:1046  
+blog:imtrying-butimpissed_formatted.xlsx   with posts:838    and reblogs:483  
+blog:faithhopeloveandtherapy_formatted.xlsx   with posts:2994    and reblogs:1510  
+blog:finallyrecoveringforgood_formatted.xlsx   with posts:137    and reblogs:49  
+blog:intentandotrascender_formatted.xlsx   with posts:21    and reblogs:0  
+blog:fearless-foodie_formatted.xlsx   with posts:3956    and reblogs:3670  
+blog:ariessuntaurusrising_formatted.xlsx   with posts:504    and reblogs:206  
+blog:rec-hovery_formatted.xlsx   with posts:22    and reblogs:7  
+blog:shameofateen_formatted.xlsx   with posts:54    and reblogs:2  
+blog:brittle-bunny_formatted.xlsx   with posts:121    and reblogs:20  
+blog:mirithebrave_formatted.xlsx   with posts:578    and reblogs:299  
+blog:matchayogurt_formatted.xlsx   with posts:219    and reblogs:168  
+blog:palpitationstation_formatted.xlsx   with posts:1439    and reblogs:888  
+number of blogs: 17 - number of posts: 12997
+out of 12997 documents, 9234 are reblogged.
+number of unique reblogged texts: 234
+number of unique string in all texts: 11473
+size of orginal dataset: 8276 and size of the pre-processed dataset: 5383
+end...

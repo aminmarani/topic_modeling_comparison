@@ -5,7 +5,7 @@ from post_processing import *
 from os import walk
 
 
-#reading data for ED corpus
+# reading data for ED corpus
 # datafolder = './data/ed_recovery_formatted/Excel'
 # #datafolder = 'ed_recovery_topicmodel'
 # df = pd.DataFrame(columns=['url','type','photo','date','tags','notes','text','photo_url','reblogged','blog_name'])
@@ -58,7 +58,7 @@ from os import walk
 # sel_df = sel_df.iloc[ind,:]
 # print('size of orginal dataset: {0} and size of the pre-processed dataset: {1}'.format(len(original_doc_set),len(pre_processed_docs)))
 
-#lemmatization
+# lemmatization
 # pre_processed_docs_lem,filtered_docs_lem = preprocess_data(original_doc_set,extra_stopwords=extra_stopwords,lemmatized=True)
 # vocab_dict_lem, doc_term_matrix_lem = prepare_corpus(pre_processed_docs_lem)
 
@@ -74,8 +74,8 @@ del wiki_docs
 
 '''reading data
 '''
-text_df = newsgroup('./data/20newsgroup_preprocessed.csv')
-# text_df = ap_corpus('./data/ap.txt')
+# text_df = newsgroup('./data/20newsgroup_preprocessed.csv')
+text_df = ap_corpus('./data/ap.txt')
 doc_list = list(text_df.text_cleaned)
 #tokenizing
 pre_processed_docs,filtered_docs = preprocess_data(doc_list,extra_stopwords={})
@@ -88,15 +88,18 @@ pre_processed_docs,filtered_docs = preprocess_data(doc_list,extra_stopwords=extr
 vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
 
 
+import time
 
+a = time.time()
 
-lim = 200
-st = 20
-stp = 20
+lim = 10
+st = 10
+stp = 1
 models, coherence, pur, cont,eval_df = compute_coherence_values(dictionary=vocab_dict, corpus=doc_term_matrix, texts=pre_processed_wiki,ref_dict=wiki_vocab_dict, limit=lim, start=st, step=stp,threshold=0.10,runs = 3)
 #running on a VM machine
 # eval_df.to_csv('coherence_ap_10to90.csv',index=False)
-plotting_coherence(eval_df)
+# plotting_coherence(eval_df)
+print(time.time()-a)
 
 
 #Coherence Evaluation for different optimize interval values
