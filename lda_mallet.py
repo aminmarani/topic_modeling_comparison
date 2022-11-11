@@ -27,6 +27,7 @@ except:
 
 
 from post_processing import jaccard_sim, dice_sim, similarity_computation
+from pre_processing import loading_wiki_docs, prepare_corpus, preprocess_data
 
 import platform 
 #checking OS
@@ -36,6 +37,92 @@ else:
 	mallet_path = 'mallet'
 
 
+
+class lda_score:
+	def __init__(self):
+		pass
+
+
+	def __init__(self,num_topics=10,alpha=10,optimize_interval=10,iterations=1000,wiki_path=''):
+		#setting params
+		self.num_topics = num_topics #any integer number
+		self.alpha = alpha #any number between 1-100
+		self.optimize_interval = optimize_interval #preferred 10-200
+		self.iterations = iterations #preferred 500-5000
+		self.wiki_path = wiki_path
+		self.mallet_path = mallet_path
+
+	def fit(self,X):
+		'''
+		Receives a corpus and return average score of three runs
+		'''
+		#setting wikipedia and removing words from vocab
+		#loading ref corpus for coherene score for lda_mallet
+		wiki_docs = loading_wiki_docs(self.wiki_path)
+		#doing pre-processing on wiki-pedia documents
+		pre_processed_wiki, _ = preprocess_data(wiki_docs)
+		wiki_vocab_dict, _ = prepare_corpus(pre_processed_wiki)
+		del wiki_docs
+
+		'''adjusting vocab and preparing corpous
+		'''
+		#tokenizing
+		pre_processed_docs,filtered_docs = preprocess_data(X,extra_stopwords={})
+		#generate vocabulary and texts
+		vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
+
+		#finding stopwords that are not in Wikipedia and removing those
+		extra_stopwords = set(vocab_dict.token2id.keys()).difference(set(wiki_vocab_dict.token2id.keys()))
+		pre_processed_docs,filtered_docs = preprocess_data(X,extra_stopwords=extra_stopwords)
+		vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
+		
+		#running LDA_mallet three times and average coherence values
+		all_top_terms = []
+		for r in range(3):#fixed number of runs = 3
+			model = LdaMallet(self.mallet_path, corpus=doc_term_matrix, 
+				num_topics=self.num_topics, id2word=vocab_dict,
+				optimize_interval = self.optimize_interval, 
+				random_seed=int(np.random.random()*100000),alpha=self.alpha,
+				iterations=self.iterations,workers=1 )
+			#storing top_terms
+			for tn in range(self.num_topics): 
+				tt = model.show_topic(tn,topn=20)
+				#saving top_terms and their counts
+				all_top_terms.append([i[0] for i in tt])
+
+		self.all_top_terms = all_top_terms
+		self.wiki_vocab_dict = wiki_vocab_dict
+		self.pre_processed_wiki = pre_processed_wiki
+
+		return all_top_terms
+
+	def score(self,X):
+		#computing coherence for all top terms at once
+		cscore = CoherenceModel(topics=self.all_top_terms,dictionary=self.wiki_vocab_dict,texts=self.pre_processed_wiki,coherence='c_npmi',processes=1).get_coherence_per_topic()
+		return np.mean(cscore)
+
+
+	def get_params(self,deep=True):
+		out = {'num_topics':self.num_topics, 'alpha':self.alpha,
+						'optimize_interval':self.optimize_interval,
+						'iterations':self.iterations, 'wiki_path':self.wiki_path}
+		
+		return out
+
+	def set_params(self, **params):
+		if not params:
+			return self
+
+		for key, value in params.items():
+			if hasattr(self, key):
+				setattr(self, key, value)
+			else:
+				self.kwargs[key] = value
+
+		# self.estimators = self._generate_estimators()
+		# self.estimator = VotingClassifier(self.estimators, voting="soft")
+		return self
+            
 
 
 def compute_coherence_values(dictionary, corpus, texts, ref_dict=[], limit=25, start=5, step=5,threshold=0.10,runs = 1):
