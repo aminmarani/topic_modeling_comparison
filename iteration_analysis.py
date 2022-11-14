@@ -46,12 +46,17 @@ def reading_results(res,topic_num,itreations):
         #excluding the last item using [0:-1].  because the last item is '\n'
         all_top_terms.append(res[current_line].split('\t')[2].split(' ')[0:-1])
       except:
-        print(res[current_line-2:current_line+3],current_line)
+        # print(res[current_line-2:current_line+3],current_line)
+        pass
       current_line+=1#going to next line
     current_line+=1 #going to LL
-    if _i>3: #optimizing alpha would add [beta] update after 250 iterations and we want to add one line for that
-      current_line +=1
-    LLs.append(float(res[current_line].split(': ')[1]))
+    #in the new version we remove [beta] so we don't need the lines below
+    # if _i>3: #optimizing alpha would add [beta] update after 250 iterations and we want to add one line for that
+      # current_line +=1
+    try:
+      LLs.append(float(res[current_line].split(': ')[1]))
+    except:
+      print(res[current_line],current_line)
     current_line += stp2
     #all_top_terms.append(top_terms)
   return all_top_terms,LLs
@@ -111,12 +116,13 @@ for _ in range(3): #three runs
                         , stdout=subprocess.PIPE,stderr=subprocess.STDOUT).stdout.decode('utf-8')
   #we have to wait till subprocess.run finishes....
   
-  # with open('t.csv','w') as csvfile:
-  #   csvfile.write(res)
+  with open('t.csv','w') as csvfile:
+    csvfile.write(res)
 
   # with open('t.csv','r') as csvfile:
   #   res = csvfile.readlines()
   res = res.split('\n')
+  res = [i for i in res if  'beta' not in i]#removing any line with beta
   tts,LLs = reading_results(res,topic_num,itreations)
   all_lls.extend(LLs)
   all_top_terms.extend(tts)
