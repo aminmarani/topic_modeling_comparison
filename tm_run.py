@@ -20,11 +20,13 @@ if __name__ == '__main__':
     num_topics = 100
     random_seed = 12345
     iterations = 900
+    optimize_interval = 50
+    alpha = 100
 
-    opts,args = getopt.getopt(sys.argv[1:],"h",['data=','tech=','num=','seed=','iter='])
+    opts,args = getopt.getopt(sys.argv[1:],"h",['data=','tech=','num=','seed=','iter=','opt_inter=','alpha='])
 
   except getopt.GetoptError:
-    print('python3 tm_run.py --data data_path --tech topic_modeling_technique --num number_of_topics --seed random_seed --iter iterations')
+    print('python3 tm_run.py --data data_path --tech topic_modeling_technique --num number_of_topics --seed random_seed --iter iterations --opt_inter optimization_inteval --alpha alpha')
 
   for opt,arg in opts:
     if opt == '-h':
@@ -39,6 +41,10 @@ if __name__ == '__main__':
       random_seed = int(arg)
     elif opt == '--iter':
       iterations = int(arg)
+    elif opt == '--opt_inter':
+      optimize_interval = int(arg)
+    elif opt == '--alpha':
+      alpha = int(arg)
 
 
   #loading data
@@ -59,7 +65,7 @@ if __name__ == '__main__':
   vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
   #run topic modeling technique
   if technique == 'lda':
-    ldaMallet = LdaMallet(mallet_path, corpus=doc_term_matrix, num_topics=num_topics, id2word=vocab_dict,iterations=iterations,random_seed = random_seed,optimize_interval=50)
+    ldaMallet = LdaMallet(mallet_path, corpus=doc_term_matrix, num_topics=num_topics, id2word=vocab_dict,iterations=iterations,random_seed = random_seed,optimize_interval=optimize_interval,alpha=alpha)
 
 
 
