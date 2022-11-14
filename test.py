@@ -72,34 +72,34 @@ pre_processed_wiki, _ = preprocess_data(wiki_docs)
 wiki_vocab_dict, _ = prepare_corpus(pre_processed_wiki)
 del wiki_docs
 
-'''reading data
-'''
-# text_df = newsgroup('./data/20newsgroup_preprocessed.csv')
-text_df = ap_corpus('./data/ap.txt')
-doc_list = list(text_df.text_cleaned)
-#tokenizing
-pre_processed_docs,filtered_docs = preprocess_data(doc_list,extra_stopwords={})
-#generate vocabulary and texts
-vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
+# '''reading data
+# '''
+# # text_df = newsgroup('./data/20newsgroup_preprocessed.csv')
+# text_df = ap_corpus('./data/ap.txt')
+# doc_list = list(text_df.text_cleaned)
+# #tokenizing
+# pre_processed_docs,filtered_docs = preprocess_data(doc_list,extra_stopwords={})
+# #generate vocabulary and texts
+# vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
 
-#finding stopwords that are not in Wikipedia and removing those
-extra_stopwords = set(vocab_dict.token2id.keys()).difference(set(wiki_vocab_dict.token2id.keys()))
-pre_processed_docs,filtered_docs = preprocess_data(doc_list,extra_stopwords=extra_stopwords)
-vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
+# #finding stopwords that are not in Wikipedia and removing those
+# extra_stopwords = set(vocab_dict.token2id.keys()).difference(set(wiki_vocab_dict.token2id.keys()))
+# pre_processed_docs,filtered_docs = preprocess_data(doc_list,extra_stopwords=extra_stopwords)
+# vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
 
 
-import time
+# import time
 
-a = time.time()
+# a = time.time()
 
-lim = 10
-st = 10
-stp = 1
-models, coherence, pur, cont,eval_df = compute_coherence_values(dictionary=vocab_dict, corpus=doc_term_matrix, texts=pre_processed_wiki,ref_dict=wiki_vocab_dict, limit=lim, start=st, step=stp,threshold=0.10,runs = 3)
-#running on a VM machine
-# eval_df.to_csv('coherence_ap_10to90.csv',index=False)
-# plotting_coherence(eval_df)
-print(time.time()-a)
+# lim = 10
+# st = 10
+# stp = 1
+# models, coherence, pur, cont,eval_df = compute_coherence_values(dictionary=vocab_dict, corpus=doc_term_matrix, texts=pre_processed_wiki,ref_dict=wiki_vocab_dict, limit=lim, start=st, step=stp,threshold=0.10,runs = 3)
+# #running on a VM machine
+# # eval_df.to_csv('coherence_ap_10to90.csv',index=False)
+# # plotting_coherence(eval_df)
+# print(time.time()-a)
 
 
 #Coherence Evaluation for different optimize interval values
@@ -120,7 +120,10 @@ print(time.time()-a)
 # topic_author_heat_map(doc_topics,topic_term,sel_df)
 
 
+from gensim.models.coherencemodel import CoherenceModel
 
+top_terms = []
+cscore = CoherenceModel(topics=,dictionary=wiki_vocab_dict,texts=pre_processed_wiki,coherence='c_npmi',processes=3).get_coherence_per_topic()
 
 
 
