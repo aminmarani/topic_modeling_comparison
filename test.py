@@ -122,7 +122,7 @@ del wiki_docs
 
 from gensim.models.coherencemodel import CoherenceModel
 
-top_terms = []
+top_terms = ['day','question','answer','time']
 cscore = CoherenceModel(topics=,dictionary=wiki_vocab_dict,texts=pre_processed_wiki,coherence='c_npmi',processes=3).get_coherence_per_topic()
 
 
