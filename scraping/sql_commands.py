@@ -13,7 +13,7 @@ def insert_platform(sql_cursor,platform_id,platform_name):
     cmd_str = ("INSERT INTO platfrom_type"
                "(platform_type_name) "
                "VALUES (%s)")
-    res = cursor.execute(cmd_str, (platform_name))
+    res = sql_cursor.execute(cmd_str, (platform_name,))
     cnx.commit()
     cnx.close()
 
