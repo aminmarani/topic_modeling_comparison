@@ -27,7 +27,9 @@ except:
 
 
 from post_processing import jaccard_sim, dice_sim, similarity_computation
-from pre_processing import loading_wiki_docs, prepare_corpus, preprocess_data
+from pre_processing import loading_wiki_docs, prepare_corpus, preprocess_data, term_pairs_generator
+
+from diskcache_class import db
 
 import platform 
 #checking OS
@@ -43,7 +45,7 @@ class lda_score:
 		pass
 
 
-	def __init__(self,num_topics=10,alpha=10,optimize_interval=10,iterations=1000,wiki_path=''):
+	def __init__(self,num_topics=10,alpha=10,optimize_interval=10,iterations=1000,wiki_path='',npmi_db = None):
 		#setting params
 		self.num_topics = num_topics #any integer number
 		self.alpha = alpha #any number between 1-100
@@ -51,6 +53,12 @@ class lda_score:
 		self.iterations = iterations #preferred 500-5000
 		self.wiki_path = wiki_path
 		self.mallet_path = mallet_path
+		if not npmi_db:
+			self.npmi_db = db('./temp_db')
+			print('You have not entered any pre-stored DB. This run will make None and store in temp_db database')
+		else:
+			self.npmi_db = db(npmi_db)
+
 
 	def fit(self,X):
 		'''
@@ -87,7 +95,7 @@ class lda_score:
 			#storing top_terms
 			for tn in range(self.num_topics): 
 				tt = model.show_topic(tn,topn=20)
-				#saving top_terms and their counts
+				#saving top_terms
 				all_top_terms.append([i[0] for i in tt])
 
 		self.all_top_terms = all_top_terms
@@ -97,6 +105,43 @@ class lda_score:
 		return all_top_terms
 
 	def score(self,X):
+		'''
+		Recall coherence for word pairs.
+		If a key (pair of terms) is not in the DB, it calls coherence model to compute thos.
+
+		returns coherence score for each topic
+
+		parameter X: top terms of one or more topics
+		'''
+
+		for topic in X:
+			term_pairs = term_pairs_generator(topic)
+			cscore = [self.npmi_db.get(i) for i in term_pairs]
+		
+		#check if there is -100 and if we need to run coherence for these pairs
+		ind = np.where(np.array(cscore)==-100)
+
+		#if all the terms had a hit in the DB, return the mean
+		if len(ind[0]) == 0:
+			return np.mean(cscore)
+		
+		#else, compute coehernce for those terms
+		cscore_rem = CoherenceModel(topics=[term_pairs[i] for i in range(cscore) if cscore==-100],dictionary=self.wiki_vocab_dict,texts=self.pre_processed_wiki,coherence='c_npmi',processes=1).get_coherence_per_topic()
+
+		c = 0#counter for cscore_rem
+		for i in ind:
+			cscore[i] = cscore_rem[c]
+			c+=1
+
+		return np.mean(cscore)
+
+
+	def score_old(self,X):
+		'''
+		This function is deprecated. It had been used to compute coherence
+		for all the topics' top terms. The new function uses a pre-defined 
+		Coherence score and recall the items.
+		'''
 		#computing coherence for all top terms at once
 		cscore = CoherenceModel(topics=self.all_top_terms,dictionary=self.wiki_vocab_dict,texts=self.pre_processed_wiki,coherence='c_npmi',processes=1).get_coherence_per_topic()
 		return np.mean(cscore)

@@ -227,3 +227,21 @@ def ap_corpus(data_path):
 				#we save it twice
 				docs.append([l,l])
 	return pd.DataFrame(docs,columns=['text','text_cleaned'])
+
+
+def term_pairs_generator(terms):
+	'''
+	This function returns all the pairs in one list of terms
+
+	returns a list of all term-pairs
+
+	parameter terms: a list of unique terms
+	'''
+	term_pairs = set()
+
+	#making pair terms
+	for i in range(len(terms)):
+		for j in range(i+1,len(terms)):
+			term_pairs.add((terms[i],terms[j]))
+
+	return list(term_pairs)
