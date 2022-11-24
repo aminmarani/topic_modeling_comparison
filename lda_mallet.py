@@ -45,7 +45,7 @@ class lda_score:
 		pass
 
 
-	def __init__(self,num_topics=10,alpha=10,optimize_interval=10,iterations=1000,wiki_path='',npmi_db = None):
+	def __init__(self,num_topics=10,alpha=10,optimize_interval=10,iterations=1000,wiki_path='',db_path = None):
 		#setting params
 		self.num_topics = num_topics #any integer number
 		self.alpha = alpha #any number between 1-100
@@ -53,11 +53,7 @@ class lda_score:
 		self.iterations = iterations #preferred 500-5000
 		self.wiki_path = wiki_path
 		self.mallet_path = mallet_path
-		if not npmi_db:
-			self.npmi_db = db('./temp_db')
-			print('You have not entered any pre-stored DB. This run will make None and store in temp_db database')
-		else:
-			self.npmi_db = db(npmi_db)
+		self.db_path = db_path
 
 
 	def fit(self,X):
@@ -74,6 +70,7 @@ class lda_score:
 
 		'''adjusting vocab and preparing corpous
 		'''
+
 		#tokenizing
 		pre_processed_docs,filtered_docs = preprocess_data(X,extra_stopwords={})
 		#generate vocabulary and texts
@@ -111,12 +108,21 @@ class lda_score:
 
 		returns coherence score for each topic
 
-		parameter X: top terms of one or more topics
+		parameter X: Training set (we don't use this param ) ##top terms of one or more topics
 		'''
+		if not self.db_path:
+			self.npmi_db = db('./temp_db')
+			print('You have not entered any pre-stored DB. This run will make None and store in temp_db database')
+		else:
+			self.npmi_db = db(self.db_path)
 
-		for topic in X:
-			term_pairs = term_pairs_generator(topic)
-			cscore = [self.npmi_db.get(i) for i in term_pairs]
+		term_pairs = []; cscore = []
+
+		for topic in self.all_top_terms:
+			t = term_pairs_generator(topic)
+			term_pairs.extend(t)
+			cscore.extend([self.npmi_db.get(i) for i in t])
+
 		
 		#check if there is -100 and if we need to run coherence for these pairs
 		ind = np.where(np.array(cscore)==-100)
@@ -125,12 +131,15 @@ class lda_score:
 		if len(ind[0]) == 0:
 			return np.mean(cscore)
 		
+		# print([[term_pairs[i][0],term_pairs[i][1]] for i in range(len(cscore)) if cscore[i]==-100],'-----')
 		#else, compute coehernce for those terms
-		cscore_rem = CoherenceModel(topics=[term_pairs[i] for i in range(cscore) if cscore==-100],dictionary=self.wiki_vocab_dict,texts=self.pre_processed_wiki,coherence='c_npmi',processes=1).get_coherence_per_topic()
+		cscore_rem = CoherenceModel(topics=[[term_pairs[i][0],term_pairs[i][1]] for i in range(len(cscore)) if cscore[i]==-100],dictionary=self.wiki_vocab_dict,texts=self.pre_processed_wiki,coherence='c_npmi',processes=1).get_coherence_per_topic()
 
 		c = 0#counter for cscore_rem
-		for i in ind:
-			cscore[i] = cscore_rem[c]
+		for i in ind[0]:
+			cscore[int(i)] = cscore_rem[c]
+			#add this to the DB as well
+			self.npmi_db.db[term_pairs[int(i)]] = cscore_rem[c]
 			c+=1
 
 		return np.mean(cscore)
@@ -150,7 +159,8 @@ class lda_score:
 	def get_params(self,deep=True):
 		out = {'num_topics':self.num_topics, 'alpha':self.alpha,
 						'optimize_interval':self.optimize_interval,
-						'iterations':self.iterations, 'wiki_path':self.wiki_path}
+						'iterations':self.iterations, 'wiki_path':self.wiki_path,
+						'db_path':self.db_path}
 		
 		return out
 
