@@ -1,3 +1,8 @@
 K = 6
 val. score: 0.049392640923358086
 best params: OrderedDict([('alpha', 80), ('iterations', 5000), ('num_topics', 6), ('optimize_interval', 200), ('wiki_path', './data/wiki_sampled_5p.txt')])
+
+
+K = 7
+val. score: 0.058700365185136424
+best params: OrderedDict([('alpha', 100), ('db_path', './db/wiki_10p'), ('iterations', 4820), ('num_topics', 7), ('optimize_interval', 200), ('vocab_dict_path', './data/corpus.vocab'), ('wiki_path', './data/wiki_sampled_10p.txt'), ('wiki_vocab_dict_path', './data/ref_corpus.vocab')])

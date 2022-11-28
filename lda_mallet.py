@@ -18,6 +18,8 @@ import sys
 
 import matplotlib.pyplot as plt
 
+import pickle
+
 from scipy.spatial.distance import jensenshannon
 try:
 	from hungarian_algorithm import algorithm
@@ -45,7 +47,7 @@ class lda_score:
 		pass
 
 
-	def __init__(self,num_topics=10,alpha=10,optimize_interval=10,iterations=1000,wiki_path='',db_path = None):
+	def __init__(self,num_topics=10,alpha=10,optimize_interval=10,iterations=1000,wiki_path='',db_path = None, vocab_dict_path = None, wiki_vocab_dict_path = None,npmi_skip_threshold = 0.05):
 		#setting params
 		self.num_topics = num_topics #any integer number
 		self.alpha = alpha #any number between 1-100
@@ -55,6 +57,14 @@ class lda_score:
 		self.mallet_path = mallet_path
 		self.db_path = db_path
 
+		# self.doc_term_matrix = doc_term_matrix
+		# self.vocab_dict = vocab_dict
+		# self.pre_processed_wiki = pre_processed_wiki
+		self.wiki_vocab_dict_path = wiki_vocab_dict_path
+		self.vocab_dict_path = vocab_dict_path
+		self.npmi_skip_threshold = npmi_skip_threshold
+
+
 
 	def fit(self,X):
 		'''
@@ -62,30 +72,39 @@ class lda_score:
 		'''
 		#setting wikipedia and removing words from vocab
 		#loading ref corpus for coherene score for lda_mallet
-		wiki_docs = loading_wiki_docs(self.wiki_path)
-		#doing pre-processing on wiki-pedia documents
-		pre_processed_wiki, _ = preprocess_data(wiki_docs)
-		wiki_vocab_dict, _ = prepare_corpus(pre_processed_wiki)
-		del wiki_docs
+		# wiki_docs = loading_wiki_docs(self.wiki_path)
+		# #doing pre-processing on wiki-pedia documents
+		# pre_processed_wiki, _ = preprocess_data(wiki_docs)
+		# wiki_vocab_dict, _ = prepare_corpus(pre_processed_wiki)
+		# del wiki_docs
 
 		'''adjusting vocab and preparing corpous
 		'''
 
-		#tokenizing
-		pre_processed_docs,filtered_docs = preprocess_data(X,extra_stopwords={})
-		#generate vocabulary and texts
-		vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
+		# #tokenizing
+		# pre_processed_docs,filtered_docs = preprocess_data(X,extra_stopwords={})
+		# #generate vocabulary and texts
+		# vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
 
-		#finding stopwords that are not in Wikipedia and removing those
-		extra_stopwords = set(vocab_dict.token2id.keys()).difference(set(wiki_vocab_dict.token2id.keys()))
-		pre_processed_docs,filtered_docs = preprocess_data(X,extra_stopwords=extra_stopwords)
-		vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
+		# #finding stopwords that are not in Wikipedia and removing those
+		# extra_stopwords = set(vocab_dict.token2id.keys()).difference(set(wiki_vocab_dict.token2id.keys()))
+		# pre_processed_docs,filtered_docs = preprocess_data(X,extra_stopwords=extra_stopwords)
+		# vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
 		
+		# #set the wiki_docs and corpus docs parameters
+		self.wiki_vocab_dict = []
+		with open(self.wiki_vocab_dict_path,'rb') as f:
+			self.wiki_vocab_dict = pickle.load(f)
+
+		self.vocab_dict = []
+		with open(self.vocab_dict_path,'rb') as f:
+			self.vocab_dict = pickle.load(f)
+
 		#running LDA_mallet three times and average coherence values
 		all_top_terms = []
 		for r in range(3):#fixed number of runs = 3
-			model = LdaMallet(self.mallet_path, corpus=doc_term_matrix, 
-				num_topics=self.num_topics, id2word=vocab_dict,
+			model = LdaMallet(self.mallet_path, corpus=X, 
+				num_topics=self.num_topics, id2word=self.vocab_dict,
 				optimize_interval = self.optimize_interval, 
 				random_seed=int(np.random.random()*100000),alpha=self.alpha,
 				iterations=self.iterations,workers=1 )
@@ -96,13 +115,89 @@ class lda_score:
 				all_top_terms.append([i[0] for i in tt])
 
 		self.all_top_terms = all_top_terms
-		self.wiki_vocab_dict = wiki_vocab_dict
-		self.pre_processed_wiki = pre_processed_wiki
+		# self.wiki_vocab_dict = wiki_vocab_dict
+		# self.pre_processed_wiki = pre_processed_wiki
 
 		return all_top_terms
 
 	def score(self,X):
 		'''
+		Recall coherence for word pairs.
+		If a key (pair of terms) is not in the DB, it calls coherence model to compute those.
+		However, this function consider a threshold to skip computing cohernce. 
+		e.g., if 5% of term-pairs are not in the DB, the model still compute average
+		of the ones that are in the DB. 
+		This function also computes the average of top-n = 5,10,15,20
+
+
+		returns coherence score for each topic
+
+		parameter X: Training set (we don't use this param ) ##top terms of one or more topics
+		'''
+		if not self.db_path:
+			self.npmi_db = db('./temp_db')
+			print('You have not entered any pre-stored DB. This run will make None and store in temp_db database')
+		else:
+			self.npmi_db = db(self.db_path)
+
+		top_n = [5,10,15,20]
+		count_all = 0; count_miss = 0; misses_score = {}
+
+		#preparing cscore dictionary
+		cscore = {i:{} for i in top_n}
+
+		for n in top_n: #compute pairs for different top-n terms
+			for topic in self.all_top_terms:
+				term_pairs = term_pairs_generator(topic[0:n])
+				vals = {i:self.npmi_db.get(i) for i in term_pairs}
+				cscore[n].update(vals)
+
+				#get and count the ones that are not in the DB
+				count_all += len(vals.keys())
+				t_misses = {i:-100 for i in vals.keys() if vals[i]==-100}
+				count_miss += len(t_misses.keys())
+				misses_score.update(t_misses)
+
+		#if number of misses are more than the threshold, run coherence
+		if count_miss/count_all > self.npmi_skip_threshold: 
+			
+			print('computing Coherence Value...')
+			#setting wikipedia and removing words from vocab
+			#loading ref corpus for coherene score for lda_mallet
+			wiki_docs = loading_wiki_docs(self.wiki_path)
+			#doing pre-processing on wiki-pedia documents
+			pre_processed_wiki, _ = preprocess_data(wiki_docs)
+			del wiki_docs
+		
+
+			cscore_rem = CoherenceModel(topics=[[i[0],i[1]] for i in misses_score.keys()],dictionary=self.wiki_vocab_dict,texts=pre_processed_wiki,coherence='c_npmi',processes=1).get_coherence_per_topic()
+
+			#update misses_score
+			c = 0
+			for k in misses_score.keys():
+				#update the ones we missed
+				misses_score[k] = cscore_rem[c]
+				#update the DB
+				self.npmi_db.db[k] = cscore_rem[c]
+
+			#update the cscore
+			for n in top_n:
+				for k in misses_score.keys():
+					if k in cscore[n].keys():
+						cscore[n].update({k:misses_score[k]})
+			c+=1
+
+		#compute mean for the ones without -100 (to make sure we don't include those)
+		avg_scores = [[0] for i in top_n] #make an empty list for average score 
+		for i in range(len(avg_scores)):
+			avg_scores[i] = np.mean([l for l in cscore[top_n[i]].values() if l != -100])
+		#return average over top-n
+		return np.mean(avg_scores)
+
+	def score_with_db_old(self,X):
+		'''
+		This function is deprecated. It only computes coherence for top_n=20 and
+		it needs all term-pairs to be in the DB. The newer version addresses both of these
 		Recall coherence for word pairs.
 		If a key (pair of terms) is not in the DB, it calls coherence model to compute thos.
 
@@ -123,17 +218,26 @@ class lda_score:
 			term_pairs.extend(t)
 			cscore.extend([self.npmi_db.get(i) for i in t])
 
-		
+
 		#check if there is -100 and if we need to run coherence for these pairs
 		ind = np.where(np.array(cscore)==-100)
 
 		#if all the terms had a hit in the DB, return the mean
 		if len(ind[0]) == 0:
 			return np.mean(cscore)
+
+
+		print('computing Coherence Value...')
+		#setting wikipedia and removing words from vocab
+		#loading ref corpus for coherene score for lda_mallet
+		wiki_docs = loading_wiki_docs(self.wiki_path)
+		#doing pre-processing on wiki-pedia documents
+		pre_processed_wiki, _ = preprocess_data(wiki_docs)
+		del wiki_docs
 		
 		# print([[term_pairs[i][0],term_pairs[i][1]] for i in range(len(cscore)) if cscore[i]==-100],'-----')
 		#else, compute coehernce for those terms
-		cscore_rem = CoherenceModel(topics=[[term_pairs[i][0],term_pairs[i][1]] for i in range(len(cscore)) if cscore[i]==-100],dictionary=self.wiki_vocab_dict,texts=self.pre_processed_wiki,coherence='c_npmi',processes=1).get_coherence_per_topic()
+		cscore_rem = CoherenceModel(topics=[[term_pairs[i][0],term_pairs[i][1]] for i in range(len(cscore)) if cscore[i]==-100],dictionary=self.wiki_vocab_dict,texts=pre_processed_wiki,coherence='c_npmi',processes=1).get_coherence_per_topic()
 
 		c = 0#counter for cscore_rem
 		for i in ind[0]:
@@ -160,7 +264,9 @@ class lda_score:
 		out = {'num_topics':self.num_topics, 'alpha':self.alpha,
 						'optimize_interval':self.optimize_interval,
 						'iterations':self.iterations, 'wiki_path':self.wiki_path,
-						'db_path':self.db_path}
+						'db_path':self.db_path,'vocab_dict_path': self.vocab_dict_path,
+						'wiki_vocab_dict_path':self.wiki_vocab_dict_path,
+						'npmi_skip_threshold':self.npmi_skip_threshold}
 		
 		return out
 
