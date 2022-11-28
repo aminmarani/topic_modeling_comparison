@@ -186,6 +186,8 @@ class lda_score:
 					if k in cscore[n].keys():
 						cscore[n].update({k:misses_score[k]})
 			c+=1
+		else:
+			print('skipping {0} missed term-pairs < allowed misses = {1}'.format(int(count_miss/count_all),self.npmi_skip_threshold))
 
 		#compute mean for the ones without -100 (to make sure we don't include those)
 		avg_scores = [[0] for i in top_n] #make an empty list for average score 
