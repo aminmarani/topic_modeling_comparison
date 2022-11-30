@@ -14,3 +14,8 @@ best params: OrderedDict([('alpha', 100), ('db_path', './db/wiki_10p'), ('iterat
 K = 9
 val. score: 0.06444755790587801
 best params: OrderedDict([('alpha', 78), ('db_path', './db/wiki_10p'), ('iterations', 4700), ('npmi_skip_threshold', 0.05), ('num_topics', 9), ('optimize_interval', 240), ('vocab_dict_path', './data/corpus.vocab'), ('wiki_path', './data/wiki_sampled_10p.txt'), ('wiki_vocab_dict_path', './data/ref_corpus.vocab')])
+
+K = 10
+
+val. score: 0.06272563643550169
+best params: OrderedDict([('alpha', 99), ('db_path', './db/wiki_10p'), ('iterations', 3750), ('npmi_skip_threshold', 0.05), ('num_topics', 10), ('optimize_interval', 180), ('vocab_dict_path', './data/corpus.vocab'), ('wiki_path', './data/wiki_sampled_10p.txt'), ('wiki_vocab_dict_path', './data/ref_corpus.vocab')])
