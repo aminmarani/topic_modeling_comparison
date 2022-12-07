@@ -62,7 +62,7 @@ def reading_results(res,topic_num,itreations):
   return all_top_terms,LLs
 
 #loading ref corpus for coherene score for lda_mallet
-wiki_docs = loading_wiki_docs('./data/wiki_sampled_5p.txt')
+wiki_docs = loading_wiki_docs('./data/wiki_sampled_10p.txt')
 #doing pre-processing on wiki-pedia documents
 pre_processed_wiki, _ = preprocess_data(wiki_docs)
 wiki_vocab_dict, _ = prepare_corpus(pre_processed_wiki)
@@ -101,31 +101,32 @@ with open('./data/temp_corpus','w',encoding='utf-8') as txtfile:
 
 
 #running for one topic number
-topic_num = 6
+topic_num = range(6,20)
 itreations = 7000
 iter_stp = 50#LDA stops every 50 iterations and print LLs and top terms
 
 all_top_terms = []#storing all top terms in one vector
 all_lls = [] #all of Log-Likelihood values
 
-for _ in range(3): #three runs
-  res = subprocess.run([python_cmd, 'tm_run.py','--data','./data/temp_corpus',
-                        '--tech','lda','--num',str(topic_num),'--seed',
-                        str(int(random.random()*100000)),'--iter',str(itreations),
-                        '--opt_inter',str(200),'--alpha',str(80)]
-                        , stdout=subprocess.PIPE,stderr=subprocess.STDOUT).stdout.decode('utf-8')
-  #we have to wait till subprocess.run finishes....
-  
-  with open('t.csv','w') as csvfile:
-    csvfile.write(res)
+for t_num in topic_num:
+  for _ in range(3): #three runs
+    res = subprocess.run([python_cmd, 'tm_run.py','--data','./data/temp_corpus',
+                          '--tech','lda','--num',str(t_num),'--seed',
+                          str(int(random.random()*100000)),'--iter',str(itreations),
+                          '--opt_inter',str(200),'--alpha',str(80)]
+                          , stdout=subprocess.PIPE,stderr=subprocess.STDOUT).stdout.decode('utf-8')
+    #we have to wait till subprocess.run finishes....
+    
+    with open('t.csv','w') as csvfile:
+      csvfile.write(res)
 
-  # with open('t.csv','r') as csvfile:
-  #   res = csvfile.readlines()
-  res = res.split('\n')
-  res = [i for i in res if  'beta' not in i]#removing any line with beta
-  tts,LLs = reading_results(res,topic_num,itreations)
-  all_lls.extend(LLs)
-  all_top_terms.extend(tts)
+    # with open('t.csv','r') as csvfile:
+    #   res = csvfile.readlines()
+    res = res.split('\n')
+    res = [i for i in res if  'beta' not in i]#removing any line with beta
+    tts,LLs = reading_results(res,t_num,itreations)
+    all_lls.extend(LLs)
+    all_top_terms.extend(tts)
 
 #saving to keep in case of an Error
 with open('LLs_iter_analysis.txt','w') as txtfile:
@@ -140,36 +141,57 @@ print('LDA runs are finished!')
 
 coherence = []
 
-stats = pd.DataFrame(columns=['iterations','top_n','coherence','LL'])
-#running all top-terms in one go!
-for n in [5,10,15,20]:
-  #we compute coherence scores for all topics, which is [topic_num * numnber of runs (3) * group of top terms (4 grpups: 5-10-15-20)]
-  #we should compute the average for each run over all topics with same number of top terms
-  cscore = CoherenceModel(topics=all_top_terms,dictionary=wiki_vocab_dict,texts=pre_processed_wiki,topn=n,coherence='c_npmi',processes=1).get_coherence_per_topic()
-  cscore = np.asarray(cscore).reshape(int(itreations/iter_stp)*3,topic_num) #3 : three runs
-  coherence_avg = np.mean(cscore,axis=1)
-  # print(coherence_avg)
+stats = pd.DataFrame(columns=['K','iterations','coherence','LL'])
+# #running all top-terms in one go!
+# for n in [5,10,15,20]:
+#   #we compute coherence scores for all topics, which is [topic_num * numnber of runs (3) * group of top terms (4 grpups: 5-10-15-20)]
+#   #we should compute the average for each run over all topics with same number of top terms
+#   cscore = CoherenceModel(topics=all_top_terms,dictionary=wiki_vocab_dict,texts=pre_processed_wiki,topn=n,coherence='c_npmi',processes=1).get_coherence_per_topic()
+#   cscore = np.asarray(cscore).reshape(int(itreations/iter_stp)*3,topic_num) #3 : three runs
+#   coherence_avg = np.mean(cscore,axis=1)
+#   # print(coherence_avg)
 
+#defining Coherence-DB scorer
+scorer = lda_score(num_topics=2,alpha=10,optimize_interval=10,iterations=1000,wiki_path='./data/wiki_sampled_10p.txt',
+                   db_path = './db/wiki_full',vocab_dict_path = './data/corpus.vocab', 
+                   wiki_vocab_dict_path='./data/ref_corpus.vocab',npmi_skip_threshold=0.05)
+# #set the wiki_docs and corpus docs parameters
+scorer.wiki_vocab_dict = []
+with open(scorer.wiki_vocab_dict_path,'rb') as f:
+  scorer.wiki_vocab_dict = pickle.load(f)
 
-  c =0 #coherence counter
+scorer.vocab_dict = []
+with open(scorer.vocab_dict_path,'rb') as f:
+  scorer.vocab_dict = pickle.load(f)
+
+c = 0 #coherence counter
+itc = 0#iteration counter
+for t_num in topic_num:
   for _ in range(3):#for three runs
     for it in range(int(itreations/iter_stp)):
-      # print([(it+1)*iter_stp,n,coherence_avg[c],all_lls[it]])
-      stats = pd.concat([stats,pd.DataFrame(data=[[(it+1)*iter_stp,n,coherence_avg[c],all_lls[it]]],columns=['iterations','top_n','coherence','LL'])],ignore_index=True)
-      c+=1 #adding coherence counter
-  #save a copy
-  stats.to_csv('LDA_stats.csv',index=False)
-  print('All coherence compuation for top-{0} terms are computed'.format(n))
+      #set values for scorer
+      scorer.all_top_terms = all_top_terms[c:c+t_num]
+
+      #running scorer
+      coherence_avg = scorer.score(None)
+      stats = pd.concat([stats,pd.DataFrame(data=[[t_num,(it+1)*iter_stp,n,coherence_avg,all_lls[itc]]],columns=['K','iterations','coherence','LL'])],ignore_index=True)
+      #adding coherence counter
+      c+=t_num
+      itc+=1
+
+#save a copy
+stats.to_csv('LDA_stats.csv',index=False)
+print('All coherence compuation for top-{0} terms are computed'.format(n))
 
 plt.figure(figsize=(12,12))
 
-ax = sns.pointplot(x='iterations',y='coherence',hue='top_n',data=stats)
+ax = sns.pointplot(x='iterations',y='coherence',hue='K',data=stats,markers = 'O')
 ax.set(title='Coherence and LL with Wiki docs as ref corpus for K={0}'.format(topic_num),xlabel='Coherence',ylabel='Iterations#')
 ax.tick_params(axis='x', rotation=90)
 
 
 ax2 = ax.twinx()
-sns.pointplot(x='iterations',y='LL',data=stats,color='cyan')
+sns.pointplot(x='iterations',y='LL',hue='K',data=stats,markers = '^')
 ax2.set(ylabel='Log-Likelihood')
 # ax2.y_label('Log-Likelihood')
 
