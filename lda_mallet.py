@@ -160,7 +160,7 @@ class lda_score:
 
 		#if number of misses are more than the threshold, run coherence
 		if count_miss/count_all > self.npmi_skip_threshold: 
-			
+			print('percentage of misses = {0}% exceeds the threshold = {1}%'.format(int(100*count_miss/count_all),self.npmi_skip_threshold*100))
 			print('computing Coherence Value...')
 			#setting wikipedia and removing words from vocab
 			#loading ref corpus for coherene score for lda_mallet

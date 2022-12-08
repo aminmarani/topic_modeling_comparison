@@ -12,6 +12,8 @@ import time
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+from os.path import exists
+
 import platform 
 #checking OS
 if 'windows' in platform.system().lower():
@@ -61,82 +63,99 @@ def reading_results(res,topic_num,itreations):
     #all_top_terms.append(top_terms)
   return all_top_terms,LLs
 
-#loading ref corpus for coherene score for lda_mallet
-wiki_docs = loading_wiki_docs('./data/wiki_sampled_10p.txt')
-#doing pre-processing on wiki-pedia documents
-pre_processed_wiki, _ = preprocess_data(wiki_docs)
-wiki_vocab_dict, _ = prepare_corpus(pre_processed_wiki)
-del wiki_docs
+LL_file = 'LLs_iter_analysis.txt'
+top_terms_file = 'top_terms_iter_analysis.txt'
 
-'''reading data
-'''
-# text_df = newsgroup('./data/20newsgroup_preprocessed.csv')
-# # text_df = ap_corpus('./data/ap.txt')
-# doc_list = list(text_df.text_cleaned)
-# EDML corpus
-doc_list=[]
-with open('./data/edml.txt','r',encoding='utf-8') as txtfile:
-  doc_list = txtfile.readlines()
-#extra_stopwords for EDML
-extra_stopwords = ['isnt','want','cant','wanna','im','could','ive','would','dont','get','also','us','thats','got','ur','wanted',
-                   'may', 'the', 'just', 'can', 'think', 'damn', 'still', 'guys', 'literally', 'hopefully', 'much', 'even', 'rly', 'guess', 'anon']#anything with a length of one
-# #tweet dataset
-# doc_list=[]
-# with open('./data/covid_tweets','r',encoding='utf-8') as txtfile:
-#   doc_list = txtfile.readlines()
-#tokenizing
-pre_processed_docs,filtered_docs = preprocess_data(doc_list,extra_stopwords={})
-#generate vocabulary and texts
-vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
-
-#finding stopwords that are not in Wikipedia and removing those
-extra_stopwords = set(vocab_dict.token2id.keys()).difference(set(wiki_vocab_dict.token2id.keys()))
-pre_processed_docs,filtered_docs = preprocess_data(doc_list,extra_stopwords=extra_stopwords)
-#since we will pre-process the corpus in the tm_run.py file, we will save 
-#it in a temp file
-#vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
-with open('./data/temp_corpus','w',encoding='utf-8') as txtfile:
-  for t in pre_processed_docs:
-    txtfile.write(' '.join(t)+'\n')
-
+all_top_terms = []#storing all top terms in one vector
+all_lls = [] #all of Log-Likelihood values
 
 #running for one topic number
 topic_num = range(6,20)
 itreations = 7000
 iter_stp = 50#LDA stops every 50 iterations and print LLs and top terms
 
-all_top_terms = []#storing all top terms in one vector
-all_lls = [] #all of Log-Likelihood values
 
-for t_num in topic_num:
-  for _ in range(3): #three runs
-    res = subprocess.run([python_cmd, 'tm_run.py','--data','./data/temp_corpus',
-                          '--tech','lda','--num',str(t_num),'--seed',
-                          str(int(random.random()*100000)),'--iter',str(itreations),
-                          '--opt_inter',str(200),'--alpha',str(80)]
-                          , stdout=subprocess.PIPE,stderr=subprocess.STDOUT).stdout.decode('utf-8')
-    #we have to wait till subprocess.run finishes....
-    
-    with open('t.csv','w') as csvfile:
-      csvfile.write(res)
+#if for any reasons we have the results and just want to see the analysis
+if not exists(top_terms_file) or not exists(LL_file):
 
-    # with open('t.csv','r') as csvfile:
-    #   res = csvfile.readlines()
-    res = res.split('\n')
-    res = [i for i in res if  'beta' not in i]#removing any line with beta
-    tts,LLs = reading_results(res,t_num,itreations)
-    all_lls.extend(LLs)
-    all_top_terms.extend(tts)
+  #loading ref corpus for coherene score for lda_mallet
+  wiki_docs = loading_wiki_docs('./data/wiki_sampled_10p.txt')
+  #doing pre-processing on wiki-pedia documents
+  pre_processed_wiki, _ = preprocess_data(wiki_docs)
+  wiki_vocab_dict, _ = prepare_corpus(pre_processed_wiki)
+  del wiki_docs
 
-#saving to keep in case of an Error
-with open('LLs_iter_analysis.txt','w') as txtfile:
-  for tt in all_lls:
-    txtfile.write(str(tt)+'\n')
-with open('top_terms_iter_analysis.txt','w') as txtfile:
-  for tt in all_top_terms:
-    txtfile.write(','.join(tt)+'\n')
+  '''reading data
+  '''
+  # text_df = newsgroup('./data/20newsgroup_preprocessed.csv')
+  # # text_df = ap_corpus('./data/ap.txt')
+  # doc_list = list(text_df.text_cleaned)
+  # EDML corpus
+  doc_list=[]
+  with open('./data/edml.txt','r',encoding='utf-8') as txtfile:
+    doc_list = txtfile.readlines()
+  #extra_stopwords for EDML
+  extra_stopwords = ['isnt','want','cant','wanna','im','could','ive','would','dont','get','also','us','thats','got','ur','wanted',
+                     'may', 'the', 'just', 'can', 'think', 'damn', 'still', 'guys', 'literally', 'hopefully', 'much', 'even', 'rly', 'guess', 'anon']#anything with a length of one
+  # #tweet dataset
+  # doc_list=[]
+  # with open('./data/covid_tweets','r',encoding='utf-8') as txtfile:
+  #   doc_list = txtfile.readlines()
+  #tokenizing
+  pre_processed_docs,filtered_docs = preprocess_data(doc_list,extra_stopwords={})
+  #generate vocabulary and texts
+  vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
 
-print('LDA runs are finished!')
+  #finding stopwords that are not in Wikipedia and removing those
+  extra_stopwords = set(vocab_dict.token2id.keys()).difference(set(wiki_vocab_dict.token2id.keys()))
+  pre_processed_docs,filtered_docs = preprocess_data(doc_list,extra_stopwords=extra_stopwords)
+  #since we will pre-process the corpus in the tm_run.py file, we will save 
+  #it in a temp file
+  #vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
+  with open('./data/temp_corpus','w',encoding='utf-8') as txtfile:
+    for t in pre_processed_docs:
+      txtfile.write(' '.join(t)+'\n')
+
+
+
+  for t_num in topic_num:
+    for _ in range(3): #three runs
+      res = subprocess.run([python_cmd, 'tm_run.py','--data','./data/temp_corpus',
+                            '--tech','lda','--num',str(t_num),'--seed',
+                            str(int(random.random()*100000)),'--iter',str(itreations),
+                            '--opt_inter',str(200),'--alpha',str(80)]
+                            , stdout=subprocess.PIPE,stderr=subprocess.STDOUT).stdout.decode('utf-8')
+      #we have to wait till subprocess.run finishes....
+      
+      with open('t.csv','w') as csvfile:
+        csvfile.write(res)
+
+      # with open('t.csv','r') as csvfile:
+      #   res = csvfile.readlines()
+      res = res.split('\n')
+      res = [i for i in res if  'beta' not in i]#removing any line with beta
+      tts,LLs = reading_results(res,t_num,itreations)
+      all_lls.extend(LLs)
+      all_top_terms.extend(tts)
+
+  #saving to keep in case of an Error
+  with open(LL_file,'w') as txtfile:
+    for tt in all_lls:
+      txtfile.write(str(tt)+'\n')
+  with open(top_terms_file,'w') as txtfile:
+    for tt in all_top_terms:
+      txtfile.write(','.join(tt)+'\n')
+
+  print('LDA runs are finished!')
+
+else:#loading the pre-saved files
+  #saving to keep in case of an Error
+  with open(LL_file,'r') as txtfile:
+    for row in txtfile:
+      all_lls.append(float(row))
+  with open(top_terms_file,'r') as txtfile:
+    for row in txtfile:
+      all_top_terms.append(row.strip().split(','))
 
 
 coherence = []
