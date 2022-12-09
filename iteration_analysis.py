@@ -70,7 +70,7 @@ all_top_terms = []#storing all top terms in one vector
 all_lls = [] #all of Log-Likelihood values
 
 #running for one topic number
-topic_num = range(6,20)
+topic_num = [14,17,20,23,50,60,70,80]
 itreations = 7000
 iter_stp = 50#LDA stops every 50 iterations and print LLs and top terms
 
@@ -87,16 +87,16 @@ if not exists(top_terms_file) or not exists(LL_file):
 
   '''reading data
   '''
-  # text_df = newsgroup('./data/20newsgroup_preprocessed.csv')
+  text_df = newsgroup('./data/20newsgroup_preprocessed.csv')
   # # text_df = ap_corpus('./data/ap.txt')
-  # doc_list = list(text_df.text_cleaned)
+  doc_list = list(text_df.text_cleaned)
   # EDML corpus
-  doc_list=[]
-  with open('./data/edml.txt','r',encoding='utf-8') as txtfile:
-    doc_list = txtfile.readlines()
-  #extra_stopwords for EDML
-  extra_stopwords = ['isnt','want','cant','wanna','im','could','ive','would','dont','get','also','us','thats','got','ur','wanted',
-                     'may', 'the', 'just', 'can', 'think', 'damn', 'still', 'guys', 'literally', 'hopefully', 'much', 'even', 'rly', 'guess', 'anon']#anything with a length of one
+  # doc_list=[]
+  # with open('./data/edml.txt','r',encoding='utf-8') as txtfile:
+  #   doc_list = txtfile.readlines()
+  # #extra_stopwords for EDML
+  # extra_stopwords = ['isnt','want','cant','wanna','im','could','ive','would','dont','get','also','us','thats','got','ur','wanted',
+  #                    'may', 'the', 'just', 'can', 'think', 'damn', 'still', 'guys', 'literally', 'hopefully', 'much', 'even', 'rly', 'guess', 'anon']#anything with a length of one
   # #tweet dataset
   # doc_list=[]
   # with open('./data/covid_tweets','r',encoding='utf-8') as txtfile:
@@ -193,28 +193,64 @@ for t_num in topic_num:
 
       #running scorer
       coherence_avg = scorer.score(None)
-      stats = pd.concat([stats,pd.DataFrame(data=[[t_num,(it+1)*iter_stp,n,coherence_avg,all_lls[itc]]],columns=['K','iterations','coherence','LL'])],ignore_index=True)
+      stats = pd.concat([stats,pd.DataFrame(data=[[t_num,(it+1)*iter_stp,coherence_avg,all_lls[itc]]],columns=['K','iterations','coherence','LL'])],ignore_index=True)
       #adding coherence counter
       c+=t_num
       itc+=1
 
 #save a copy
 stats.to_csv('LDA_stats.csv',index=False)
-print('All coherence compuation for top-{0} terms are computed'.format(n))
+print('All coherence compuation for top terms are computed')
 
-plt.figure(figsize=(12,12))
+# stats = pd.read_csv('LDA_stats.csv')
 
-ax = sns.pointplot(x='iterations',y='coherence',hue='K',data=stats,markers = 'O')
-ax.set(title='Coherence and LL with Wiki docs as ref corpus for K={0}'.format(topic_num),xlabel='Coherence',ylabel='Iterations#')
-ax.tick_params(axis='x', rotation=90)
+fig, axes = plt.subplots(7, 2, figsize=(15,25))
+fig.suptitle('Iteration analysis')
+
+K_count = 0
+
+for i in range(0,int(len(topic_num)/2)):
+    for j in range(0,2):
+        ax = sns.pointplot(ax=axes[i,j],x='iterations',y='coherence',data=stats.loc[stats.K==topic_num[K_count],:])
+        if i == 6:
+            xlabel = 'iterations#'
+        else:
+            xlabel = ''
+        ax.set(title='Coherence and LL with Wiki docs as ref corpus for K = {0}'.format(topic_num[K_count]),xlabel=xlabel,ylabel='Coherence')
+        ax.tick_params(axis='x', rotation=90)
+        ax.set(ylim=(min(stats.coherence),max(stats.coherence)))
+        if j == 1:#if the plot is on right, don't print iterations for ylabel to avoid interfere
+            ax.set(ylabel='')
+            ax.set(yticklabels=[])
+        
+        ax2 = ax.twinx()
+        sns.pointplot(x='iterations',y='LL',data=stats.loc[stats.K==topic_num[K_count],:],markers = '^',color='red')
+        ax2.set(ylim=(min(stats.LL),max(stats.LL)))
+        if j==1:#if the plot is on the right side, print log-likelihood for ylabel
+            ax2.set(ylabel='Log-Likelihood')
+        else:
+            ax2.set(yticklabels=[])
+            
+        #decreasing font size for x-ticks
+        ax.set_xticklabels(ax.get_xticks(), size = 5)
+        
+        if i<(len(topic_num)/2)-1:#remove iterations for subplots that are not at the bottom
+            ax2.set(xticklabels=[])
+
+# ax = sns.pointplot(x='iterations',y='coherence',hue='K',data=stats.loc[stats.K<11,:])
+# ax.set(title='Coherence and LL with Wiki docs as ref corpus for different K',xlabel='Coherence',ylabel='Iterations#')
+# ax.tick_params(axis='x', rotation=90)
 
 
-ax2 = ax.twinx()
-sns.pointplot(x='iterations',y='LL',hue='K',data=stats,markers = '^')
-ax2.set(ylabel='Log-Likelihood')
-# ax2.y_label('Log-Likelihood')
+# ax2 = ax.twinx()
+# sns.pointplot(x='iterations',y='LL',hue='K',data=stats.loc[stats.K<11,:],markers = '^')
+# ax2.set(ylabel='Log-Likelihood')
 
 plt.show()
+
+fig.savefig('./result/edml/iteration_analysis_multiple_K_EDML.png', format='png', dpi=1200)
+fig.savefig('./result/edml/iteration_analysis_multiple_K_EDML.svg', format='svg', dpi=1200)
+
 
 print('end...')
 

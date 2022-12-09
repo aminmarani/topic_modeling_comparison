@@ -158,6 +158,7 @@ class lda_score:
 				count_miss += len(t_misses.keys())
 				misses_score.update(t_misses)
 
+
 		#if number of misses are more than the threshold, run coherence
 		if count_miss/count_all > self.npmi_skip_threshold: 
 			print('percentage of misses = {0}% exceeds the threshold = {1}%'.format(int(100*count_miss/count_all),self.npmi_skip_threshold*100))

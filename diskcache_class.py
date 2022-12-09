@@ -11,9 +11,9 @@ class db:
 		#try to return the value for the key
 		try:
 			return self.db[key]
-		except:
+		except KeyError:
 			try:#if the key does not exist, try different combination of the key
 				return self.db[(key[1],key[0])]
-			except:#if no combinations of these pairs exist, return -100
+			except KeyError:#if no combinations of these pairs exist, return -100
 				return -100
 
