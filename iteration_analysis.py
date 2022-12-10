@@ -204,7 +204,7 @@ print('All coherence compuation for top terms are computed')
 
 # stats = pd.read_csv('LDA_stats.csv')
 
-fig, axes = plt.subplots(7, 2, figsize=(15,25))
+fig, axes = plt.subplots(int(len(topic_num)/2), 2, figsize=(15,25))
 fig.suptitle('Iteration analysis')
 
 K_count = 0
