@@ -70,7 +70,7 @@ all_top_terms = []#storing all top terms in one vector
 all_lls = [] #all of Log-Likelihood values
 
 #running for one topic number
-topic_num = [41,51,61,71,81,91,101,111]
+topic_num = [30,40,50,60,70,80,90,100,120,140,160,180]
 itreations = 7000
 iter_stp = 50#LDA stops every 50 iterations and print LLs and top terms
 
@@ -88,8 +88,8 @@ if not exists(top_terms_file) or not exists(LL_file):
   '''reading data
   '''
   # text_df = newsgroup('./data/20newsgroup_preprocessed.csv')
-  text_df = ap_corpus('./data/ap.txt')
-  doc_list = list(text_df.text_cleaned)
+  # text_df = ap_corpus('./data/ap.txt')
+  # doc_list = list(text_df.text_cleaned)
   # EDML corpus
   # doc_list=[]
   # with open('./data/edml.txt','r',encoding='utf-8') as txtfile:
@@ -99,8 +99,8 @@ if not exists(top_terms_file) or not exists(LL_file):
   #                    'may', 'the', 'just', 'can', 'think', 'damn', 'still', 'guys', 'literally', 'hopefully', 'much', 'even', 'rly', 'guess', 'anon']#anything with a length of one
   # #tweet dataset
   # doc_list=[]
-  # with open('./data/covid_tweets','r',encoding='utf-8') as txtfile:
-  #   doc_list = txtfile.readlines()
+  with open('./data/covid_tweets','r',encoding='utf-8') as txtfile:
+    doc_list = txtfile.readlines()
   #tokenizing
   pre_processed_docs,filtered_docs = preprocess_data(doc_list,extra_stopwords={})
   #generate vocabulary and texts
@@ -236,6 +236,11 @@ for i in range(0,int(len(topic_num)/2)):
         
         if i<(len(topic_num)/2)-1:#remove iterations for subplots that are not at the bottom
             ax2.set(xticklabels=[])
+        else:
+            ax2.set(xlabel='Iterations#')
+            ax2.set(xticklabels=list(range(50,iterations,50)))
+            
+        K_count+=1
 
 # ax = sns.pointplot(x='iterations',y='coherence',hue='K',data=stats.loc[stats.K<11,:])
 # ax.set(title='Coherence and LL with Wiki docs as ref corpus for different K',xlabel='Coherence',ylabel='Iterations#')
@@ -248,9 +253,8 @@ for i in range(0,int(len(topic_num)/2)):
 
 plt.show()
 
-fig.savefig('./result/edml/iteration_analysis_multiple_K_EDML.png', format='png', dpi=1200)
-fig.savefig('./result/edml/iteration_analysis_multiple_K_EDML.svg', format='svg', dpi=1200)
-
+fig.savefig('./iteration_analysis_multiple_K.png', format='png', dpi=1200)
+fig.savefig('./iteration_analysis_multiple_K.svg', format='svg', dpi=1200)
 
 print('end...')
 
