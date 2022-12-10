@@ -70,7 +70,7 @@ all_top_terms = []#storing all top terms in one vector
 all_lls = [] #all of Log-Likelihood values
 
 #running for one topic number
-topic_num = [14,17,20,23,50,60,70,80]
+topic_num = [41,51,61,71,81,91,101,111]
 itreations = 7000
 iter_stp = 50#LDA stops every 50 iterations and print LLs and top terms
 
@@ -87,8 +87,8 @@ if not exists(top_terms_file) or not exists(LL_file):
 
   '''reading data
   '''
-  text_df = newsgroup('./data/20newsgroup_preprocessed.csv')
-  # # text_df = ap_corpus('./data/ap.txt')
+  # text_df = newsgroup('./data/20newsgroup_preprocessed.csv')
+  text_df = ap_corpus('./data/ap.txt')
   doc_list = list(text_df.text_cleaned)
   # EDML corpus
   # doc_list=[]
