@@ -78,12 +78,14 @@ iter_stp = 50#LDA stops every 50 iterations and print LLs and top terms
 #if for any reasons we have the results and just want to see the analysis
 if not exists(top_terms_file) or not exists(LL_file):
 
-  #loading ref corpus for coherene score for lda_mallet
-  wiki_docs = loading_wiki_docs('./data/wiki_sampled_10p.txt')
-  #doing pre-processing on wiki-pedia documents
-  pre_processed_wiki, _ = preprocess_data(wiki_docs)
-  wiki_vocab_dict, _ = prepare_corpus(pre_processed_wiki)
-  del wiki_docs
+  # #loading ref corpus for coherene score for lda_mallet
+  # wiki_docs = loading_wiki_docs('./data/wiki_sampled_10p.txt')
+  # #doing pre-processing on wiki-pedia documents
+  # pre_processed_wiki, _ = preprocess_data(wiki_docs)
+  # wiki_vocab_dict, _ = prepare_corpus(pre_processed_wiki)
+  # del wiki_docs
+  with open('./data/wiki_full_vocab.obj','rb') as objfile:
+    wiki_vocab_dict = pickle.load(objfile)
 
   '''reading data
   '''
@@ -157,7 +159,7 @@ else:#loading the pre-saved files
     for row in txtfile:
       all_top_terms.append(row.strip().split(','))
 
-
+exit()
 coherence = []
 
 stats = pd.DataFrame(columns=['K','iterations','coherence','LL'])
