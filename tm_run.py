@@ -65,7 +65,7 @@ if __name__ == '__main__':
   vocab_dict, doc_term_matrix = prepare_corpus(pre_processed_docs)
   #run topic modeling technique
   if technique == 'lda':
-    ldaMallet = LdaMallet(mallet_path, corpus=doc_term_matrix, num_topics=num_topics, id2word=vocab_dict,iterations=iterations,random_seed = random_seed,optimize_interval=optimize_interval,alpha=alpha)
+    ldaMallet = LdaMallet(mallet_path, corpus=doc_term_matrix, num_topics=num_topics, id2word=vocab_dict,iterations=iterations,random_seed = random_seed,optimize_interval=optimize_interval,alpha=alpha,workers=4)
 
 
 

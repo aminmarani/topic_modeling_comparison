@@ -21,7 +21,7 @@ if 'windows' in platform.system().lower():
 elif 'darwin' in platform.system().lower():
   python_cmd = 'python3'
 else:
-  python_cmd = 'python.exe'
+  python_cmd = 'python'
 
 def reading_results(res,topic_num,itreations):
   '''
@@ -103,6 +103,8 @@ if not exists(top_terms_file) or not exists(LL_file):
   # doc_list=[]
   with open('./data/covid_tweets','r',encoding='utf-8') as txtfile:
     doc_list = txtfile.readlines()
+  
+  extra_stopwords = ['amp']
   #tokenizing
   pre_processed_docs,filtered_docs = preprocess_data(doc_list,extra_stopwords={})
   #generate vocabulary and texts
@@ -144,7 +146,7 @@ if not exists(top_terms_file) or not exists(LL_file):
   with open(LL_file,'w') as txtfile:
     for tt in all_lls:
       txtfile.write(str(tt)+'\n')
-  with open(top_terms_file,'w') as txtfile:
+  with open(top_terms_file,'w',encoding='utf-8') as txtfile:
     for tt in all_top_terms:
       txtfile.write(','.join(tt)+'\n')
 
