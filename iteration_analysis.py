@@ -58,7 +58,7 @@ def reading_results(res,topic_num,itreations):
     try:
       LLs.append(float(res[current_line].split(': ')[1]))
     except:
-      print(res[current_line],current_line)
+      print(res,current_line)
     current_line += stp2
     #all_top_terms.append(top_terms)
   return all_top_terms,LLs
@@ -103,8 +103,8 @@ if not exists(top_terms_file) or not exists(LL_file):
   # doc_list=[]
   with open('./data/covid_tweets','r',encoding='utf-8') as txtfile:
     doc_list = txtfile.readlines()
-  
   extra_stopwords = ['amp']
+
   #tokenizing
   pre_processed_docs,filtered_docs = preprocess_data(doc_list,extra_stopwords={})
   #generate vocabulary and texts
