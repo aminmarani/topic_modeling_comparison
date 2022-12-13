@@ -37,6 +37,10 @@ import platform
 #checking OS
 if 'windows' in platform.system().lower():
 	mallet_path = 'c:/mallet-2.0.8/bin/mallet'
+elif 'linux' in platform.system().lower():
+    import os
+    os.environ['MALLET_HOME'] = '../mallet-2.0.8/'
+    mallet_path = '../mallet-2.0.8/bin/mallet' # you should NOT need to change this 
 else:
 	mallet_path = 'mallet'
 

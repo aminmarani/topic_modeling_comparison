@@ -37,6 +37,10 @@ import platform
 #checking OS
 if 'windows' in platform.system().lower():
 	mallet_path = 'c:/mallet-2.0.8/bin/mallet'
+elif 'linux' in platform.system().lower():
+    import os
+    os.environ['MALLET_HOME'] = '../mallet-2.0.8/'
+    mallet_path = '../mallet-2.0.8/bin/mallet' # you should NOT need to change this 
 else:
 	mallet_path = 'mallet'
 
@@ -158,9 +162,10 @@ class lda_score:
 				count_miss += len(t_misses.keys())
 				misses_score.update(t_misses)
 
+
 		#if number of misses are more than the threshold, run coherence
 		if count_miss/count_all > self.npmi_skip_threshold: 
-			
+			print('percentage of misses = {0}% exceeds the threshold = {1}%'.format(int(100*count_miss/count_all),self.npmi_skip_threshold*100))
 			print('computing Coherence Value...')
 			#setting wikipedia and removing words from vocab
 			#loading ref corpus for coherene score for lda_mallet
@@ -186,7 +191,7 @@ class lda_score:
 					if k in cscore[n].keys():
 						cscore[n].update({k:misses_score[k]})
 			c+=1
-		if count_miss>0:
+		elif count_miss>0:
 			print('skipping {0} missed term-pairs < allowed misses = {1}'.format(int(count_miss/count_all),self.npmi_skip_threshold))
 
 		#compute mean for the ones without -100 (to make sure we don't include those)

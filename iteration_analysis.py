@@ -103,7 +103,7 @@ if not exists(top_terms_file) or not exists(LL_file):
   # doc_list=[]
   with open('./data/covid_tweets','r',encoding='utf-8') as txtfile:
     doc_list = txtfile.readlines()
-  extra_stopwords = ['amp']
+  extra_stopwords_ = ['amp']
 
   #tokenizing
   pre_processed_docs,filtered_docs = preprocess_data(doc_list,extra_stopwords={})
@@ -112,6 +112,7 @@ if not exists(top_terms_file) or not exists(LL_file):
 
   #finding stopwords that are not in Wikipedia and removing those
   extra_stopwords = set(vocab_dict.token2id.keys()).difference(set(wiki_vocab_dict.token2id.keys()))
+  extra_stopwords.update(extra_stopwords_)
   pre_processed_docs,filtered_docs = preprocess_data(doc_list,extra_stopwords=extra_stopwords)
   #since we will pre-process the corpus in the tm_run.py file, we will save 
   #it in a temp file

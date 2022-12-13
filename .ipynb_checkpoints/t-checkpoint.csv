@@ -1,0 +1,24 @@
+/bin/sh: mallet: command not found
+[nltk_data] Downloading package stopwords to /home/amh418/nltk_data...
+[nltk_data]   Package stopwords is already up-to-date!
+[nltk_data] Downloading package wordnet to /home/amh418/nltk_data...
+[nltk_data]   Package wordnet is already up-to-date!
+[nltk_data] Downloading package omw-1.4 to /home/amh418/nltk_data...
+[nltk_data]   Package omw-1.4 is already up-to-date!
+[nltk_data] Downloading package averaged_perceptron_tagger to
+[nltk_data]     /home/amh418/nltk_data...
+[nltk_data]   Package averaged_perceptron_tagger is already up-to-
+[nltk_data]       date!
+************
+Traceback (most recent call last):
+  File "tm_run.py", line 68, in <module>
+    ldaMallet = LdaMallet(mallet_path, corpus=doc_term_matrix, num_topics=num_topics, id2word=vocab_dict,iterations=iterations,random_seed = random_seed,optimize_interval=optimize_interval,alpha=alpha,workers=15)
+  File "/home/amh418/.local/lib/python3.8/site-packages/gensim/models/wrappers/ldamallet.py", line 131, in __init__
+    self.train(corpus)
+  File "/home/amh418/.local/lib/python3.8/site-packages/gensim/models/wrappers/ldamallet.py", line 272, in train
+    self.convert_input(corpus, infer=False)
+  File "/home/amh418/.local/lib/python3.8/site-packages/gensim/models/wrappers/ldamallet.py", line 261, in convert_input
+    check_output(args=cmd, shell=True)
+  File "/home/amh418/.local/lib/python3.8/site-packages/gensim/utils.py", line 1932, in check_output
+    raise error
+subprocess.CalledProcessError: Command 'mallet import-file --preserve-case --keep-sequence --remove-stopwords --token-regex "\S+" --input /share/ceph/scratch/amh418/9230330/36855c_corpus.txt --output /share/ceph/scratch/amh418/9230330/36855c_corpus.mallet' returned non-zero exit status 127.
