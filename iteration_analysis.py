@@ -23,7 +23,7 @@ elif 'darwin' in platform.system().lower():
 else:
   python_cmd = 'python'
 
-def reading_results(res,topic_num,itreations):
+def reading_results(res,topic_num,iterations):
   '''
   Reading result to get top terms and log-likelihood every 50 iterations
 
@@ -40,7 +40,7 @@ def reading_results(res,topic_num,itreations):
   #please set the number of iteration to what you set for your topic model
   all_top_terms = []#storing all top terms
   LLs = []
-  for _i in range(int(itreations/50)):
+  for _i in range(int(iterations/50)):
     #top_terms = []
     for i in range(topic_num):#reading top 
       try:
@@ -71,7 +71,7 @@ all_lls = [] #all of Log-Likelihood values
 
 #running for one topic number
 topic_num = [30,40,50,60,70,80,90,100,120,140,160,180]
-itreations = 7000
+iterations = 7000
 iter_stp = 50#LDA stops every 50 iterations and print LLs and top terms
 
 
@@ -127,7 +127,7 @@ if not exists(top_terms_file) or not exists(LL_file):
     for _ in range(3): #three runs
       res = subprocess.run([python_cmd, 'tm_run.py','--data','./data/temp_corpus',
                             '--tech','lda','--num',str(t_num),'--seed',
-                            str(int(random.random()*100000)),'--iter',str(itreations),
+                            str(int(random.random()*100000)),'--iter',str(iterations),
                             '--opt_inter',str(200),'--alpha',str(80)]
                             , stdout=subprocess.PIPE,stderr=subprocess.STDOUT).stdout.decode('utf-8')
       #we have to wait till subprocess.run finishes....
@@ -139,7 +139,7 @@ if not exists(top_terms_file) or not exists(LL_file):
       #   res = csvfile.readlines()
       res = res.split('\n')
       res = [i for i in res if  'beta' not in i]#removing any line with beta
-      tts,LLs = reading_results(res,t_num,itreations)
+      tts,LLs = reading_results(res,t_num,iterations)
       all_lls.extend(LLs)
       all_top_terms.extend(tts)
 
@@ -162,7 +162,6 @@ else:#loading the pre-saved files
     for row in txtfile:
       all_top_terms.append(row.strip().split(','))
 
-exit()
 coherence = []
 
 stats = pd.DataFrame(columns=['K','iterations','coherence','LL'])
@@ -171,7 +170,7 @@ stats = pd.DataFrame(columns=['K','iterations','coherence','LL'])
 #   #we compute coherence scores for all topics, which is [topic_num * numnber of runs (3) * group of top terms (4 grpups: 5-10-15-20)]
 #   #we should compute the average for each run over all topics with same number of top terms
 #   cscore = CoherenceModel(topics=all_top_terms,dictionary=wiki_vocab_dict,texts=pre_processed_wiki,topn=n,coherence='c_npmi',processes=1).get_coherence_per_topic()
-#   cscore = np.asarray(cscore).reshape(int(itreations/iter_stp)*3,topic_num) #3 : three runs
+#   cscore = np.asarray(cscore).reshape(int(iterations/iter_stp)*3,topic_num) #3 : three runs
 #   coherence_avg = np.mean(cscore,axis=1)
 #   # print(coherence_avg)
 
@@ -190,18 +189,21 @@ with open(scorer.vocab_dict_path,'rb') as f:
 
 c = 0 #coherence counter
 itc = 0#iteration counter
-for t_num in topic_num:
-  for _ in range(3):#for three runs
-    for it in range(int(itreations/iter_stp)):
-      #set values for scorer
-      scorer.all_top_terms = all_top_terms[c:c+t_num]
+try:
+  for t_num in topic_num:
+    for _ in range(3):#for three runs
+      for it in range(int(iterations/iter_stp)):
+        #set values for scorer
+        scorer.all_top_terms = all_top_terms[c:c+t_num]
 
-      #running scorer
-      coherence_avg = scorer.score(None)
-      stats = pd.concat([stats,pd.DataFrame(data=[[t_num,(it+1)*iter_stp,coherence_avg,all_lls[itc]]],columns=['K','iterations','coherence','LL'])],ignore_index=True)
-      #adding coherence counter
-      c+=t_num
-      itc+=1
+        #running scorer
+        coherence_avg = scorer.score(None)
+        stats = pd.concat([stats,pd.DataFrame(data=[[t_num,(it+1)*iter_stp,coherence_avg,all_lls[itc]]],columns=['K','iterations','coherence','LL'])],ignore_index=True)
+        #adding coherence counter
+        c+=t_num
+        itc+=1
+except:
+  print('cut some analysis')
 
 #save a copy
 stats.to_csv('LDA_stats.csv',index=False)
