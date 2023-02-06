@@ -70,7 +70,7 @@ library(readr)
 #' @param rp.p dimensionality of the random projections for Spectral initialization
 #' @param tSNE_init.dims if you use K=0 for spectral initialization, the algorithm uses tSNE for starting and only uses tSNE_init.dims (i.e., default = 50) to initialize
 #'
-run_stm <- function(docs,topic_n=10,verbose=T,prevalence='',content='', model_type='LDA',max_itr=500,emtol = 1e-05,LDAbeta=T,interactions=T,ngroups=1, sigma.prior = 0, gamma.prior='Pooled',kappa.prior='L1',nits=50,burnin=25, alpha=-1, eta= 0.1,rp.s = 0.05, rp.p=3000, tSNE_init.dims = 50,no_below=5,no_above=0.5)
+run_stm <- function(docs,topic_n=10,verbose=F,reportevery=5,prevalence='',content='', model_type='LDA',max_itr=500,emtol = 1e-05,LDAbeta=T,interactions=T,ngroups=1, sigma.prior = 0, gamma.prior='Pooled',kappa.prior='L1',nits=50,burnin=25, alpha=-1, eta= 0.1,rp.s = 0.05, rp.p=3000, tSNE_init.dims = 50,no_below=5,no_above=0.5)
 {
   #if no value is provide, we set it to the default STM uses, 50/K
   if (alpha == -1)
@@ -115,7 +115,7 @@ run_stm <- function(docs,topic_n=10,verbose=T,prevalence='',content='', model_ty
 	                kappa.prior = kappa.prior, control= list(nits=nits,
 	                burnin=burnin, alpha= alpha, eta= eta, rp.s = rp.s,
 	                rp.p=rp.p, tSNE_init.dims = tSNE_init.dims),
-	                init.type = "LDA", verbose = FALSE,seed = 12345)
+	                init.type = "LDA", verbose = verbose,reportever=reportevery,seed = 12345)
 	else if (nchar(prevalence)>0)
     STM <- stm(documents = out$documents, vocab = out$vocab,
 	                K = topic_n, prevalence =~ prevalence ,
@@ -125,7 +125,7 @@ run_stm <- function(docs,topic_n=10,verbose=T,prevalence='',content='', model_ty
 	                kappa.prior = kappa.prior, control= list(nits=nits,
 	                burnin=burnin, alpha= alpha, eta= eta, rp.s = rp.s,
 	                rp.p=rp.p, tSNE_init.dims = tSNE_init.dims),
-	                init.type = "LDA", verbose = FALSE,seed = 12345)
+	                init.type = "LDA", verbose = verbose,reportevery=reportevery,seed = 12345)
 	else if (nchar(content)>0)
 	  STM <- stm(documents = out$documents, vocab = out$vocab,
 	                K = topic_n,content=content,
@@ -135,7 +135,7 @@ run_stm <- function(docs,topic_n=10,verbose=T,prevalence='',content='', model_ty
 	                kappa.prior = kappa.prior, control= list(nits=nits,
 	                burnin=burnin, alpha= alpha, eta= eta, rp.s = rp.s,
 	                rp.p=rp.p, tSNE_init.dims = tSNE_init.dims),
-	                init.type = "LDA", verbose = FALSE,seed = 12345)
+	                init.type = "LDA", verbose = verbose,reportevery=reportevery,seed = 12345)
 	else
 	  STM <- stm(documents = out$documents, vocab = out$vocab,
 	                K = topic_n, max.em.its = max_itr, data = out$meta, 
@@ -144,7 +144,7 @@ run_stm <- function(docs,topic_n=10,verbose=T,prevalence='',content='', model_ty
 	                kappa.prior = kappa.prior, control= list(nits=nits,
 	                burnin=burnin, alpha= alpha, eta= eta, rp.s = rp.s,
 	                rp.p=rp.p, tSNE_init.dims = tSNE_init.dims),
-	                init.type = "LDA", verbose = FALSE,seed = 12345)
+	                init.type = "LDA", verbose = verbose,reportevery=reportevery,seed = 12345)
   #storing top terms
 	top.terms = matrix(nrow = topic_n,ncol = 50)
   log.beta = STM$beta$logbeta[[1]]
