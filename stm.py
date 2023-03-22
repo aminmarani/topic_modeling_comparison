@@ -32,8 +32,8 @@ text_df = pd.DataFrame(zip(np.arange(1,len(docs)),docs),columns=['int_values','t
 #   '''.format(12,22))
 
 robjects.r.source('stm.R')
-num_topics = 10
-ans = robjects.r.run_stm(text_df,topic_n=num_topics,max_itr=50)
+num_topics = 8
+ans = robjects.r.run_stm(text_df,topic_n=num_topics,max_itr=50,save_flag = True)
 top_terms = np.asarray(ans[1]).reshape(num_topics,50,order='F')#topic number * top_n
 print(top_terms)
 

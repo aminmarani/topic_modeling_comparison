@@ -51,9 +51,12 @@ library(reticulate)
 #' @param extra.epochs running model for another extra.epochs to generate final topics
 #' @param word.freq words with frequency lower than this will be filter after topic generation
 #' @param label.len Top-N terms to return
+#' @param save_flag if you want to store the model at the end (default = False)
+#' @param save_path the address to save the model, if save_flag = T
 
 findTopics <- function(docs, n.topics,rand.seed=54321L,burnin.iteration=20,after.iteration.burnin = 10,
-                      epochs=2000,extra.epochs = 50,word_min_freq=2,label.len=50){
+                      epochs=2000,extra.epochs = 50,word_min_freq=2,label.len=50,save_flag = F,
+                       save_path = 'default' ){
   #Use mallet as in sample code
   print("Building mallet instance ...")
   # replace single smart quote with single straight quote, so as to catch stopword contractions
@@ -63,7 +66,6 @@ findTopics <- function(docs, n.topics,rand.seed=54321L,burnin.iteration=20,after
   ## Create a topic trainer object.
   print("Building topic trainer ...")
   topic.model <- MalletLDA(num.topics=as.numeric(n.topics))
-  print(topic.model)
   topic.model$setRandomSeed(rand.seed)
   
   ## Load our documents. We could also pass in the filename of a 
@@ -100,6 +102,22 @@ findTopics <- function(docs, n.topics,rand.seed=54321L,burnin.iteration=20,after
   
   model = list(doc_distr = doc.topics, word_distr = topic.words, words = wordlist, 
             malletModel = topic.model, wordFreq = word.freq, word_distr_count = topic.words.count) #malletModel given for easy implementation of topn labeler 
+    
+  if (save_flag)
+      {
+        if (save_path == 'default')#change the path
+            save_path = paste('K',n.topics,'burnin.iteration',burnin.iteration,
+                             'after.burnin',after.iteration.burnin,'epochs',epochs,
+                              Sys.Date(),Sys.time(),sep='_')
+        # save(topic.model, ascii=FALSE, file=paste('MalletModel_',save_path))
+        save.mallet.instances(mallet.instances,file=paste('MalletInstance_',save_path))
+        save.mallet.state(topic.model,state.file=paste('MalletState_',save_path,'.gz'))
+        save(model, ascii=FALSE, file=paste('MalletSpec_',save_path))
+        ################Important##############
+        #in order to load LDA MALLET topic.model you should do
+        #1. make an object ==>   topic.model <- MalletLDA(num.topics='any number is fine. Next line will override this with the actual number you stored your model with.')
+        #2. load stored states ==> load.mallet.state(topic.model,state.file=your_file)
+      }
                                                                                                    #but it is only saved for the session
   return(list(model,getLabels(docs,model,label.len,delim=" ")))
 }

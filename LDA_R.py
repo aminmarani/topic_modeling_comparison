@@ -33,7 +33,7 @@ text_df = pd.DataFrame(zip([str(i) for i in range(1,len(docs))],docs),columns=['
 
 robjects.r.source('LDA_R.R')
 num_topics = 12
-ans = robjects.r.findTopics(text_df,num_topics,epochs=500)
+ans = robjects.r.findTopics(text_df,num_topics,epochs=500,save_flag=True)
 top_terms = np.asarray(ans[1])#.reshape(num_topics,50,order='F')#topic number * top_n
 print(top_terms)
 
