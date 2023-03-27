@@ -43,19 +43,19 @@ library(reticulate)
 
 #' Runs topic-modeling, LDA Mallet, using R
 #' @param docs documents with text and other meta-data
-#' @param n.topics number of topics
-#' @param rand.seed random seed for topic initialization
-#' @param burnin.iteration update alpha hyper-parameter each burnin.iterations
-#' @param after.iteration.burnin start updating alpha hyper-parameter each after.iteration.burnin
+#' @param n_topics number of topics
+#' @param rand_seed random seed for topic initialization
+#' @param burnin_iteration update alpha hyper-parameter each burnin_iterations
+#' @param after_iteration_burnin start updating alpha hyper-parameter each after_iteration_burnin
 #' @param epochs training epochs
-#' @param extra.epochs running model for another extra.epochs to generate final topics
+#' @param extra_epochs running model for another extra_epochs to generate final topics
 #' @param word.freq words with frequency lower than this will be filter after topic generation
 #' @param label.len Top-N terms to return
 #' @param save_flag if you want to store the model at the end (default = False)
 #' @param save_path the address to save the model, if save_flag = T
 
-findTopics <- function(docs, n.topics,rand.seed=54321L,burnin.iteration=20,after.iteration.burnin = 10,
-                      epochs=2000,extra.epochs = 50,word_min_freq=2,label.len=50,save_flag = F,
+findTopics <- function(docs, n_topics,rand_seed=54321L,burnin_iteration=20,after_iteration_burnin = 10,
+                      epochs=2000,extra_epochs = 50,word_min_freq=2,label.len=50,save_flag = F,
                        save_path = 'default' ){
   #Use mallet as in sample code
   print("Building mallet instance ...")
@@ -65,8 +65,8 @@ findTopics <- function(docs, n.topics,rand.seed=54321L,burnin.iteration=20,after
   
   ## Create a topic trainer object.
   print("Building topic trainer ...")
-  topic.model <- MalletLDA(num.topics=as.numeric(n.topics))
-  topic.model$setRandomSeed(rand.seed)
+  topic.model <- MalletLDA(num.topics=as.numeric(n_topics))
+  topic.model$setRandomSeed(rand_seed)
   
   ## Load our documents. We could also pass in the filename of a 
   ##  saved instance list file that we build from the command-line tools.
@@ -75,13 +75,13 @@ findTopics <- function(docs, n.topics,rand.seed=54321L,burnin.iteration=20,after
   
   ## Optimize hyperparameters every 20 iterations, 
   ##  after 10 burn-in iterations.
-  topic.model$setAlphaOptimization(burnin.iteration, after.iteration.burnin)
+  topic.model$setAlphaOptimization(burnin_iteration, after_iteration_burnin)
   
   ## Now train a model.
   ##  We can specify the number of iterations. Here we'll use a large-ish round number.
   print("Training model ...")
   topic.model$train(as.numeric(epochs))#1000
-  topic.model$maximize(as.numeric(extra.epochs))#50
+  topic.model$maximize(as.numeric(extra_epochs))#50
   print("Training complete.")
   
   doc.topics <- data.frame(mallet.doc.topics(topic.model, smoothed=T, normalized=T)) #docs * topics matrix (topic makeup of documents)
@@ -106,8 +106,8 @@ findTopics <- function(docs, n.topics,rand.seed=54321L,burnin.iteration=20,after
   if (save_flag)
       {
         if (save_path == 'default')#change the path
-            save_path = paste('K',n.topics,'burnin.iteration',burnin.iteration,
-                             'after.burnin',after.iteration.burnin,'epochs',epochs,
+            save_path = paste('K',n_topics,'burnin_iteration',burnin_iteration,
+                             'after.burnin',after_iteration_burnin,'epochs',epochs,
                               Sys.Date(),Sys.time(),sep='_')
         # save(topic.model, ascii=FALSE, file=paste('MalletModel_',save_path))
         save.mallet.instances(mallet.instances,file=paste('MalletInstance_',save_path))

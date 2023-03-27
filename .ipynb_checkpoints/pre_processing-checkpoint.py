@@ -50,6 +50,9 @@ def nltk_tag_to_wordnet_tag(nltk_tag):
 	    return None
 
 
+def remove_html_tags(doc:str):
+    CLEANR = re.compile('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});')
+    return re.sub(CLEANR, '', doc).strip()
 
 def preprocess_data(doc_list, extra_stopwords = {},len_th=4,lemmatized=False):
 	'''

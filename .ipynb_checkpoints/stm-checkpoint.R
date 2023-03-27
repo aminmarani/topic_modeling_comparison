@@ -62,8 +62,8 @@ library(readr)
 #' @param sigma.prior A scalar between 0-1. Sets the strength of regularization of covariance matrix. If topics are highly correlated, setting this value >0 would be helpful.
 #' @param gamma.prior Prior estimation method for prevalence. Values=c('Pooled','L1')
 #' @param kappa.prior prior estimation method for content. Values=c('L1','Jeffreys')
-#' @param number of iterations for LDA gibbs sampling
-#' @param buring for LDA gibbs sampling
+#' @param nits number of iterations for LDA gibbs sampling
+#' @param burnin for LDA gibbs sampling
 #' @param alpha prevalence hyperparameter in collabsed gibbs sampling for LDA
 #' @param eta sets the topic-word hyperparameter for collapsed gibbs sampling in LDA
 #' @param rp.s a param between 0-1 controlling the sparsity of random projection for Spectral initialization
