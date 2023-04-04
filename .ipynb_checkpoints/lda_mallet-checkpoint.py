@@ -124,7 +124,14 @@ class lda_score:
 
 		return all_top_terms
 
-	def score(self,X):
+    
+	def score(self,X=None):
+		'''call score and return average'''
+		avg, _ = self.score_per_pairs(X)
+		return np.mean(avg)
+    
+    
+	def score_per_pairs(self,X):
 		'''
 		Recall coherence for word pairs.
 		If a key (pair of terms) is not in the DB, it calls coherence model to compute those.
@@ -174,7 +181,6 @@ class lda_score:
 			pre_processed_wiki, _ = preprocess_data(wiki_docs)
 			del wiki_docs
 		
-
 			cscore_rem = CoherenceModel(topics=[[i[0],i[1]] for i in misses_score.keys()],dictionary=self.wiki_vocab_dict,texts=pre_processed_wiki,coherence='c_npmi',processes=1).get_coherence_per_topic()
 
 			#update misses_score
@@ -198,8 +204,9 @@ class lda_score:
 		avg_scores = [[0] for i in top_n] #make an empty list for average score 
 		for i in range(len(avg_scores)):
 			avg_scores[i] = np.mean([l for l in cscore[top_n[i]].values() if l != -100])
+		return avg_scores,cscore
 		#return average over top-n
-		return np.mean(avg_scores)
+		# return np.mean(avg_scores)
 
 	def score_with_db_old(self,X):
 		'''

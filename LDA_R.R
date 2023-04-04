@@ -62,6 +62,7 @@ findTopics <- function(docs, n_topics,rand_seed=54321L,burnin_iteration=20,after
   # replace single smart quote with single straight quote, so as to catch stopword contractions
   #docs$text <- gsub("[\u2018\u2019]", "'", docs$text)
   mallet.instances <- mallet.import(docs$title, docs$text)
+    
   
   ## Create a topic trainer object.
   print("Building topic trainer ...")
@@ -75,7 +76,7 @@ findTopics <- function(docs, n_topics,rand_seed=54321L,burnin_iteration=20,after
   
   ## Optimize hyperparameters every 20 iterations, 
   ##  after 10 burn-in iterations.
-  topic.model$setAlphaOptimization(burnin_iteration, after_iteration_burnin)
+  topic.model$setAlphaOptimization(as.numeric(burnin_iteration), as.numeric(after_iteration_burnin))
   
   ## Now train a model.
   ##  We can specify the number of iterations. Here we'll use a large-ish round number.
