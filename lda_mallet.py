@@ -207,6 +207,32 @@ class lda_score:
 		return avg_scores,cscore
 		#return average over top-n
 		# return np.mean(avg_scores)
+        
+	def score_per_topic(self,X):
+		'''
+		This function calls score_per_pairs to receive score of term pairs and 
+		calulates the average of all term-paris in each topic to return NPMI for 
+		each topic.        
+		'''
+		_, scores = self.score_per_pairs(None)
+		#we are saving scores in a dictionary format, index_of_topic:[avg top5, avg top10,...]
+		topic_score = {i:{} for i in range(len(self.all_top_terms))}
+		
+		#doing the NPMI average for each N=5,10,15,20
+		for k in scores.keys():
+			pair_scores = scores[k]#gettign all the term-pairs score for Top-K terms
+			for t in range(len(self.all_top_terms)):#finding average for each topic reagrding top-k terms
+				topic = self.all_top_terms[t] #getting the topic terms
+				term_pairs = term_pairs_generator(topic) #generating all pairs
+				avg = np.mean([sc[1] for sc in scores[k].items() if sc[0] in term_pairs])
+				topic_score[t].update({k:avg})
+		
+		return topic_score
+		
+		
+		
+		
+		
 
 	def score_with_db_old(self,X):
 		'''
@@ -261,6 +287,9 @@ class lda_score:
 			c+=1
 
 		return np.mean(cscore)
+    
+    
+
 
 
 	def score_old(self,X):
