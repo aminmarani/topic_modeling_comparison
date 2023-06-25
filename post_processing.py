@@ -228,6 +228,35 @@ def annotate_heatmap(im, data=None, valfmt="{x:.4f}",textcolors=["white", "black
     return texts
 
 
+def topic_selection(mat):
+    """
+    A function to select top topics for each document. 
+    It uses the Elbow method to select top topics for each document.
+
+    Parameters
+    ----------
+    mat
+        the topic-doc matrix in size of (documents*topics)
+
+    Returns
+        list of topics for each documnet
+        binary list of topics for each document. 1 means selected and 0 means not selected
+    """
+    topics4docs = [] #storing topic selection for each document
+    topics4docs_bin = np.zeros((mat.shape)) #storing topic selection for each document as binary
+    for i in range(mat.shape[0]):#do it for every document
+        #sorting topic-doc distribution from highest to lowest
+        args = np.argsort(mat[i])[::-1]
+        #calculating the difference between each two topic distribution from highest to lowest but consecutievly
+        difs = [abs( mat[i,args[a]] - mat[i,args[a+1]]) for a in range(len(args)-1)]
+        #find the max difference
+        idx = np.argmax(difs)
+        #storing top topics for this doc
+        topics4docs.append(args[0:idx+1])
+        topics4docs_bin[i,args[0:idx+1]] = 1
+    return topics4docs,topics4docs_bin
+
+
 import matplotlib.pyplot as plt
 
 def topic_author_plots(csv_file):
