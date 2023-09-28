@@ -1,6 +1,6 @@
 CPU,ElapsedRaw,NTasks -j 10336784-X -P -n -a --format JobID,User,AllocCPUS,TotalC
 10336784|amh418|16|00:00:00|82122|
 
-100 SUs for each LDA
-250 SUs for each topicbert
-100 SUs for each Scholar
+100 SUs for each LDA (100 topics and 2000 iterations)
+250 SUs for each topicbert (100 topics no-specific number of iterations)
+100 SUs for each Scholar (100 topics with 250 iterations [default was 50])
