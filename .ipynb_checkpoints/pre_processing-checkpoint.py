@@ -72,7 +72,9 @@ def preprocess_data(doc_list, extra_stopwords = {},len_th=4,lemmatized=False):
 	'''
 
 	# replace single smart quote with single straight quote, so as to catch stopword contractions
+    #converting open/close quotations to neutral one
 	doc_list = [re.sub("[\u2018\u2019]", "'", doc) for doc in doc_list]
+    #removing digits
 	doc_list = [re.sub('\d+', '', doc) for doc in doc_list]
 	doc_list = [re.sub('(\/.*?\.[\w:]+)', '', doc) for doc in doc_list]
 	#doc_list = [re.sub('pdf|icon|jpg', '', doc) for doc in doc_list]
@@ -80,7 +82,7 @@ def preprocess_data(doc_list, extra_stopwords = {},len_th=4,lemmatized=False):
 	doc_list = [re.sub(r"http\S+", '', doc) for doc in doc_list]
 
 	# initialize regex tokenizer
-	tokenizer = RegexpTokenizer(r'\w+')
+	tokenizer = RegexpTokenizer(r'[\w|#]+')#\w+
 	# create English stop words list
 	en_stop = set(stopwords.words('english'))
 	# add any extra stopwords

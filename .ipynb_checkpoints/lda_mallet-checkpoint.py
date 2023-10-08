@@ -114,9 +114,11 @@ class lda_score:
 				iterations=self.iterations,workers=1 )
 			#storing top_terms
 			for tn in range(self.num_topics): 
-				tt = model.show_topic(tn,topn=20)
-				#saving top_terms
-				all_top_terms.append([i[0] for i in tt])
+				tt = model.show_topic(tn,topn=50)
+				#saving top_terms (selecting only terms that are in the dictionary (top-20)
+				candids = [i[0] for i in tt if i[0] in self.wiki_vocab_dict.token2id.keys()][0:20]
+				all_top_terms.append(candids)
+				# all_top_terms.append([i[0] for i in tt])
 
 		self.all_top_terms = all_top_terms
 		# self.wiki_vocab_dict = wiki_vocab_dict
