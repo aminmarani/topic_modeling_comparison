@@ -61,7 +61,7 @@ findTopics <- function(docs, n_topics,rand_seed=54321L,burnin_iteration=20,after
   print("Building mallet instance ...")
   # replace single smart quote with single straight quote, so as to catch stopword contractions
   #docs$text <- gsub("[\u2018\u2019]", "'", docs$text)
-  mallet.instances <- mallet.import(docs$title, docs$text)
+  mallet.instances <- mallet.import(docs$title, docs$text,token.regexp = "[\\p{L}|\\#]+")
     
   
   ## Create a topic trainer object.
