@@ -4,12 +4,37 @@
   <title>Topical Visualization</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
-$(document).ready(function(){
-    // I need to read a json including photo, text, link, and topics with color
+var topic_data;
 
-    for (var i = 1;i<15;i++)
+
+
+
+$(document).ready(function(){
+
+  $.getJSON( "topics.json", function( data ) {
+  // Do something with the JSON data
+   for (var i = 0;i<3;i++)
+   {
+      $("#div"+i).width(500);
+      $("#div"+i).height(500);
       $("#div"+i).fadeIn(i*1000);
+
+      //adding texts and images
+      $("#div"+i).append(data['topic '+i][2])
+      var img=document.createElement("img");
+      img.src=data['topic '+i][4];
+      img.width = 200
+      img.height = 200
+      $("#div"+i).append(img)
+    }
       // add image, text, link (read more), and topics
+
+});
+    // I need to read a json including photo, text, link, and topics with color
+    // for (var i = 1;i<15;i++)
+    //   $("#div"+i).fadeIn(i*1000);
+    //   // add image, text, link (read more), and topics
+    // $("#div1").append(topic_data['topic 0'][2])
 
 });
 </script>
@@ -18,7 +43,7 @@ $(document).ready(function(){
 
 
 <!-- <button>Start...</button><br><br> -->
-
+<div id="div0" style="width:300px;height:300px;display:none;background-color:gray;"></div><br>
 <div id="div1" style="width:300px;height:300px;display:none;background-color:gray;"></div><br>
 <div id="div2" style="width:300px;height:300px;display:none;background-color:gray;"></div><br>
 <div id="div3" style="width:300px;height:300px;display:none;background-color:gray;"></div><br>
