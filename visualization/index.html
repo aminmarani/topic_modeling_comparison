@@ -2,6 +2,13 @@
 <html>
 <head>
   <title>Topical Visualization</title>
+<style>
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
 var topic_data;
@@ -15,19 +22,37 @@ $(document).ready(function(){
   // Do something with the JSON data
    for (var i = 0;i<3;i++)
    {
-      $("#div"+i).width(500);
-      $("#div"+i).height(500);
+      $("#div"+i).width(400);
+      $("#div"+i).height(400);
       $("#div"+i).fadeIn(i*1000);
 
       //adding texts and images
-      $("#div"+i).append(data['topic '+i][2])
       var img=document.createElement("img");
       img.src=data['topic '+i][4];
       img.width = 200
       img.height = 200
+      // img
       $("#div"+i).append(img)
+
+      // text
+      if (data['topic '+i][2].length>500)
+      {
+        $("#div"+i).append("\n"+ data['topic '+i][2].substring(0,500)+'<a href="'+data['topic '+i][3]+'"> ...read more.</a>')
+         // <a href="https://www.w3schools.com">...read more...</a>')
+      }
+      else
+      {
+        $("#div"+i).append("\n"+ data['topic '+i][2].substring(0,500))
+      }
+
+
+      $("#div"+i).append('<input type="button" id="button' + i + '" value=" Show me more!"/>')
+      $("#button"+i).click(function(e)
+      {
+        alert("Show me more!"+i);
+      });
+
     }
-      // add image, text, link (read more), and topics
 
 });
     // I need to read a json including photo, text, link, and topics with color
