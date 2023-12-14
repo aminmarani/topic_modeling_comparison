@@ -46,43 +46,79 @@ $(document).ready(function(){
       }
 
 
-      $("#div"+i).append('<input type="button" id="button' + i + '" value=" Show me more!"/>')
-      $("#button"+i).click(function(e)
-      {
-        alert("Show me more!"+i);
-      });
+      $("#div"+i).append('<input type="button" id="button' + i + '" value=" Show me more!" onclick="myFunction(this)"/>')
+      // $("#button"+i).click(function(e)
+      // {
+      //   var l=-1;
+      //   alert("Show me more!"+l)
+      // });
 
     }
 
 });
-    // I need to read a json including photo, text, link, and topics with color
-    // for (var i = 1;i<15;i++)
-    //   $("#div"+i).fadeIn(i*1000);
-    //   // add image, text, link (read more), and topics
-    // $("#div1").append(topic_data['topic 0'][2])
+// $.getJSON( "transitions.json", function( data ) {
+//         for (var i=0;i<3;i++)
+//         {
+//           var l=-1;
+//           l = data['topic '+i].length
+//           $("#button"+i).click(function(e)
+//           {  
+//             console.log(i)
+//             alert("Show me more!"+data['topic '+i][0][0])
+//           });
+//         }
+//         });
+
 
 });
+
+function myFunction(elem) {
+    var trans;
+    $.getJSON( "transitions.json", function( data ) {
+
+      id = elem.id.split('button')[1]
+      var topic = 'topic '+ id
+      base_left = 500
+      for (var i=0;i<data[topic].length;i++)
+      {
+        var div = document.createElement("div");
+        div.style.width = "200px";
+        div.style.height = "400px";
+        div.style.background = "#7393B3";
+        div.style.color = "white";
+        div.innerHTML = '<img src="'+data[topic][i][1]+'" width="200" height="200">' +data[topic][i][0]
+        div.style.position = "absolute";
+        div.style.left = base_left + "px"
+        base_left += 210
+        div.style.top = (400*id)+((id+1)*2.5)+"px"
+        document.getElementById("div"+id).appendChild(div)
+      }
+    });
+    
+}
+
+
 </script>
 </head>
 <body>
 
 
 <!-- <button>Start...</button><br><br> -->
-<div id="div0" style="width:300px;height:300px;display:none;background-color:gray;"></div><br>
-<div id="div1" style="width:300px;height:300px;display:none;background-color:gray;"></div><br>
-<div id="div2" style="width:300px;height:300px;display:none;background-color:gray;"></div><br>
-<div id="div3" style="width:300px;height:300px;display:none;background-color:gray;"></div><br>
-<div id="div4" style="width:300px;height:300px;display:none;background-color:gray;"></div><br>
-<div id="div5" style="width:300px;height:300px;display:none;background-color:gray;"></div><br>
-<div id="div6" style="width:300px;height:300px;display:none;background-color:gray;"></div><br>
-<div id="div7" style="width:300px;height:300px;display:none;background-color:gray;"></div><br>
-<div id="div8" style="width:300px;height:300px;display:none;background-color:gray;"></div><br>
-<div id="div9" style="width:300px;height:300px;display:none;background-color:gray;"></div><br>
-<div id="div10" style="width:300px;height:300px;display:none;background-color:gray;"></div><br>
-<div id="div11" style="width:300px;height:300px;display:none;background-color:gray;"></div><br>
-<div id="div12" style="width:300px;height:300px;display:none;background-color:gray;"></div><br>
-<div id="div13" style="width:300px;height:300px;display:none;background-color:gray;"></div><br>
-<div id="div14" style="width:300px;height:300px;display:none;background-color:gray;"></div><br>
+<div id="div0" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div1" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div2" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div3" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div4" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div5" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div6" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div7" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div8" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div9" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div10" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div11" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div12" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div13" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div14" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
 
 </body>
 </html>
