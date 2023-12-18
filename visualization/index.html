@@ -10,8 +10,11 @@ img {
 }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="node_modules/leader-line/leader-line.min.js"></script>
 <script>
 var topic_data;
+const arr = [[],[],[],[],[],[],[]];
+
 
 
 
@@ -54,7 +57,6 @@ $(document).ready(function(){
       // });
 
     }
-
 });
 // $.getJSON( "transitions.json", function( data ) {
 //         for (var i=0;i<3;i++)
@@ -82,17 +84,47 @@ function myFunction(elem) {
       for (var i=0;i<data[topic].length;i++)
       {
         var div = document.createElement("div");
+        div.setAttribute("id","div"+id+"div"+i)
         div.style.width = "200px";
-        div.style.height = "400px";
+        div.style.height = 400-40*(3-i)+"px";
         div.style.background = "#7393B3";
         div.style.color = "white";
         div.innerHTML = '<img src="'+data[topic][i][1]+'" width="200" height="200">' +data[topic][i][0]
         div.style.position = "absolute";
         div.style.left = base_left + "px"
         base_left += 210
-        div.style.top = 75 + (400*id)+((id+1)*2.5)+"px" 
+        div.style.top = 40*(3-i)+75 + (400*id)+((id+1)*2.5)+"px" 
         document.getElementById("div"+id).appendChild(div)
+
+        // drawing a line
+        if (arr[id].length < 3)
+        {
+          var line =  new LeaderLine(
+          LeaderLine.pointAnchor(document.getElementById('div'+id), {x: "100%", y: 30+(40)*(2-i)}),
+          LeaderLine.pointAnchor(document.getElementById('div'+id+'div'+i), {x: 0, y: 0}),
+          {dash: {animation: true}}
+          );
+          arr[id][i] = line
+        }
+        else
+        {
+          arr[id][i].remove()
+          var line =  new LeaderLine(
+          LeaderLine.pointAnchor(document.getElementById('div'+id), {x: "100%", y: 30+(40)*(2-i)}),
+          LeaderLine.pointAnchor(document.getElementById('div'+id+'div'+i), {x: 0, y: 0}),
+          {outline: false,color: 'blue',endPlugOutline: true,size:20*data[topic][i][2],endlabel: LeaderLine.captionLabel({text: 'LABEL-2', color: 'red'})}
+          );
+          
+        }
       }
+
+    // new LeaderLine(
+    //     document.getElementById('div1'),
+    //     document.getElementById('div1div1'),
+    //     {color: 'red', size: 8}
+    //   );
+
+
     });
     
 }
