@@ -56,7 +56,7 @@ library(reticulate)
 
 findTopics <- function(docs, n_topics,rand_seed=54321L,burnin_iteration=20,after_iteration_burnin = 10,
                       epochs=2000,extra_epochs = 50,word_min_freq=2,label.len=50,save_flag = F,
-                       save_path = 'default' ){
+                       save_path = 'default',alpha_sum=1.0 ){
   #Use mallet as in sample code
   print("Building mallet instance ...")
   # replace single smart quote with single straight quote, so as to catch stopword contractions
@@ -66,7 +66,7 @@ findTopics <- function(docs, n_topics,rand_seed=54321L,burnin_iteration=20,after
   
   ## Create a topic trainer object.
   print("Building topic trainer ...")
-  topic.model <- MalletLDA(num.topics=as.numeric(n_topics))
+  topic.model <- MalletLDA(num.topics=as.numeric(n_topics),alpha.sum=as.numeric(alpha_sum))
   topic.model$setRandomSeed(rand_seed)
   
   ## Load our documents. We could also pass in the filename of a 

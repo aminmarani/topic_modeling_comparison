@@ -8,18 +8,72 @@ img {
   margin-left: auto;
   margin-right: auto;
 }
+.floating-div {
+  background-color: #A4BFCB;
+  padding: 5px 25px;
+  color:#EEE;
+  font-size: 15px;
+  margin-top:10px;
+  
+}
+
+.sticky {
+  position: fixed; 
+  top: 10px;
+  right:18px;
+  margin: 0;
+  width:calc(33.33% - 25px);
+}
+
+.abs {
+  position: absolute; 
+  bottom: 10px;
+  right:10px;
+  width:calc(33.33% - 20px);
+}
+
+.sidebar {
+  width:33.33%;
+  float:left;
+  padding: 0 10px;
+}
+
+.wrap {
+  width: 100%;
+}
+
+#primary-content-wrap {
+  position: relative;
+}
+
+.primary-content {
+  width:66.66%;
+  float:left;
+  padding: 10px;
+  
+}
+
+.primary-content h2 {
+  font-size: 24px;
+}
+
+
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="node_modules/leader-line/leader-line.min.js"></script>
 <script>
 var topic_data;
 const arr = [[],[],[],[],[],[],[]];
+var floating_div_enabled = false
+
 
 
 
 
 
 $(document).ready(function(){
+
+  $('.floating-div').hide()
 
   $.getJSON( "topics.json", function( data ) {
   // Do something with the JSON data
@@ -40,7 +94,7 @@ $(document).ready(function(){
       // text
       if (data['topic '+i][2].length>500)
       {
-        $("#div"+i).append("\n"+ data['topic '+i][2].substring(0,500)+'<a href="'+data['topic '+i][3]+'"> ...read more.</a>')
+        $("#div"+i).append("\n"+ data['topic '+i][2].substring(0,500)+'<a href="'+data['topic '+i][3]+'"target="_blank"> ...read more.</a>')
          // <a href="https://www.w3schools.com">...read more...</a>')
       }
       else
@@ -49,27 +103,12 @@ $(document).ready(function(){
       }
 
 
-      $("#div"+i).append('<input type="button" id="button' + i + '" value=" Show me more!" onclick="myFunction(this)"/>')
-      // $("#button"+i).click(function(e)
-      // {
-      //   var l=-1;
-      //   alert("Show me more!"+l)
-      // });
+      $("#div"+i).append('<input type="button" id="button' + i + '" value="Explore" onclick="myFunction(this)"/>')
+
 
     }
 });
-// $.getJSON( "transitions.json", function( data ) {
-//         for (var i=0;i<3;i++)
-//         {
-//           var l=-1;
-//           l = data['topic '+i].length
-//           $("#button"+i).click(function(e)
-//           {  
-//             console.log(i)
-//             alert("Show me more!"+data['topic '+i][0][0])
-//           });
-//         }
-//         });
+
 
 
 });
@@ -96,6 +135,8 @@ function myFunction(elem) {
         div.style.top = 40*(3-i)+75 + (400*id)+((id+1)*2.5)+"px" 
         document.getElementById("div"+id).appendChild(div)
 
+        // window.name = topic
+
         // drawing a line
         if (arr[id].length < 3)
         {
@@ -105,24 +146,57 @@ function myFunction(elem) {
           {dash: {animation: true}}
           );
           arr[id][i] = line
+
         }
-        else
+        else //if this is second time they click on show me more
         {
           arr[id][i].remove()
           var line =  new LeaderLine(
           LeaderLine.pointAnchor(document.getElementById('div'+id), {x: "100%", y: 30+(40)*(2-i)}),
-          LeaderLine.pointAnchor(document.getElementById('div'+id+'div'+i), {x: 0, y: 0}),
-          {outline: false,color: 'blue',endPlugOutline: true,size:20*data[topic][i][2],endlabel: LeaderLine.captionLabel({text: 'LABEL-2', color: 'red'})}
+          LeaderLine.pointAnchor(document.getElementById('div'+id+'div'+i), {x: 0, y: 0}),{endLabel: ~~(100*data[topic][i][2])+'%',color: "#85c0f9",size:20*data[topic][i][2],outline:true,endPlugOutline: true}
           );
+
+          //https://www.minddevelopmentanddesign.com/blog/create-floating-html-element-stays-sidebar-scrolling/
+          //showing floatting div
+          if (floating_div_enabled == false)
+          {
+             $('.floating-div').show()
+             var topPosition = $('.floating-div').offset().top - 10;
+             var floatingDivHeight = $('.floating-div').outerHeight();
+             // var footerFromTop = $('footer').offset().top;
+             var absPosition = data[topic].length*400-400//footerFromTop - floatingDivHeight - 20;
+             var win = $(window);
+             var floatingDiv = $('.floating-div');
+             floatingDiv.addClass('sticky');
+           win.scroll(function() {
+            if (true) {//window.matchMedia('(min-width: 768px)').matches
+             if ((win.scrollTop() < absPosition)) {//(win.scrollTop() > topPosition) && 
+              floatingDiv.addClass('sticky');
+              floatingDiv.removeClass('abs');
+             } else if ( (win.scrollTop() > absPosition)) {
+              floatingDiv.removeClass('sticky');
+              floatingDiv.addClass('abs');
+             } else {
+              // floatingDiv.removeClass('sticky');
+              floatingDiv.addClass('sticky');
+              floatingDiv.removeClass('abs');
+             }
+            }
+           });
+           floating_div_enabled = true
+            }
+
+
           
         }
-      }
 
-    // new LeaderLine(
-    //     document.getElementById('div1'),
-    //     document.getElementById('div1div1'),
-    //     {color: 'red', size: 8}
-    //   );
+      }
+      //changing button
+      var button = document.getElementById("button"+id);
+      button.value = "Show transitions"
+      button.style.background= "#008CBA"
+
+
 
 
     });
@@ -138,8 +212,9 @@ function myFunction(elem) {
   
   <h5> These are posts from users writing about ED and ED recovery. 
   <br>
+  Think about a moment in the past and choose one or more post to explore that is aligned with that moment.
   <br>
-  Think about a moment in the past and choose one or more post to explore that aligned with that moment.
+  You can also click again on the same button to see other posts and topics bloggers were posting afterward.
 </h5>
 </div><br>
 
@@ -159,6 +234,16 @@ function myFunction(elem) {
 <div id="div12" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
 <div id="div13" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
 <div id="div14" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+
+<div id="primary-content-wrap" class="wrap clearfix">
+  <div class="primary-content">
+    <div class="sidebar">
+      <div class="floating-div">
+        <p>These posts and topics were posted by the user(s) who posted similar topic on the left. The thickness and the percentage shows how likely is to post a topic on the right after posting the left one.</p>
+      </div>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
