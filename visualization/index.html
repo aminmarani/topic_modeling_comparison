@@ -102,8 +102,9 @@ $(document).ready(function(){
         $("#div"+i).append("\n"+ data['topic '+i][2].substring(0,500))
       }
 
-
-      $("#div"+i).append('<input type="button" id="button' + i + '" value="Explore" onclick="myFunction(this)"/>')
+      $("#div"+i).append("<br>")
+      $("#div"+i).append('<input type="button" id="button' + i + '" value="What others posted next" onclick="myFunction(this)" style="top:'+(460*(i+1)-40*i)+'px;position:absolute;left:10px"/>')
+      // $('#button' + i).position().left = "400px"
 
 
     }
@@ -128,7 +129,7 @@ function myFunction(elem) {
         div.style.height = 400-40*(3-i)+"px";
         div.style.background = "#7393B3";
         div.style.color = "white";
-        div.innerHTML = '<img src="'+data[topic][i][1]+'" width="200" height="200">' +data[topic][i][0]
+        div.innerHTML = '<img src="'+data[topic][i][1]+'" width="200" height="200">' +data[topic][i][0] 
         div.style.position = "absolute";
         div.style.left = base_left + "px"
         base_left += 210
@@ -210,11 +211,11 @@ function myFunction(elem) {
 
 <div id="div_exp" style="width:1200px;height:50px;display:True;background-color:#818593;">
   
-  <h5> These are posts from users writing about ED and ED recovery. 
+  <h5> Think about a moment in the past and choose one post to explore that experienced during ED recovery.
   <br>
-  Think about a moment in the past and choose one or more post to explore that is aligned with that moment.
+  These are posts from users writing about ED and ED recovery. 
   <br>
-  You can also click again on the same button to see other posts and topics bloggers were posting afterward.
+  You can explore posts that users posted after the orignal posts by clicking on "What others posted next" and see the proportion by clicking on "Show transitions". 
 </h5>
 </div><br>
 
