@@ -200,7 +200,7 @@ class lda_score:
 						cscore[n].update({k:misses_score[k]})
 			c+=1
 		elif count_miss>0:
-			print('skipping {0} missed term-pairs < allowed misses = {1}'.format(int(count_miss/count_all),self.npmi_skip_threshold))
+			print('skipping {0:.2f} missed term-pairs < allowed misses = {1}'.format((count_miss/count_all),self.npmi_skip_threshold))
 
 		#compute mean for the ones without -100 (to make sure we don't include those)
 		avg_scores = [[0] for i in top_n] #make an empty list for average score 
@@ -222,11 +222,11 @@ class lda_score:
 		
 		#doing the NPMI average for each N=5,10,15,20
 		for k in scores.keys():
-			pair_scores = scores[k]#gettign all the term-pairs score for Top-K terms
+			# pair_scores = scores[k]#gettign all the term-pairs score for Top-K terms
 			for t in range(len(self.all_top_terms)):#finding average for each topic reagrding top-k terms
 				topic = self.all_top_terms[t] #getting the topic terms
 				term_pairs = term_pairs_generator(topic) #generating all pairs
-				avg = np.mean([sc[1] for sc in scores[k].items() if sc[0] in term_pairs])
+				avg = np.mean([sc[1] for sc in scores[k].items() if sc[0] in term_pairs and sc[1]!=-100])
 				topic_score[t].update({k:avg})
 		
 		return topic_score
