@@ -102,7 +102,7 @@ run_stm <- function(docs,topic_n=10,verbose=F,reportevery=5,prevalence='',conten
 	# names(data) <- "id"
 	# data$text <- text
 
-	processed <- textProcessor(docs$text, metadata = docs,stem = FALSE,onlycharacter = T)
+	processed <- textProcessor(docs$text, metadata = docs,stem = FALSE,onlycharacter = F, removestopwords = F,  removenumbers = F,  removepunctuation = F)
 	out <- prepDocuments(processed$documents, processed$vocab, processed$meta,, lower.thresh=no_below, upper.thresh=as.integer(length(docs$text)*no_above))
 	docs <- out$documents
 	vocab <- out$vocab
@@ -158,7 +158,7 @@ run_stm <- function(docs,topic_n=10,verbose=F,reportevery=5,prevalence='',conten
         save(STM, ascii=FALSE, file=paste('STM_',save_path))
       }
     top_terms <- getLabels(STM,topic_n)
-	return(list(STM,top_terms))
+	return(list(STM,top_terms,meta))
 }
 
 
