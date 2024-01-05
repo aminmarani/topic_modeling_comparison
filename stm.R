@@ -82,10 +82,19 @@ run_stm <- function(docs,topic_n=10,verbose=F,reportevery=5,prevalence='',conten
 	###checking libraries
 	if (! require('reader'))
 		stop('reader package is not installed! You need to isntall this package to continue.')	
-	if (! require('stm'))
-		stop('stm package is not installed! You need to isntall this package to continue.')	
 	if (! require('tm'))
-		stop('tm package is not installed! You need to isntall this package to continue.')	
+    {
+		# stop('tm package is not installed! You need to isntall this package to continue.')	
+        print('installing TM...')
+        install.packages('tm')
+    }
+	if (! require('stm'))
+    {
+        # stop('stm package is not installed! You need to isntall this package to continue.')	
+        print('installing STM...')
+        install.packages('stm')
+            
+    }
 
 
 	###loading libraries
