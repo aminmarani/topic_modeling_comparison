@@ -3,6 +3,8 @@ import seaborn as sns
 import copy
 from matplotlib import pyplot as py
 
+import pandas as pd
+
 
 
 
@@ -417,3 +419,148 @@ def topic_author_heat_map(doc_topics,topic_term,sel_df,author_names='blog_name',
   texts = annotate_heatmap(im, valfmt="{x:.4f}",fontsize=10,weight="bold",)
   fig.tight_layout()
   plt.show()
+
+
+
+
+def date2days(time_df):
+    """
+    Compute days of a post from the time a blogger start posting. E.g., 10 means 10 days since they posted for the first time
+    
+    parameters:
+    -----------------
+    @param time_df: dataframe including date in dateformat and blog
+    
+    
+    returns:
+    -------------
+    dataframe with an additional columns as "days"
+    """
+    days_df = pd.DataFrame()
+    
+    for blog in set(time_df.blog):
+      tdf = time_df[time_df.blog==blog].sort_values('date')
+      tdf['days'] = [abs((tdf.iloc[0].date - tdf.iloc[i].date).days) for i in range(len(tdf))]
+      days_df = pd.concat([days_df,tdf])
+    
+    return days_df
+
+
+from tqdm import tqdm
+
+def transition_analysis(days_topic_df,n_topics,begin_col,end_col):
+    '''
+    Computing Transitions 
+    **important note for each tuple item: i[1] ==> i[0] meaning that index=1 is b4 and i[0] is a4**
+
+    parameters:
+    -----------------
+    @param days_topic_df: dataframe including date, days, topic_dist, etc.
+    @param n_topics: number of topics
+    @param begin_col: the column topic_dist starts
+    @param end_col: the column that topic_dist ends or begin_col+n_topics
+    
+    
+    returns:
+    -------------
+    Three arrays in a dictionary for "use", "short non-use", and "long non-use"
+    '''
+
+    use_trs = []
+    short_trs = []
+    long_trs = []
+    # begin_col = 10; end_col = 20
+    # Topic0_dist, Topici_select
+    short_delta = 10
+    long_delta = 20
+    
+    for blog in tqdm(set(days_topic_df.blog)):
+      tdf = days_topic_df[days_topic_df.blog == blog].sort_values('days')
+      start = 0#starting index
+    
+      # for i in range(1,len(tdf)):
+      i = 1#since we check index with the previous one, we start from 1
+      while i<len(tdf) and start<len(tdf):
+        #seeing a break or end of tdf
+        if abs(tdf.iloc[i].days - tdf.iloc[i-1].days) > short_delta or i == len(tdf) -1 :
+          j = i-1 #j will go back to find other periods
+    
+          #we check the non-use only if we are not at the end of dataframe for this blog
+          if i != len(tdf)-1:
+            non_use_start = np.array([0]*n_topics)#storing b4 non-use (10 days beofore index i-1)
+            while j >= start and abs(tdf.iloc[j].days - tdf.iloc[i-1].days)<=short_delta:
+              #we multiply topic_select to topic_dist to only keep the selected ones proportion
+              non_use_start = (tdf.iloc[j,begin_col:end_col].values) * \
+                                (tdf.iloc[j,end_col:end_col+n_topics].values) + non_use_start
+              j-=1#go back
+          #meaning that we have other periods before the one we found and/or 10 days before that if it was non-use
+          if j>start:
+            #we have to collect use
+            use = np.array([0]*n_topics)#storing use
+            use_ls = []
+            k = j
+            while k>=start:
+              #if the difference is more than short_delta that is a period
+              if abs(tdf.iloc[k].days - tdf.iloc[j].days)>short_delta:
+                #store it
+                use_ls.append(use.copy())
+                use = np.array([0]*n_topics)#storing use (a fresh start)
+                j = k
+              #keep track of use unless we reach to a period
+              use = tdf.iloc[k,begin_col:end_col].values * \
+                    (tdf.iloc[k,end_col:end_col+n_topics].values)+ use
+    
+              k-=1#go back
+            #after the while-loop if use_ls has at least two periods we should save it
+            if len(use_ls)>1:
+              for l in range(0,len(use_ls)-1):
+                #we save them in reverse order, so we store them as before and after, i+1 and i respectively
+                use_trs.append([use_ls[l+1], use_ls[l]])
+    
+            #we also need to collect non-use
+            if i != len(tdf)-1: #if there are other records in df to check we go for checking non-use
+              #checking the first next 10 days as after non-use
+              j = i
+              non_use_end = np.array([0]*n_topics)#storing b4 non-use (10 days beofore index i)
+              while j<len(tdf) and abs(tdf.iloc[j].days - tdf.iloc[i].days)<short_delta:
+                non_use_end = tdf.iloc[j,begin_col:end_col].values * \
+                             (tdf.iloc[j,end_col:end_col+n_topics].values) + non_use_end
+                j+=1
+    
+              #storing short or long
+              if short_delta<abs(tdf.iloc[i].days - tdf.iloc[i-1].days)<=long_delta: #short non-use
+                short_trs.append([non_use_start,non_use_end])
+              else:#long non-use
+                long_trs.append([non_use_start,non_use_end])
+    
+              #we need to update start as the index j we have
+              start = j
+            else:#if we do not explore non-use we still need to update start as
+              start = i
+    
+    
+    
+        i+=1 #adding loop counter
+
+    return {'use':use_trs,'short_non_use':short_trs,'long_non_use':long_trs}
+
+def trns2mat(trns):
+    '''
+    Computing transition matrix
+
+    parameters:
+    -----------------
+    @param trns: list of np arrays including a4,b4 tuples for periods
+    
+    
+    returns:
+    -------------
+    Returns a np matrix of n_topics*n_topics size showing the transition from rows to columns
+    '''
+    n_topics = len(trns[0][0])
+    mat = np.zeros((n_topics,n_topics))
+    for a4,b4 in trns:
+        t = b4.reshape(1,16) * a4.reshape(16,1)
+        mat += np.float64(t)
+
+    return mat
