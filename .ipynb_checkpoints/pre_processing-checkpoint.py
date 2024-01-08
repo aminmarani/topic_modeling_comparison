@@ -3,6 +3,8 @@ import gensim.corpora as corpora
 from gensim.utils import simple_preprocess
 from gensim import similarities
 
+from tqdm import tqdm
+
 
 
 import csv, sys
@@ -250,3 +252,92 @@ def term_pairs_generator(terms):
 			term_pairs.add((terms[i],terms[j]))
 
 	return list(term_pairs)
+
+
+
+def transition_labeling(days_topic_df):
+    '''
+    Calculating if an entry is "NA", "USE", "NON-USE SHORT", or "NON-USE LONG"
+    **Note that each entry should have a property names "blog".
+
+    parameters:
+    -----------------
+    @param days_topic_df: dataframe including date, days, topic_dist, etc.
+    
+    
+    returns:
+    -------------
+    A list of the same size as days_topic_df length with label of each row
+    '''
+
+    labels = {i:"No period" for i in list(days_topic_df.id)}
+    short_delta = 10
+    long_delta = 20
+    
+    for blog in tqdm(set(days_topic_df.blog)):
+      tdf = days_topic_df[days_topic_df.blog == blog].sort_values('days')
+      start = 0#starting index
+    
+      # for i in range(1,len(tdf)):
+      i = 1#since we check index with the previous one, we start from 1
+      while i<len(tdf) and start<len(tdf):
+        #seeing a break or end of tdf
+        if abs(tdf.iloc[i].days - tdf.iloc[i-1].days) > short_delta or i == len(tdf) -1 :
+          j = i-1 #j will go back to find other periods
+
+          nuse_inds = []
+          #we check the non-use only if we are not at the end of dataframe for this blog
+          if i != len(tdf)-1:
+            while j >= start and abs(tdf.iloc[j].days - tdf.iloc[i-1].days)<=short_delta:
+              #keeping indices as we don't know this is short or long yet!
+              nuse_inds.append(tdf.iloc[j].id)
+              j-=1#go back
+          #meaning that we have other periods before the one we found and/or 10 days before that if it was non-use
+          if j>start:
+            #we have to collect use [we need this part to make sure if we reach a use or NA]
+            # use = np.array([0])#storing use
+            use_ls = []
+            use_inds = []
+            k = j
+            while k>=start:
+              #if the difference is more than short_delta that is a period
+              if abs(tdf.iloc[k].days - tdf.iloc[j].days)>short_delta:
+                #store it
+                use_ls.append(1)#just adding an entry to let the algo knows we found a period
+                # use = np.array([0])#storing use (a fresh start)
+                j = k
+              #keep track of use unless we reach to a period
+              # use = np.array([1]) + use#fake assignment to keep the algo works
+              use_inds.append(tdf.iloc[k].id) #storing index of use
+              k-=1#go back
+            #after the while-loop if use_ls has at least two periods we should save it
+            if len(use_ls)>1:
+              for id in use_inds:
+                  labels[id] = 'use' 
+    
+            #we also need to collect non-use
+            if i != len(tdf)-1: #if there are other records in df to check we go for checking non-use
+              #checking the first next 10 days as after non-use
+              j = i
+              while j<len(tdf) and abs(tdf.iloc[j].days - tdf.iloc[i].days)<short_delta:
+                nuse_inds.append(tdf.iloc[j].id)
+                j+=1
+    
+              #storing short or long
+              if short_delta<abs(tdf.iloc[i].days - tdf.iloc[i-1].days)<=long_delta: #short non-use
+                for id in nuse_inds:
+                  labels[id] = 'non-use short'
+              else:#long non-use
+                 for id in nuse_inds:
+                     labels[id] = 'non-use long'
+    
+              #we need to update start as the index j we have
+              start = j
+            else:#if we do not explore non-use we still need to update start as
+              start = i
+    
+    
+    
+        i+=1 #adding loop counter
+
+    return labels

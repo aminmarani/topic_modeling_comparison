@@ -3,6 +3,8 @@ import seaborn as sns
 import copy
 from matplotlib import pyplot as py
 
+from tqdm import tqdm
+
 import pandas as pd
 
 
@@ -446,7 +448,6 @@ def date2days(time_df):
     return days_df
 
 
-from tqdm import tqdm
 
 def transition_analysis(days_topic_df,n_topics,begin_col,end_col):
     '''

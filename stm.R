@@ -112,35 +112,44 @@ run_stm <- function(docs,topic_n=10,verbose=F,reportevery=5,prevalence='',conten
 	# data$text <- text
 
 	processed <- textProcessor(docs$text, metadata = docs,stem = FALSE,onlycharacter = F, removestopwords = F,  removenumbers = F,  removepunctuation = F)
-	out <- prepDocuments(processed$documents, processed$vocab, processed$meta,, lower.thresh=no_below, upper.thresh=as.integer(length(docs$text)*no_above))
+	out <- prepDocuments(processed$documents, processed$vocab, processed$meta, lower.thresh=no_below, upper.thresh=as.integer(length(docs$text)*no_above))
 	docs <- out$documents
 	vocab <- out$vocab
 	meta <-out$meta
 
+    
 	#running STM
 	if (nchar(prevalence)>0 && nchar(content)>0)
+    {
 	  STM <- stm(documents = out$documents, vocab = out$vocab,
-	                K = topic_n, prevalence =~ prevalence ,content=content,
-	                data = out$meta, max.em.its = max_itr,
-	                emtol = emtol,LDAbeta=FALSE, interactions=interactions,
+	                K = topic_n, prevalence =~ as.factor(meta$prevalence),
+                    content=~as.factor(meta$content),
+	                 max.em.its = max_itr,
+	                emtol = emtol,LDAbeta=F, interactions=interactions,
 	                ngroups = ngroups, gamma.prior = gamma.prior, 
 	                kappa.prior = kappa.prior, control= list(nits=nits,
 	                burnin=burnin, alpha= alpha, eta= eta, rp.s = rp.s,
 	                rp.p=rp.p, tSNE_init.dims = tSNE_init.dims),
-	                init.type = "LDA", verbose = verbose,reportever=reportevery,seed = 12345)
+	                init.type = "LDA", verbose = verbose,reportevery=reportevery,seed = 12345)#data = out$meta,
+    }
 	else if (nchar(prevalence)>0)
-    STM <- stm(documents = out$documents, vocab = out$vocab,
-	                K = topic_n, prevalence =~ prevalence ,
-	                max.em.its = 75, data = out$meta, max.em.its = max_itr,
+    {
+        STM <- stm(documents = out$documents, vocab = out$vocab,
+	                K = topic_n, prevalence =~ as.factor(out$meta$prevalence) ,
+	                data = out$meta, max.em.its = max_itr,
                   emtol = emtol,LDAbeta=T, interactions=interactions,
                   ngroups = ngroups,gamma.prior = gamma.prior, 
 	                kappa.prior = kappa.prior, control= list(nits=nits,
 	                burnin=burnin, alpha= alpha, eta= eta, rp.s = rp.s,
 	                rp.p=rp.p, tSNE_init.dims = tSNE_init.dims),
 	                init.type = "LDA", verbose = verbose,reportevery=reportevery,seed = 12345)
+    }
 	else if (nchar(content)>0)
+    {
+      # You can't call stm without prevalence and only content...
+      # You can either call stm with prevalence or with both content and prevalnece
 	  STM <- stm(documents = out$documents, vocab = out$vocab,
-	                K = topic_n,content=content,
+	                K = topic_n,content=~as.factor(out$meta$content),
 	                max.em.its = max_itr, data = out$meta, 
 	                emtol = emtol,LDAbeta=F, interactions=interactions,
 	                ngroups = ngroups,gamma.prior = gamma.prior, 
@@ -148,6 +157,7 @@ run_stm <- function(docs,topic_n=10,verbose=F,reportevery=5,prevalence='',conten
 	                burnin=burnin, alpha= alpha, eta= eta, rp.s = rp.s,
 	                rp.p=rp.p, tSNE_init.dims = tSNE_init.dims),
 	                init.type = "LDA", verbose = verbose,reportevery=reportevery,seed = 12345)
+    }
 	else
 	  STM <- stm(documents = out$documents, vocab = out$vocab,
 	                K = topic_n, max.em.its = max_itr, data = out$meta, 
