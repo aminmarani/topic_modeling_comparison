@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Topical Visualization</title>
+<style>
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.floating-div {
+  background-color: #A4BFCB;
+  padding: 5px 25px;
+  color:#EEE;
+  font-size: 15px;
+  margin-top:10px;
+  
+}
+
+.sticky {
+  position: fixed; 
+  top: 10px;
+  right:18px;
+  margin: 0;
+  width:calc(33.33% - 25px);
+}
+
+.abs {
+  position: absolute; 
+  bottom: 10px;
+  right:10px;
+  width:calc(33.33% - 20px);
+}
+
+.sidebar {
+  width:33.33%;
+  float:left;
+  padding: 0 10px;
+}
+
+.wrap {
+  width: 100%;
+}
+
+#primary-content-wrap {
+  position: relative;
+}
+
+.primary-content {
+  width:66.66%;
+  float:left;
+  padding: 10px;
+  
+}
+
+.primary-content h2 {
+  font-size: 24px;
+}
+
+
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="node_modules/leader-line/leader-line.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/underscore@1.13.6/underscore-umd-min.js"></script>
+<script>
+var topic_data;
+const arr = [[],[],[],[],[],[],[]];
+var floating_div_enabled = false
+
+
+
+
+
+
+$(document).ready(function(){
+
+  $('.floating-div').hide()
+
+  $.getJSON( "topics.json", function( data ) {
+   // shuffling topic order
+   order = _.shuffle([1, 2, 3, 4, 5, 6,7,8,9,10,11,12])
+   if (window.name.indexOf("stored") >= 0) //user previosuly picked a post to see that at the top
+   {
+      topic2front = parseInt(window.name.split('|')[0])
+      ind = order.findIndex(topic2front) 
+      order[ind] = order[0]
+      order[0] = topic2front
+   }
+   window.name = ''
+  // Do something with the JSON data
+   for (var i = 0;i<13;i++)
+   {
+      post_idx = Math.floor(Math.random() * 20) //which post to show from this topic
+      //saving post idx
+      window.name = window.name + '|' + post_idx
+      $("#div"+i).width(400);
+      $("#div"+i).height(400);
+      $("#div"+i).fadeIn(i*1000);
+
+      //adding texts and images
+      var img=document.createElement("img");
+      img.src=data['topic '+i][post_idx][3];
+      img.width = 200
+      img.height = 200
+      // img
+      $("#div"+i).append(img)
+
+      // text
+      if (data['topic '+i][post_idx][1].length>400)
+      {
+        $("#div"+i).append("\n"+ data['topic '+i][post_idx][1].substring(0,400)+ '...TRUNCATED...'+'<a href="'+data['topic '+i][post_idx][2]+'"target="_blank"> -->Read the Original Post<--</a>')
+         // <a href="https://www.w3schools.com">...read more...</a>')
+      }
+      else
+      {
+        $("#div"+i).append("\n"+ data['topic '+i][post_idx][1]+'<a href="'+data['topic '+i][post_idx][2]+'"target="_blank"> -->Read the Original Post<--</a>')
+      }
+
+      $("#div"+i).append("<br>")
+      $("#div"+i).append('<input type="button" id="button' + i + '" value="What others posted next" onclick="myFunction(this)" style="top:'+(460*(i+1)-40*i)+'px;position:absolute;left:10px"/>')
+      // $('#button' + i).position().left = "400px"
+
+
+    }
+});
+
+
+
+});
+
+function myFunction(elem) {
+    var trans;
+    $.getJSON( "transitions.json", function( data ) {
+
+      id = elem.id.split('button')[1]
+      var topic = 'topic '+ id
+      base_left = 500
+      for (var i=0;i<data[topic].length;i++)
+      {
+        var div = document.createElement("div");
+        div.setAttribute("id","div"+id+"div"+i)
+        div.style.width = "200px";
+        div.style.height = 400-40*(3-i)+"px";
+        div.style.background = "#7393B3";
+        div.style.color = "white";
+        div.innerHTML = '<img src="'+data[topic][i][1]+'" width="200" height="200">' +data[topic][i][0] 
+        div.style.position = "absolute";
+        div.style.left = base_left + "px"
+        base_left += 210
+        div.style.top = 40*(3-i)+75 + (400*id)+((id+1)*2.5)+"px" 
+        document.getElementById("div"+id).appendChild(div)
+
+        // window.name = topic
+
+        // drawing a line
+        if (arr[id].length < 3)
+        {
+          var line =  new LeaderLine(
+          LeaderLine.pointAnchor(document.getElementById('div'+id), {x: "100%", y: 30+(40)*(2-i)}),
+          LeaderLine.pointAnchor(document.getElementById('div'+id+'div'+i), {x: 0, y: 0}),
+          {dash: {animation: true}}
+          );
+          arr[id][i] = line
+
+        }
+        else //if this is second time they click on show me more
+        {
+          arr[id][i].remove()
+          var line =  new LeaderLine(
+          LeaderLine.pointAnchor(document.getElementById('div'+id), {x: "100%", y: 30+(40)*(2-i)}),
+          LeaderLine.pointAnchor(document.getElementById('div'+id+'div'+i), {x: 0, y: 0}),{endLabel: ~~(100*data[topic][i][2])+'%',color: "#85c0f9",size:20*data[topic][i][2],outline:true,endPlugOutline: true}
+          );
+
+          //https://www.minddevelopmentanddesign.com/blog/create-floating-html-element-stays-sidebar-scrolling/
+          //showing floatting div
+          if (floating_div_enabled == false)
+          {
+             $('.floating-div').show()
+             var topPosition = $('.floating-div').offset().top - 10;
+             var floatingDivHeight = $('.floating-div').outerHeight();
+             // var footerFromTop = $('footer').offset().top;
+             var absPosition = data[topic].length*400-400//footerFromTop - floatingDivHeight - 20;
+             var win = $(window);
+             var floatingDiv = $('.floating-div');
+             floatingDiv.addClass('sticky');
+           win.scroll(function() {
+            if (true) {//window.matchMedia('(min-width: 768px)').matches
+             if ((win.scrollTop() < absPosition)) {//(win.scrollTop() > topPosition) && 
+              floatingDiv.addClass('sticky');
+              floatingDiv.removeClass('abs');
+             } else if ( (win.scrollTop() > absPosition)) {
+              floatingDiv.removeClass('sticky');
+              floatingDiv.addClass('abs');
+             } else {
+              // floatingDiv.removeClass('sticky');
+              floatingDiv.addClass('sticky');
+              floatingDiv.removeClass('abs');
+             }
+            }
+           });
+           floating_div_enabled = true
+            }
+
+
+          
+        }
+
+      }
+      //changing button
+      var button = document.getElementById("button"+id);
+      button.value = "Show transitions"
+      button.style.background= "#008CBA"
+
+
+
+
+    });
+    
+}
+
+
+</script>
+</head>
+<body>
+
+<div id="div_exp" style="width:1200px;height:50px;display:True;background-color:#818593;">
+  
+  <h5> Think about a moment in the past and choose one post to explore that experienced during ED recovery.
+  <br>
+  These are posts from users writing about ED and ED recovery. 
+  <br>
+  You can explore posts that users posted after the orignal posts by clicking on "What others posted next" and see the proportion by clicking on "Show transitions". 
+</h5>
+</div><br>
+
+<!-- <button>Start...</button><br><br> -->
+<div id="div0" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div1" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div2" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div3" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div4" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div5" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div6" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div7" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div8" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div9" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div10" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div11" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div12" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div13" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+<div id="div14" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
+
+<div id="primary-content-wrap" class="wrap clearfix">
+  <div class="primary-content">
+    <div class="sidebar">
+      <div class="floating-div">
+        <p>These posts and topics were posted by the user(s) who posted similar topic on the left. The thickness and the percentage shows how likely is to post a topic on the right after posting the left one.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

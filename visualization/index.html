@@ -61,6 +61,7 @@ img {
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="node_modules/leader-line/leader-line.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/underscore@1.13.6/underscore-umd-min.js"></script>
 <script>
 var topic_data;
 const arr = [[],[],[],[],[],[],[]];
@@ -76,30 +77,43 @@ $(document).ready(function(){
   $('.floating-div').hide()
 
   $.getJSON( "topics.json", function( data ) {
-  // Do something with the JSON data
-   for (var i = 0;i<3;i++)
+   // shuffling topic order
+   order = _.shuffle([1, 2, 3, 4, 5, 6,7,8,9,10,11,12])
+   if (window.name.indexOf("stored") >= 0) //user previosuly picked a post to see that at the top
    {
+      topic2front = parseInt(window.name.split('|')[0])
+      ind = order.findIndex(topic2front) 
+      order[ind] = order[0]
+      order[0] = topic2front
+   }
+   window.name = ''
+  // Do something with the JSON data
+   for (var i = 0;i<13;i++)
+   {
+      post_idx = Math.floor(Math.random() * 20) //which post to show from this topic
+      //saving post idx
+      window.name = window.name + '|' + post_idx
       $("#div"+i).width(400);
       $("#div"+i).height(400);
       $("#div"+i).fadeIn(i*1000);
 
       //adding texts and images
       var img=document.createElement("img");
-      img.src=data['topic '+i][4];
+      img.src=data['topic '+i][post_idx][3];
       img.width = 200
       img.height = 200
       // img
       $("#div"+i).append(img)
 
       // text
-      if (data['topic '+i][2].length>500)
+      if (data['topic '+i][post_idx][1].length>400)
       {
-        $("#div"+i).append("\n"+ data['topic '+i][2].substring(0,500)+'<a href="'+data['topic '+i][3]+'"target="_blank"> ...read more.</a>')
+        $("#div"+i).append("\n"+ data['topic '+i][post_idx][1].substring(0,400)+ '...TRUNCATED...'+'<a href="'+data['topic '+i][post_idx][2]+'"target="_blank"> -->Read the Original Post<--</a>')
          // <a href="https://www.w3schools.com">...read more...</a>')
       }
       else
       {
-        $("#div"+i).append("\n"+ data['topic '+i][2].substring(0,500))
+        $("#div"+i).append("\n"+ data['topic '+i][post_idx][1]+'<a href="'+data['topic '+i][post_idx][2]+'"target="_blank"> -->Read the Original Post<--</a>')
       }
 
       $("#div"+i).append("<br>")

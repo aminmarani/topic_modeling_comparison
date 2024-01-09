@@ -561,7 +561,7 @@ def trns2mat(trns):
     n_topics = len(trns[0][0])
     mat = np.zeros((n_topics,n_topics))
     for a4,b4 in trns:
-        t = b4.reshape(1,16) * a4.reshape(16,1)
+        t = b4.reshape(1,n_topics) * a4.reshape(n_topics,1)
         mat += np.float64(t)
 
     return mat
