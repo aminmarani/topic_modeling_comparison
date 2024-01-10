@@ -64,8 +64,11 @@ img {
 <script src="https://cdn.jsdelivr.net/npm/underscore@1.13.6/underscore-umd-min.js"></script>
 <script>
 var topic_data;
-const arr = [[],[],[],[],[],[],[]];
+const arr = [[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
+var topic_docs;
+var order;
 var floating_div_enabled = false
+
 
 
 
@@ -77,8 +80,10 @@ $(document).ready(function(){
   $('.floating-div').hide()
 
   $.getJSON( "topics.json", function( data ) {
+   //store data for outside "ready" function use
+   topic_docs = data;
    // shuffling topic order
-   order = _.shuffle([1, 2, 3, 4, 5, 6,7,8,9,10,11,12])
+   order = _.shuffle([1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13])
    if (window.name.indexOf("stored") >= 0) //user previosuly picked a post to see that at the top
    {
       topic2front = parseInt(window.name.split('|')[0])
@@ -129,35 +134,56 @@ $(document).ready(function(){
 });
 
 function myFunction(elem) {
+
+    // if (!topic_docs)//read data from topics.json if needed
+    // {
+    //     $.getJSON( "topics.json", function( data ) {
+    //         if (data)
+    //             topic_docs = data;
+    //         alert(topic_docs['topic 0'].length)
+    //     })
+    // }
+    // if (topic_docs)
+    //     alert(topic_docs['topic 0'].length)
     var trans;
     $.getJSON( "transitions.json", function( data ) {
 
-      id = elem.id.split('button')[1]
-      var topic = 'topic '+ id
+      id = elem.id.split('button')[1] //id of the button
+      // topic_order = window.name.split('|').slice(1) //getting the topic associated with each post 
+      var topic = 'topic '+ order[id]
       base_left = 500
       for (var i=0;i<data[topic].length;i++)
       {
-        var div = document.createElement("div");
-        div.setAttribute("id","div"+id+"div"+i)
-        div.style.width = "200px";
-        div.style.height = 400-40*(3-i)+"px";
-        div.style.background = "#7393B3";
-        div.style.color = "white";
-        div.innerHTML = '<img src="'+data[topic][i][1]+'" width="200" height="200">' +data[topic][i][0] 
-        div.style.position = "absolute";
-        div.style.left = base_left + "px"
-        base_left += 210
-        div.style.top = 40*(3-i)+75 + (400*id)+((id+1)*2.5)+"px" 
-        document.getElementById("div"+id).appendChild(div)
+        to_topic = 'topic '+data[topic][i][0] //which topic we are going to
+        to_dist = data[topic][i][1] //distribution of the topics we are going to
 
         // window.name = topic
 
-        // drawing a line
+        // creat the posts and drawing lines if it was not done before
         if (arr[id].length < 3)
         {
+          var div = document.createElement("div");
+          post_idx = Math.floor(Math.random() * 20) //which post to show from this topic
+          div.setAttribute("id","from"+topic+"|to"+to_topic)
+          div.style.width = "200px";
+          div.style.height = 400-40*(3-i)+"px";
+          div.style.background = "#7393B3";
+          div.style.color = "white";
+          if (topic_docs[to_topic][post_idx][1].length > 200)
+            allowed_text = topic_docs[to_topic][post_idx][1].substring(0,200+(i*50)) + "...TRUNCATED..." + '<a href="'+topic_docs[to_topic][post_idx][2]+'"target="_blank"> -->Read the Original Post<--</a>'
+          else
+            allowed_text = topic_docs[to_topic][post_idx][1]
+          div.innerHTML = '<img src="'+topic_docs[to_topic][post_idx][3]+'" width="100" height="100">' +allowed_text
+          div.style.position = "absolute";
+          div.style.left = base_left + "px"
+          base_left += 210
+          div.style.top = 40*(3-i)+75 + (400*id)+((id+1)*2.5)+"px" 
+          document.getElementById("div"+id).appendChild(div)
+
+          //drawing line for the first time
           var line =  new LeaderLine(
           LeaderLine.pointAnchor(document.getElementById('div'+id), {x: "100%", y: 30+(40)*(2-i)}),
-          LeaderLine.pointAnchor(document.getElementById('div'+id+'div'+i), {x: 0, y: 0}),
+          LeaderLine.pointAnchor(document.getElementById("from"+topic+"|to"+to_topic), {x: 0, y: 0}),
           {dash: {animation: true}}
           );
           arr[id][i] = line
@@ -168,7 +194,7 @@ function myFunction(elem) {
           arr[id][i].remove()
           var line =  new LeaderLine(
           LeaderLine.pointAnchor(document.getElementById('div'+id), {x: "100%", y: 30+(40)*(2-i)}),
-          LeaderLine.pointAnchor(document.getElementById('div'+id+'div'+i), {x: 0, y: 0}),{endLabel: ~~(100*data[topic][i][2])+'%',color: "#85c0f9",size:20*data[topic][i][2],outline:true,endPlugOutline: true}
+          LeaderLine.pointAnchor(document.getElementById("from"+topic+"|to"+to_topic), {x: 0, y: 0}),{endLabel: ~~(100*to_dist)+'%',color: "#85c0f9",size:20*to_dist,outline:true,endPlugOutline: true}
           );
 
           //https://www.minddevelopmentanddesign.com/blog/create-floating-html-element-stays-sidebar-scrolling/
