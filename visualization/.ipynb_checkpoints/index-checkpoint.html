@@ -65,6 +65,7 @@ img {
 <script>
 var topic_data;
 const arr = [[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
+const post_topic = [[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
 var topic_docs;
 var order;
 var floating_div_enabled = false
@@ -72,10 +73,13 @@ var floating_div_enabled = false
 
 
 
-
-
+//start from the top everytime you refresh
+$(window).on('beforeunload', function() {
+    $(window).scrollTop(0);
+});
 
 $(document).ready(function(){
+  post2front = -1
 
   $('.floating-div').hide()
 
@@ -83,11 +87,12 @@ $(document).ready(function(){
    //store data for outside "ready" function use
    topic_docs = data;
    // shuffling topic order
-   order = _.shuffle([1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13])
+   order = _.shuffle([0,1, 2, 3, 4, 5, 6,7,8,9,10,11,12])
    if (window.name.indexOf("stored") >= 0) //user previosuly picked a post to see that at the top
    {
-      topic2front = parseInt(window.name.split('|')[0])
-      ind = order.findIndex(topic2front) 
+      topic2front = parseInt(window.name.split('|')[1])
+      post2front = parseInt(window.name.split('|')[2])
+      ind = order.findIndex(x => x ===topic2front) 
       order[ind] = order[0]
       order[0] = topic2front
    }
@@ -96,6 +101,9 @@ $(document).ready(function(){
    for (var i = 0;i<13;i++)
    {
       post_idx = Math.floor(Math.random() * 20) //which post to show from this topic
+      //set the stored post if users clicked on a post previouslu
+      if (post2front>-1 && i == 0)
+          post_idx = post2front
       //saving post idx
       window.name = window.name + '|' + post_idx
       $("#div"+i).width(400);
@@ -104,25 +112,25 @@ $(document).ready(function(){
 
       //adding texts and images
       var img=document.createElement("img");
-      img.src=data['topic '+i][post_idx][3];
+      img.src=data['topic '+order[i]][post_idx][3];
       img.width = 200
       img.height = 200
       // img
       $("#div"+i).append(img)
 
       // text
-      if (data['topic '+i][post_idx][1].length>400)
+      if (data['topic '+order[i]][post_idx][1].length>400)
       {
-        $("#div"+i).append("\n"+ data['topic '+i][post_idx][1].substring(0,400)+ '...TRUNCATED...'+'<a href="'+data['topic '+i][post_idx][2]+'"target="_blank"> -->Read the Original Post<--</a>')
+        $("#div"+i).append("\n"+ data['topic '+order[i]][post_idx][1].substring(0,400)+ '...TRUNCATED...'+'<a href="'+data['topic '+order[i]][post_idx][2]+'"target="_blank"> -->Read the Original Post<--</a>')
          // <a href="https://www.w3schools.com">...read more...</a>')
       }
       else
       {
-        $("#div"+i).append("\n"+ data['topic '+i][post_idx][1]+'<a href="'+data['topic '+i][post_idx][2]+'"target="_blank"> -->Read the Original Post<--</a>')
+        $("#div"+i).append("\n"+ data['topic '+order[i]][post_idx][1]+'<a href="'+data['topic '+order[i]][post_idx][2]+'"target="_blank"> -->Read the Original Post<--</a>')
       }
 
       $("#div"+i).append("<br>")
-      $("#div"+i).append('<input type="button" id="button' + i + '" value="What others posted next" onclick="myFunction(this)" style="top:'+(460*(i+1)-40*i)+'px;position:absolute;left:10px"/>')
+      $("#div"+i).append('<input type="button" id="button' + i + '" value="What others posted next" onclick="myFunction(this)" style="top:'+(460*(i+1)-41.5*i)+'px;position:absolute;left:10px"/>')
       // $('#button' + i).position().left = "400px"
 
 
@@ -177,7 +185,7 @@ function myFunction(elem) {
           div.style.position = "absolute";
           div.style.left = base_left + "px"
           base_left += 210
-          div.style.top = 40*(3-i)+75 + (400*id)+((id+1)*2.5)+"px" 
+          div.style.top = 40*(3-i)+75 + (400*id)+((id+1)*2)+"px" 
           document.getElementById("div"+id).appendChild(div)
 
           //drawing line for the first time
@@ -187,6 +195,8 @@ function myFunction(elem) {
           {dash: {animation: true}}
           );
           arr[id][i] = line
+          post_topic[id][i] = post_idx//save post idx for this topic and ith div
+          div.meta_data = post_idx
 
         }
         else //if this is second time they click on show me more
@@ -197,6 +207,13 @@ function myFunction(elem) {
           LeaderLine.pointAnchor(document.getElementById("from"+topic+"|to"+to_topic), {x: 0, y: 0}),{endLabel: ~~(100*to_dist)+'%',color: "#85c0f9",size:20*to_dist,outline:true,endPlugOutline: true}
           );
 
+          //making the div clickable to refresh
+          document.getElementById("from"+topic+"|to"+to_topic).addEventListener("click", function(event) {
+          
+          window.name = "stored|"+event.target.id.split('|totopic ')[1] + '|'+document.getElementById(event.target.id).meta_data
+          location.reload()
+});
+
           //https://www.minddevelopmentanddesign.com/blog/create-floating-html-element-stays-sidebar-scrolling/
           //showing floatting div
           if (floating_div_enabled == false)
@@ -205,7 +222,7 @@ function myFunction(elem) {
              var topPosition = $('.floating-div').offset().top - 10;
              var floatingDivHeight = $('.floating-div').outerHeight();
              // var footerFromTop = $('footer').offset().top;
-             var absPosition = data[topic].length*400-400//footerFromTop - floatingDivHeight - 20;
+             var absPosition = order.length*400-400//footerFromTop - floatingDivHeight - 20;
              var win = $(window);
              var floatingDiv = $('.floating-div');
              floatingDiv.addClass('sticky');
@@ -280,7 +297,7 @@ function myFunction(elem) {
   <div class="primary-content">
     <div class="sidebar">
       <div class="floating-div">
-        <p>These posts and topics were posted by the user(s) who posted similar topic on the left. The thickness and the percentage shows how likely is to post a topic on the right after posting the left one.</p>
+        <p>The transitions (arrows, thinckness, and percentages) show how likely it was for a blogger to post any of these posts after they shared the post on the left. <b> Would like to see more? Click on the post you want to see more of the same. </b> </p>
       </div>
     </div>
   </div>
