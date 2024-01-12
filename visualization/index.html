@@ -167,8 +167,8 @@ function myFunction(elem) {
           div.style.height = 400-40*(3-i)+"px";
           div.style.background = "#7393B3";
           div.style.color = "white";
-          if (topic_docs[to_topic][post_idx][1].length > 200)
-            allowed_text = topic_docs[to_topic][post_idx][1].substring(0,200+(i*50)) + "...TRUNCATED..." + '<a href="'+topic_docs[to_topic][post_idx][2]+'"target="_blank"> -->Read the Original Post<--</a>'
+          if (topic_docs[to_topic][post_idx][1].length > 175)
+            allowed_text = topic_docs[to_topic][post_idx][1].substring(0,175+(i*50)) + "...TRUNCATED..." + '<a href="'+topic_docs[to_topic][post_idx][2]+'"target="_blank"> -->Read the Original Post<--</a>'
           else
             allowed_text = topic_docs[to_topic][post_idx][1]
           div.innerHTML = '<img src="'+topic_docs[to_topic][post_idx][3]+'" width="100" height="100">' +allowed_text
@@ -198,9 +198,13 @@ function myFunction(elem) {
           );
 
           //making the div clickable to refresh
-          document.getElementById("from"+topic+"|to"+to_topic).addEventListener("click", function(event) {
-          
-          window.name = "stored|"+event.target.id.split('|totopic ')[1] + '|'+document.getElementById(event.target.id).meta_data
+          document.getElementById("from"+topic+"|to"+to_topic).innerHTML += '<br>' + '<input type="button" id="button' + topic+'to'+to_topic + '" value="Start Again"/>'
+          document.getElementById('button' + topic+'to'+to_topic).addEventListener("click", function(event) {
+
+          button_id = event.target.id.substring(6) //get the id of the button
+          div_id = ['from',button_id.split('totopic')[0],'|','totopic',button_id.split('totopic')[1]].join('')
+          pst_idx = document.getElementById(div_id).meta_data
+          window.name = "stored|"+button_id.split('totopic')[1] + '|'+pst_idx
           location.reload()
 });
 
@@ -241,8 +245,10 @@ function myFunction(elem) {
       }
       //changing button
       var button = document.getElementById("button"+id);
-      button.value = "Show transitions"
-      button.style.background= "#008CBA"
+      // button.value = "Show transitions"
+      // button.style.background= "#008CBA"
+
+      $("#div"+id).append('<input type="button" id="button' + id + '" value="See Proportions" onclick="myFunction(this)" style="top:'+ (460*(parseInt(id)+1)-41.5*parseInt(id))+  'px;position:absolute;left:290px"/>')
 
 
 
