@@ -116,13 +116,14 @@ run_stm <- function(docs,topic_n=10,verbose=F,reportevery=5,prevalence='',conten
 	docs <- out$documents
 	vocab <- out$vocab
 	meta <-out$meta
+
     
 	#running STM
 	if (nchar(prevalence)>0 && nchar(content)>0)
     {
 	  STM <- stm(documents = out$documents, vocab = out$vocab,
-	                K = topic_n, prevalence =~ as.factor(out$meta$prevalence)+as.factor(out$meta$content),#as.factor(meta$prevalence),
-                    content=~as.factor(out$meta$content),
+	                K = topic_n, prevalence =~ as.factor(out$meta$prevalence),
+                    content=~content,data = out$meta,
 	                 max.em.its = max_itr,
 	                emtol = emtol,LDAbeta=F, interactions=interactions,
 	                ngroups = ngroups, gamma.prior = gamma.prior, 
@@ -134,7 +135,7 @@ run_stm <- function(docs,topic_n=10,verbose=F,reportevery=5,prevalence='',conten
 	else if (nchar(prevalence)>0)
     {
         STM <- stm(documents = out$documents, vocab = out$vocab,
-	                K = topic_n, prevalence =~ as.factor(out$meta$prevalence)+as.factor(out$meta$content) ,#out$meta$prevalence
+	                K = topic_n, prevalence =~ as.factor(out$meta$prevalence),#+as.factor(out$meta$content) ,#out$meta$prevalence
 	                data = out$meta, max.em.its = max_itr,
                   emtol = emtol,LDAbeta=T, interactions=interactions,
                   ngroups = ngroups,gamma.prior = gamma.prior, 
