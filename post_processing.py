@@ -565,3 +565,23 @@ def trns2mat(trns):
         mat += np.float64(t)
 
     return mat
+
+
+def topic_terms_bert(model,K):
+    '''
+    storing term probabilities for each topic in BERTopic
+
+    parameters:
+    -----------------
+    @param model: Object of BERTopic model
+    @param K: number of topics
+    
+    
+    returns:
+    -------------
+    Returns a list of lists
+    '''
+    res = []
+    for k in range(K):
+        res.append([j[1] for j in model.get_topic(k)])
+    return res
