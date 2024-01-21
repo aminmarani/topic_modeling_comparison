@@ -122,7 +122,7 @@ run_stm <- function(docs,topic_n=10,verbose=F,reportevery=5,prevalence='',conten
 	if (nchar(prevalence)>0 && nchar(content)>0)
     {
 	  STM <- stm(documents = out$documents, vocab = out$vocab,
-	                K = topic_n, prevalence =~ as.factor(out$meta$prevalence),
+	                K = topic_n, prevalence =~ as.factor(out$meta$prevalence),#+as.factor(out$meta$content),
                     content=~content,data = out$meta,
 	                 max.em.its = max_itr,
 	                emtol = emtol,LDAbeta=F, interactions=interactions,
