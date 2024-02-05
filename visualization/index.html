@@ -73,6 +73,32 @@ img {
     font-weight: 900;
 }
 
+.center {
+  border: 5px solid;
+  border-color: #a8dadc;
+/*  margin: auto;*/
+/*  width: 50%;*/
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  padding: 10px;
+}
+
+.container {
+  height: 200px;
+  position: relative;
+  border: 3px solid green;
+}
+
+.vertical-center {
+  margin: 0;
+  position: absolute;
+  left: 50%;
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
 
 
 
@@ -80,242 +106,28 @@ img {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="node_modules/leader-line/leader-line.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/underscore@1.13.6/underscore-umd-min.js"></script>
-<script>
-var topic_data;
-const arr = [[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
-const post_topic = [[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
-var topic_docs;
-var order;
-var floating_div_enabled = false
 
-
-
-
-//start from the top everytime you refresh
-$(window).on('beforeunload', function() {
-    $(window).scrollTop(0);
-});
-
-$(document).ready(function(){
-  post2front = -1
-
-  $('.floating-div').hide()
-
-  $.getJSON( "topics.json", function( data ) {
-   //store data for outside "ready" function use
-   topic_docs = data;
-   // shuffling topic order
-   order = _.shuffle([0,1, 2, 3, 4, 5, 6,7,8,9,10,11,12])
-   if (window.name.indexOf("stored") >= 0) //user previosuly picked a post to see that at the top
-   {
-      topic2front = parseInt(window.name.split('|')[1])
-      post2front = parseInt(window.name.split('|')[2])
-      ind = order.findIndex(x => x ===topic2front) 
-      order[ind] = order[0]
-      order[0] = topic2front
-   }
-   window.name = ''
-  // Do something with the JSON data
-   for (var i = 0;i<13;i++)
-   {
-      post_idx = Math.floor(Math.random() * 20) //which post to show from this topic
-      //set the stored post if users clicked on a post previouslu
-      if (post2front>-1 && i == 0)
-          post_idx = post2front
-      //saving post idx
-      window.name = window.name + '|' + post_idx
-      $("#div"+i).width(400);
-      $("#div"+i).height(400);
-      $("#div"+i).fadeIn(i*1000);
-
-      //adding texts and images
-      var img=document.createElement("img");
-      img.src=data['topic '+order[i]][post_idx][3];
-      img.width = 200
-      img.height = 200
-      // img
-      $("#div"+i).append(img)
-
-      // text
-      if (data['topic '+order[i]][post_idx][1].length>400)
-      {
-        $("#div"+i).append("\n"+ data['topic '+order[i]][post_idx][1].substring(0,400)+ '...'+'<a href="'+data['topic '+order[i]][post_idx][2]+'"target="_blank"> Read the Entire Post</a>')
-         // <a href="https://www.w3schools.com">...read more...</a>')
-      }
-      else
-      {
-        $("#div"+i).append("\n"+ data['topic '+order[i]][post_idx][1]+'<a href="'+data['topic '+order[i]][post_idx][2]+'"target="_blank"> Read the Original Post</a>')
-      }
-
-      $("#div"+i).append("<br>")
-      $("#div"+i).append('<input type="button" id="button' + i + '" value="What others posted next" onclick="myFunction(this)" style="top:'+(460*(i+1)-41.5*i)+'px;position:absolute;left:10px"/>')
-      // $('#button' + i).position().left = "400px"
-
-
-    }
-});
-
-
-
-});
-
-function myFunction(elem) {
-
-    var trans;
-    $.getJSON( "transitions.json", function( data ) {
-
-      id = elem.id.split('button')[1] //id of the button
-      // topic_order = window.name.split('|').slice(1) //getting the topic associated with each post 
-      var topic = 'topic '+ order[id]
-      base_left = 500
-      for (var i=0;i<data[topic].length;i++)
-      {
-        to_topic = 'topic '+data[topic][i][0] //which topic we are going to
-        to_dist = data[topic][i][1] //distribution of the topics we are going to
-
-        // window.name = topic
-
-        // creat the posts and drawing lines if it was not done before
-        if (arr[id].length < 3)
-        {
-          var div = document.createElement("div");
-          post_idx = Math.floor(Math.random() * 20) //which post to show from this topic
-          div.setAttribute("id","from"+topic+"|to"+to_topic)
-          div.style.width = "200px";
-          div.style.height = 400-40*(3-i)+"px";
-          div.style.background = "#7393B3";
-          div.style.color = "white";
-          if (topic_docs[to_topic][post_idx][1].length > 175)
-            allowed_text = topic_docs[to_topic][post_idx][1].substring(0,175+(i*50)) + "..." + '<a href="'+topic_docs[to_topic][post_idx][2]+'"target="_blank"> Read the Entire Post</a>'
-          else
-            allowed_text = topic_docs[to_topic][post_idx][1] + '<a href="'+topic_docs[to_topic][post_idx][2]+'"target="_blank"> Read the Original Post</a>'
-          div.innerHTML = '<img src="'+topic_docs[to_topic][post_idx][3]+'" width="100" height="100">' +allowed_text
-          div.style.position = "absolute";
-          div.style.left = base_left + "px"
-          base_left += 210
-          div.style.top = 40*(3-i)+75 + (400*id)+((id+1)*2)+"px" 
-          document.getElementById("div"+id).appendChild(div)
-
-          //drawing line for the first time
-          var line =  new LeaderLine(
-          LeaderLine.pointAnchor(document.getElementById('div'+id), {x: "100%", y: 30+(40)*(2-i)}),
-          LeaderLine.pointAnchor(document.getElementById("from"+topic+"|to"+to_topic), {x: 0, y: 0}),
-          {dash: {animation: true}}
-          );
-          arr[id][i] = line
-          post_topic[id][i] = post_idx//save post idx for this topic and ith div
-          div.meta_data = post_idx
-
-        }
-        else //if this is second time they click on show me more
-        {
-          arr[id][i].remove()
-          var line =  new LeaderLine(
-          LeaderLine.pointAnchor(document.getElementById('div'+id), {x: "100%", y: 30+(40)*(2-i)}),
-          LeaderLine.pointAnchor(document.getElementById("from"+topic+"|to"+to_topic), {x: 0, y: 0}),{endLabel: ~~(100*to_dist)+'%',color: "#85c0f9",size:20*to_dist,outline:true,endPlugOutline: true}
-          );
-
-          //making the div clickable to refresh
-          document.getElementById("from"+topic+"|to"+to_topic).innerHTML += '<br>' + '<input type="button" id="button' + topic+'to'+to_topic + '" value="Start Again from This Post"/>'
-          document.getElementById('button' + topic+'to'+to_topic).addEventListener("click", function(event) {
-
-          button_id = event.target.id.substring(6) //get the id of the button
-          div_id = ['from',button_id.split('totopic')[0],'|','totopic',button_id.split('totopic')[1]].join('')
-          pst_idx = document.getElementById(div_id).meta_data
-          window.name = "stored|"+button_id.split('totopic')[1] + '|'+pst_idx
-          location.reload()
-});
-
-          //https://www.minddevelopmentanddesign.com/blog/create-floating-html-element-stays-sidebar-scrolling/
-          //showing floatting div
-          if (floating_div_enabled == false)
-          {
-             $('.floating-div').show()
-             var topPosition = $('.floating-div').offset().top - 10;
-             var floatingDivHeight = $('.floating-div').outerHeight();
-             // var footerFromTop = $('footer').offset().top;
-             var absPosition = order.length*400-400//footerFromTop - floatingDivHeight - 20;
-             var win = $(window);
-             var floatingDiv = $('.floating-div');
-             floatingDiv.addClass('sticky');
-           win.scroll(function() {
-            if (true) {//window.matchMedia('(min-width: 768px)').matches
-             if ((win.scrollTop() < absPosition)) {//(win.scrollTop() > topPosition) && 
-              floatingDiv.addClass('sticky');
-              floatingDiv.removeClass('abs');
-             } else if ( (win.scrollTop() > absPosition)) {
-              floatingDiv.removeClass('sticky');
-              floatingDiv.addClass('abs');
-             } else {
-              // floatingDiv.removeClass('sticky');
-              floatingDiv.addClass('sticky');
-              floatingDiv.removeClass('abs');
-             }
-            }
-           });
-           floating_div_enabled = true
-            }
-
-
-          
-        }
-
-      }
-      //changing button
-      var button = document.getElementById("button"+id);
-      // button.value = "Show transitions"
-      // button.style.background= "#008CBA"
-
-      $("#div"+id).append('<input type="button" id="button' + id + '" value="See Proportions" onclick="myFunction(this)" style="top:'+ (460*(parseInt(id)+1)-41.5*parseInt(id))+  'px;position:absolute;left:290px"/>')
-
-
-
-
-    });
-    
-}
-
-
-</script>
+<head>
 </head>
+
+
 <body>
 
-<div id="div_exp" style="width:1200px;height:50px;display:True;background-color:#818593;">
-  
-  <h5> Think about a moment in the past and choose one post to explore that experienced during ED recovery.
-  <br>
+<div class = "center" id="div_exp" style="width:1200px;height:200px;display:True;background-color:#818593;">
+  Next page displays posts social media users were posting about ED.
+  <h4> Think about a moment in the past and choose one post to explore that you experienced during ED recovery.
+<!--   <br>
   These are posts from users writing about ED and ED recovery. 
-  <br>
+  <br> -->
+</h4>
   You can explore posts that users posted after the orignal posts by clicking on "What others posted next" and see the proportion by clicking on "Show transitions". 
-</h5>
-</div><br>
-
-<!-- <button>Start...</button><br><br> -->
-<div id="div0" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
-<div id="div1" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
-<div id="div2" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
-<div id="div3" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
-<div id="div4" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
-<div id="div5" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
-<div id="div6" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
-<div id="div7" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
-<div id="div8" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
-<div id="div9" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
-<div id="div10" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
-<div id="div11" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
-<div id="div12" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
-<div id="div13" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
-<div id="div14" style="width:300px;height:300px;display:none;background-color:#bfcfff;"></div><br>
-
-<div id="primary-content-wrap" class="wrap clearfix">
-  <div class="primary-content">
-    <div class="sidebar">
-      <div class="floating-div">
-        <p>The transitions (arrows, thinckness, and percentages) show how likely it was for a blogger to post any of these posts after they shared the post on the left. <b> Would like to see more? Click on the post you want to see more of the same. </b> </p>
-      </div>
-    </div>
+  <h4>When You are ready click the button below to start the experiment. </h4>
+<!-- </h5> -->
+  <div class="vertical-center">
+    <a href="index2.html">
+      <button>Start the Experiment</button>
+    </a>
   </div>
 </div>
 
 </body>
-</html>
