@@ -72,7 +72,7 @@ def preprocess_data(doc_list, extra_stopwords = {},len_th=4,lemmatized=False):
 	will result in different topics and may need different evaluation, including NPMI, stability, or human assessment**
 
 	'''
-
+	orig_docs = doc_list.copy()
 	# replace single smart quote with single straight quote, so as to catch stopword contractions
     #converting open/close quotations to neutral one
 	doc_list = [re.sub("[\u2018\u2019]", "'", doc) for doc in doc_list]
@@ -99,7 +99,7 @@ def preprocess_data(doc_list, extra_stopwords = {},len_th=4,lemmatized=False):
 	original_docs = []
 	# loop through document list
 	c = 0 #counter on the document number
-	for i in doc_list:
+	for i,orig in zip(doc_list,orig_docs):
 		# clean and tokenize document string
 		raw = i.lower()
 		tokens = tokenizer.tokenize(raw)
@@ -124,7 +124,7 @@ def preprocess_data(doc_list, extra_stopwords = {},len_th=4,lemmatized=False):
 		# add tokens to list
 		if len(stopped_tokens) >= len_th:
 		  texts.append(stopped_tokens)
-		  original_docs.append([i,c])
+		  original_docs.append([orig,c])
 
 		c += 1
 

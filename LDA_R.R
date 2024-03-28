@@ -55,7 +55,7 @@ library(reticulate)
 #' @param save_path the address to save the model, if save_flag = T
 
 findTopics <- function(docs, n_topics,rand_seed=54321L,burnin_iteration=20,after_iteration_burnin = 10,
-                      epochs=2000,extra_epochs = 50,word_min_freq=2,label.len=50,save_flag = F,
+                      epochs=2000,extra_epochs = 50,word_min_freq=2,label.len=100,save_flag = F,
                        save_path = 'default',alpha_sum=1.0 ){
   #Use mallet as in sample code
   print("Building mallet instance ...")
